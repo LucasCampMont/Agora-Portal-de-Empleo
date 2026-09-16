@@ -1,0 +1,1804 @@
+<div class="min-h-[calc(100vh-72px)] bg-[#F4FAFA]">
+
+  <!-- ENCABEZADO + BUSCADOR -->
+  <section class="px-6 pt-6 pb-4">
+
+    <div class="mb-5">
+      <h1 class="text-2xl font-semibold text-[#0F172A]">
+        Empleos
+      </h1>
+
+      <p class="mt-1 text-sm text-slate-500">
+        Encuentra oportunidades que se ajusten a tu perfil.
+      </p>
+    </div>
+
+
+    <!-- BUSCADOR -->
+    <div class="flex flex-col lg:flex-row gap-3">
+
+      <!-- PALABRAS CLAVE -->
+      <div class="relative flex-1">
+
+        <span
+          class="absolute left-4 top-1/2 -translate-y-1/2
+                 text-slate-400"
+        >
+          🔍
+        </span>
+
+        <input
+          type="text"
+          placeholder="Cargo, habilidad o empresa"
+          class="w-full h-11
+                 pl-11 pr-4
+                 rounded-lg
+                 border border-[#DCEBEA]
+                 bg-white
+                 text-sm text-[#0F172A]
+                 placeholder:text-slate-400
+                 focus:outline-none
+                 focus:ring-2
+                 focus:ring-[#0A9292]/20
+                 focus:border-[#0A9292]"
+        />
+
+      </div>
+
+
+      <!-- UBICACIÓN -->
+      <div class="relative w-full lg:w-56">
+
+        <span
+          class="absolute left-4 top-1/2 -translate-y-1/2
+                 text-slate-400"
+        >
+          📍
+        </span>
+
+        <input
+          type="text"
+          placeholder="Ubicación"
+          class="w-full h-11
+                 pl-11 pr-4
+                 rounded-lg
+                 border border-[#DCEBEA]
+                 bg-white
+                 text-sm text-[#0F172A]
+                 placeholder:text-slate-400
+                 focus:outline-none
+                 focus:ring-2
+                 focus:ring-[#0A9292]/20
+                 focus:border-[#0A9292]"
+        />
+
+      </div>
+
+
+      <!-- BOTÓN BUSCAR -->
+      <button
+        class="h-11
+               px-6
+               rounded-lg
+               bg-[#0BAFA5]
+               text-white
+               text-sm
+               font-semibold
+               hover:bg-[#09998F]
+               transition"
+      >
+        Buscar
+      </button>
+
+    </div>
+
+  </section>
+
+
+<!-- FILTROS RÁPIDOS -->
+<section class="px-6 pb-4">
+
+  <div class="flex flex-wrap items-center gap-2">
+
+    <!-- FILTROS -->
+    <button
+      (click)="toggleFilters()"
+      class="h-9
+             px-4
+             rounded-lg
+             border border-[#DCEBEA]
+             bg-white
+             text-sm
+             font-medium
+             text-[#0F172A]
+             hover:border-[#0A9292]
+             hover:text-[#087A78]
+             transition"
+    >
+      ⚙ Filtros
+    </button>
+
+
+    <!-- UBICACIÓN -->
+    <button
+      class="h-9
+             px-4
+             rounded-lg
+             border border-[#DCEBEA]
+             bg-white
+             text-sm
+             text-slate-600
+             hover:border-[#0A9292]
+             hover:text-[#087A78]
+             transition"
+    >
+      📍 Ubicación
+    </button>
+
+
+    <!-- MODALIDAD -->
+    <button
+      class="h-9
+             px-4
+             rounded-lg
+             border border-[#DCEBEA]
+             bg-white
+             text-sm
+             text-slate-600
+             hover:border-[#0A9292]
+             hover:text-[#087A78]
+             transition"
+    >
+      Modalidad
+    </button>
+
+
+    <!-- SALARIO -->
+    <button
+      class="h-9
+             px-4
+             rounded-lg
+             border border-[#DCEBEA]
+             bg-white
+             text-sm
+             text-slate-600
+             hover:border-[#0A9292]
+             hover:text-[#087A78]
+             transition"
+    >
+      Salario
+    </button>
+
+
+    <!-- EXPERIENCIA -->
+    <button
+      class="h-9
+             px-4
+             rounded-lg
+             border border-[#DCEBEA]
+             bg-white
+             text-sm
+             text-slate-600
+             hover:border-[#0A9292]
+             hover:text-[#087A78]
+             transition"
+    >
+      Experiencia
+    </button>
+
+
+    <!-- TIPO DE CONTRATO -->
+    <button
+      class="h-9
+             px-4
+             rounded-lg
+             border border-[#DCEBEA]
+             bg-white
+             text-sm
+             text-slate-600
+             hover:border-[#0A9292]
+             hover:text-[#087A78]
+             transition"
+    >
+      Tipo de contrato
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- PANEL DE FILTROS -->
+
+@if (showFilters) {
+
+  <section class="px-6 pb-4">
+
+    <div
+      class="bg-white
+             border border-[#DCEBEA]
+             rounded-xl
+             p-5"
+    >
+
+      <!-- ENCABEZADO -->
+      <div class="flex items-start justify-between">
+
+        <div>
+
+          <h2 class="text-base font-semibold text-[#0F172A]">
+            Filtros
+          </h2>
+
+          <p class="mt-1 text-sm text-slate-500">
+            Refina los resultados según tus preferencias.
+          </p>
+
+        </div>
+
+        <button
+          type="button"
+          (click)="toggleFilters()"
+          class="w-8
+                 h-8
+                 flex
+                 items-center
+                 justify-center
+                 rounded-lg
+                 text-slate-400
+                 hover:bg-[#F4FAFA]
+                 hover:text-[#0A9292]
+                 transition"
+        >
+          ✕
+        </button>
+
+      </div>
+
+
+      <!-- CONTENIDO DE FILTROS -->
+      <div
+        class="mt-6
+               grid
+               grid-cols-1
+               lg:grid-cols-2
+               gap-x-8
+               gap-y-7"
+      >
+
+
+        <!-- ORDENAR POR -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Ordenar por
+          </h3>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+
+            <!-- SELECCIONADO -->
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#0A9292]
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-sm
+                     font-semibold
+                     cursor-pointer
+                     transition"
+            >
+              Más relevantes
+            </button>
+
+            <!-- NORMAL -->
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Más recientes
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- FECHA DE PUBLICACIÓN -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Fecha de publicación
+          </h3>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Últimas 24 horas
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Última semana
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Último mes
+            </button>
+
+            <!-- SELECCIONADO -->
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#0A9292]
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-sm
+                     font-semibold
+                     cursor-pointer
+                     transition"
+            >
+              Cualquier momento
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ÁREA DE TRABAJO -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Área de trabajo
+          </h3>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Tecnología
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Datos
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Ingeniería
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Finanzas
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Ventas
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Administración
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Salud
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Marketing
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Recursos Humanos
+            </button>
+
+            <button
+              type="button"
+              class="inline-flex
+                     items-center
+                     justify-center
+                     h-9
+                     px-4
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+              Operaciones
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- NIVEL DE EXPERIENCIA -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Nivel de experiencia
+          </h3>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Prácticas
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Sin experiencia
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Junior
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Intermedio
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Senior
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Dirección
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- TIPO DE EMPLEO -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Tipo de empleo
+          </h3>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Jornada completa
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Media jornada
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Temporal
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Proyecto / obra
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Práctica
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Freelance
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Otro
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- MODALIDAD -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Modalidad
+          </h3>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Presencial
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Híbrido
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Remoto
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- EMPRESA -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Empresa
+          </h3>
+
+          <div class="mt-3">
+
+            <button
+              type="button"
+              class="w-full
+                     h-10
+                     px-3
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     flex
+                     items-center
+                     justify-between
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+
+              <span>
+                Seleccionar empresa
+              </span>
+
+              <span class="text-slate-400">
+                ▼
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- UBICACIÓN -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Ubicación
+          </h3>
+
+          <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2">
+
+            <!-- REGIÓN -->
+            <button
+              type="button"
+              class="h-10
+                     px-3
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     flex
+                     items-center
+                     justify-between
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+
+              <span>
+                Región
+              </span>
+
+              <span class="text-slate-400">
+                ▼
+              </span>
+
+            </button>
+
+
+            <!-- CIUDAD -->
+            <button
+              type="button"
+              class="h-10
+                     px-3
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     flex
+                     items-center
+                     justify-between
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+
+              <span>
+                Ciudad
+              </span>
+
+              <span class="text-slate-400">
+                ▼
+              </span>
+
+            </button>
+
+
+            <!-- COMUNA -->
+            <button
+              type="button"
+              class="h-10
+                     px-3
+                     rounded-lg
+                     border border-[#D5E5E3]
+                     bg-white
+                     text-[#475569]
+                     text-sm
+                     font-medium
+                     flex
+                     items-center
+                     justify-between
+                     cursor-pointer
+                     hover:border-[#0A9292]
+                     hover:bg-[#F4FAFA]
+                     hover:text-[#087A78]
+                     transition"
+            >
+
+              <span>
+                Comuna
+              </span>
+
+              <span class="text-slate-400">
+                ▼
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- SECTOR -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Sector
+          </h3>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              TI
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Banca
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Minería
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Retail
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Salud
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Ingeniería
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Servicios profesionales
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- SALARIO -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Salario
+          </h3>
+
+          <div class="mt-3 grid grid-cols-2 gap-2">
+
+            <input
+              type="number"
+              placeholder="Mínimo"
+              class="w-full
+                     h-10
+                     px-3
+                     rounded-lg
+                     border border-[#DCEBEA]
+                     bg-white
+                     text-sm
+                     text-[#0F172A]
+                     placeholder:text-slate-400
+                     focus:outline-none
+                     focus:ring-2
+                     focus:ring-[#0A9292]/20
+                     focus:border-[#0A9292]"
+            />
+
+            <input
+              type="number"
+              placeholder="Máximo"
+              class="w-full
+                     h-10
+                     px-3
+                     rounded-lg
+                     border border-[#DCEBEA]
+                     bg-white
+                     text-sm
+                     text-[#0F172A]
+                     placeholder:text-slate-400
+                     focus:outline-none
+                     focus:ring-2
+                     focus:ring-[#0A9292]/20
+                     focus:border-[#0A9292]"
+            />
+
+          </div>
+
+        </div>
+
+
+        <!-- TECNOLOGÍAS Y HABILIDADES -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Tecnologías y habilidades
+          </h3>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Python
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              SQL
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Angular
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Java
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Excel
+            </button>
+
+            <button type="button"
+              class="inline-flex items-center justify-center h-9 px-4 rounded-lg border border-[#D5E5E3] bg-white text-[#475569] text-sm font-medium cursor-pointer hover:border-[#0A9292] hover:bg-[#F4FAFA] hover:text-[#087A78] transition">
+              Power BI
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- SOLICITUD SENCILLA -->
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A]">
+            Postulación
+          </h3>
+
+          <label
+            class="mt-3
+                   flex
+                   items-center
+                   gap-3
+                   cursor-pointer"
+          >
+
+            <input
+              type="checkbox"
+              class="w-4
+                     h-4
+                     rounded
+                     border-[#DCEBEA]
+                     text-[#0BAFA5]
+                     focus:ring-[#0A9292]"
+            />
+
+            <span class="text-sm text-slate-600">
+              Solicitud sencilla
+            </span>
+
+          </label>
+
+          <p class="mt-2 text-xs text-slate-400">
+            Muestra ofertas que permiten postular con un proceso simplificado.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACCIONES -->
+      <div
+        class="mt-7
+               pt-5
+               border-t border-[#E7F0EF]
+               flex
+               items-center
+               justify-between"
+      >
+
+        <button
+          type="button"
+          class="text-sm
+                 font-medium
+                 text-slate-500
+                 hover:text-[#087A78]
+                 transition"
+        >
+          Limpiar filtros
+        </button>
+
+        <button
+          type="button"
+          (click)="toggleFilters()"
+          class="px-5
+                 py-2.5
+                 rounded-lg
+                 bg-[#0BAFA5]
+                 text-white
+                 text-sm
+                 font-semibold
+                 hover:bg-[#09998F]
+                 transition"
+        >
+          Aplicar filtros
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+}
+
+
+  <!-- TABS + RESULTADOS -->
+  <section class="px-6">
+
+    <div
+      class="flex flex-col sm:flex-row
+             sm:items-center
+             sm:justify-between
+             gap-3
+             border-b border-[#DCEBEA]"
+    >
+
+      <!-- TABS -->
+      <div class="flex items-center gap-6">
+
+        <button
+          class="relative
+                 pb-3
+                 text-sm
+                 font-semibold
+                 text-[#087A78]"
+        >
+          Para ti
+
+          <span
+            class="absolute
+                   bottom-0
+                   left-0
+                   right-0
+                   h-0.5
+                   bg-[#0BAFA5]
+                   rounded-full"
+          ></span>
+
+        </button>
+
+
+        <button
+          class="pb-3
+                 text-sm
+                 text-slate-500
+                 hover:text-[#087A78]
+                 transition"
+        >
+          Todos
+        </button>
+
+
+        <button
+          class="pb-3
+                 text-sm
+                 text-slate-500
+                 hover:text-[#087A78]
+                 transition"
+        >
+          Guardados
+        </button>
+
+      </div>
+
+
+      <!-- RESULTADOS -->
+      <span class="text-sm text-slate-500 pb-3">
+        248 empleos encontrados
+      </span>
+
+    </div>
+
+
+    <!-- WORKSPACE -->
+    <div
+      class="mt-4
+             grid
+             grid-cols-1
+             lg:grid-cols-[380px_minmax(0,1fr)]
+             gap-4
+             pb-6"
+    >
+
+
+      <!-- LISTA DE EMPLEOS -->
+      <div
+        class="bg-white
+               border border-[#DCEBEA]
+               rounded-xl
+               overflow-hidden"
+      >
+
+        <!-- OFERTA 1 -->
+        <article
+          class="p-5
+                 border-b border-[#EDF3F2]
+                 cursor-pointer
+                 bg-[#F4FAFA]
+                 border-l-4 border-l-[#0BAFA5]"
+        >
+
+          <div class="flex justify-between gap-3">
+
+            <div>
+
+              <h2 class="font-semibold text-[#0F172A]">
+                Analista de Datos
+              </h2>
+
+              <p class="mt-1 text-sm text-slate-500">
+                Empresa XYZ
+              </p>
+
+            </div>
+
+            <button
+              class="text-slate-400
+                     hover:text-[#0A9292]
+                     transition"
+            >
+              ♡
+            </button>
+
+          </div>
+
+
+          <div class="mt-3 space-y-1">
+
+            <p class="text-sm text-slate-600">
+              📍 Santiago · Híbrido
+            </p>
+
+            <p class="text-sm font-medium text-[#0F172A]">
+              $1.200.000 – $1.500.000
+            </p>
+
+          </div>
+
+
+          <div class="flex flex-wrap gap-2 mt-3">
+
+            <span
+              class="px-2.5 py-1
+                     rounded-md
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-xs
+                     font-medium"
+            >
+              Python
+            </span>
+
+            <span
+              class="px-2.5 py-1
+                     rounded-md
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-xs
+                     font-medium"
+            >
+              SQL
+            </span>
+
+            <span
+              class="px-2.5 py-1
+                     rounded-md
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-xs
+                     font-medium"
+            >
+              Power BI
+            </span>
+
+          </div>
+
+
+          <div class="flex justify-between items-center mt-4">
+
+            <span class="text-xs text-slate-400">
+              Hace 2 horas
+            </span>
+
+            <span
+              class="text-xs
+                     font-medium
+                     text-[#0A9292]"
+            >
+              Buena coincidencia
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- OFERTA 2 -->
+        <article
+          class="p-5
+                 border-b border-[#EDF3F2]
+                 cursor-pointer
+                 hover:bg-[#F8FCFC]
+                 transition"
+        >
+
+          <div class="flex justify-between gap-3">
+
+            <div>
+
+              <h2 class="font-semibold text-[#0F172A]">
+                Desarrollador Backend Junior
+              </h2>
+
+              <p class="mt-1 text-sm text-slate-500">
+                Tech Solutions
+              </p>
+
+            </div>
+
+            <button
+              class="text-slate-400
+                     hover:text-[#0A9292]
+                     transition"
+            >
+              ♡
+            </button>
+
+          </div>
+
+
+          <div class="mt-3 space-y-1">
+
+            <p class="text-sm text-slate-600">
+              📍 Remoto
+            </p>
+
+            <p class="text-sm font-medium text-[#0F172A]">
+              $1.000.000 – $1.300.000
+            </p>
+
+          </div>
+
+
+          <div class="flex flex-wrap gap-2 mt-3">
+
+            <span
+              class="px-2.5 py-1
+                     rounded-md
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-xs
+                     font-medium"
+            >
+              NestJS
+            </span>
+
+            <span
+              class="px-2.5 py-1
+                     rounded-md
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-xs
+                     font-medium"
+            >
+              TypeScript
+            </span>
+
+          </div>
+
+
+          <div class="flex justify-between items-center mt-4">
+
+            <span class="text-xs text-slate-400">
+              Hace 5 horas
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- OFERTA 3 -->
+        <article
+          class="p-5
+                 border-b border-[#EDF3F2]
+                 cursor-pointer
+                 hover:bg-[#F8FCFC]
+                 transition"
+        >
+
+          <div class="flex justify-between gap-3">
+
+            <div>
+
+              <h2 class="font-semibold text-[#0F172A]">
+                Analista BI
+              </h2>
+
+              <p class="mt-1 text-sm text-slate-500">
+                Data Corp
+              </p>
+
+            </div>
+
+            <button
+              class="text-slate-400
+                     hover:text-[#0A9292]
+                     transition"
+            >
+              ♡
+            </button>
+
+          </div>
+
+
+          <div class="mt-3 space-y-1">
+
+            <p class="text-sm text-slate-600">
+              📍 Santiago · Presencial
+            </p>
+
+            <p class="text-sm font-medium text-[#0F172A]">
+              $1.100.000 – $1.400.000
+            </p>
+
+          </div>
+
+
+          <div class="flex flex-wrap gap-2 mt-3">
+
+            <span
+              class="px-2.5 py-1
+                     rounded-md
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-xs
+                     font-medium"
+            >
+              Power BI
+            </span>
+
+            <span
+              class="px-2.5 py-1
+                     rounded-md
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-xs
+                     font-medium"
+            >
+              SQL
+            </span>
+
+          </div>
+
+
+          <div class="flex justify-between items-center mt-4">
+
+            <span class="text-xs text-slate-400">
+              Ayer
+            </span>
+
+          </div>
+
+        </article>
+
+
+        <!-- OFERTA 4 -->
+        <article
+          class="p-5
+                 cursor-pointer
+                 hover:bg-[#F8FCFC]
+                 transition"
+        >
+
+          <div class="flex justify-between gap-3">
+
+            <div>
+
+              <h2 class="font-semibold text-[#0F172A]">
+                Ingeniero de Datos Junior
+              </h2>
+
+              <p class="mt-1 text-sm text-slate-500">
+                DataLab
+              </p>
+
+            </div>
+
+            <button
+              class="text-slate-400
+                     hover:text-[#0A9292]
+                     transition"
+            >
+              ♡
+            </button>
+
+          </div>
+
+
+          <div class="mt-3 space-y-1">
+
+            <p class="text-sm text-slate-600">
+              📍 Santiago · Híbrido
+            </p>
+
+            <p class="text-sm font-medium text-[#0F172A]">
+              $1.300.000 – $1.600.000
+            </p>
+
+          </div>
+
+
+          <div class="flex flex-wrap gap-2 mt-3">
+
+            <span
+              class="px-2.5 py-1
+                     rounded-md
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-xs
+                     font-medium"
+            >
+              Python
+            </span>
+
+            <span
+              class="px-2.5 py-1
+                     rounded-md
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-xs
+                     font-medium"
+            >
+              SQL
+            </span>
+
+            <span
+              class="px-2.5 py-1
+                     rounded-md
+                     bg-[#E7F7F5]
+                     text-[#087A78]
+                     text-xs
+                     font-medium"
+            >
+              GCP
+            </span>
+
+          </div>
+
+
+          <div class="flex justify-between items-center mt-4">
+
+            <span class="text-xs text-slate-400">
+              Hace 1 día
+            </span>
+
+          </div>
+
+        </article>
+
+      </div>
+
+
+      <!-- DETALLE -->
+      <div
+        class="bg-white
+               border border-[#DCEBEA]
+               rounded-xl
+               min-h-[600px]"
+      >
+
+        <!-- HEADER DETALLE -->
+        <div class="p-6 border-b border-[#EDF3F2]">
+
+          <div class="flex justify-between gap-4">
+
+            <div>
+
+              <h2 class="text-2xl font-semibold text-[#0F172A]">
+                Analista de Datos
+              </h2>
+
+              <p class="mt-1 text-sm text-slate-500">
+                Empresa XYZ
+              </p>
+
+            </div>
+
+
+            <button
+              class="text-slate-400
+                     hover:text-[#0A9292]
+                     transition"
+            >
+              ♡
+            </button>
+
+          </div>
+
+
+          <div class="flex flex-wrap gap-x-5 gap-y-2 mt-4">
+
+            <span class="text-sm text-slate-600">
+              📍 Santiago · Híbrido
+            </span>
+
+            <span class="text-sm text-slate-600">
+              💼 Jornada completa
+            </span>
+
+            <span class="text-sm text-slate-600">
+              🕐 Hace 2 horas
+            </span>
+
+          </div>
+
+
+          <p class="mt-4 text-lg font-semibold text-[#0F172A]">
+            $1.200.000 – $1.500.000
+          </p>
+
+
+          <div class="flex flex-wrap gap-3 mt-5">
+
+            <button
+              class="px-5 py-2.5
+                     rounded-lg
+                     bg-[#0BAFA5]
+                     text-white
+                     text-sm
+                     font-semibold
+                     hover:bg-[#09998F]
+                     transition"
+            >
+              Postular
+            </button>
+
+            <button
+              class="px-5 py-2.5
+                     rounded-lg
+                     border border-[#DCEBEA]
+                     bg-white
+                     text-[#087A78]
+                     text-sm
+                     font-semibold
+                     hover:bg-[#F4FAFA]
+                     transition"
+            >
+              ♡ Guardar
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- COINCIDENCIA -->
+        <div class="p-6 border-b border-[#EDF3F2]">
+
+          <div
+            class="rounded-lg
+                   bg-[#EAF8F6]
+                   border border-[#CDEDEA]
+                   p-4"
+          >
+
+            <p class="text-sm font-semibold text-[#07575B]">
+              ✦ Buena coincidencia con tu perfil
+            </p>
+
+            <p class="mt-1 text-sm text-slate-600">
+              Coincides con gran parte de los requisitos de esta oferta.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <!-- DESCRIPCIÓN -->
+        <div class="p-6">
+
+          <h3 class="text-base font-semibold text-[#0F172A]">
+            Descripción del empleo
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            Buscamos un Analista de Datos para incorporarse a nuestro
+            equipo. La persona seleccionada participará en el análisis
+            de información, construcción de reportes y generación de
+            indicadores para apoyar la toma de decisiones.
+          </p>
+
+
+          <h3 class="mt-7 text-base font-semibold text-[#0F172A]">
+            Requisitos
+          </h3>
+
+          <ul class="mt-3 space-y-2 text-sm text-slate-600">
+
+            <li>✓ Experiencia trabajando con SQL.</li>
+
+            <li>✓ Manejo de Python para análisis de datos.</li>
+
+            <li>✓ Experiencia con Power BI.</li>
+
+            <li>✓ Capacidad para analizar y comunicar información.</li>
+
+          </ul>
+
+
+          <h3 class="mt-7 text-base font-semibold text-[#0F172A]">
+            Beneficios
+          </h3>
+
+          <ul class="mt-3 space-y-2 text-sm text-slate-600">
+
+            <li>✓ Modalidad híbrida.</li>
+
+            <li>✓ Seguro complementario.</li>
+
+            <li>✓ Capacitación y desarrollo profesional.</li>
+
+          </ul>
+
+
+          <h3 class="mt-7 text-base font-semibold text-[#0F172A]">
+            Sobre la empresa
+          </h3>
+
+          <p class="mt-3 text-sm leading-6 text-slate-600">
+            Empresa orientada al desarrollo de soluciones basadas en
+            datos y tecnología para distintas industrias.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

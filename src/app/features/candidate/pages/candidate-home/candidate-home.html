@@ -1,0 +1,306 @@
+
+<div class="min-h-[calc(100vh-72px)] bg-[#F4FAFA] p-6">
+
+  <!-- ENCABEZADO -->
+  <section class="mb-6">
+
+    <h1 class="text-2xl font-semibold text-[#0F172A]">
+      Hola, Lucas 👋
+    </h1>
+
+    <p class="mt-1 text-sm text-slate-500">
+      Revisa tu actividad y continúa buscando nuevas oportunidades.
+    </p>
+
+  </section>
+
+
+  <!-- BUSCADOR RÁPIDO -->
+  <section class="bg-white border border-[#DCEBEA] rounded-xl p-5 mb-6">
+
+    <h2 class="text-base font-semibold text-[#0F172A] mb-3">
+      ¿Qué estás buscando?
+    </h2>
+
+    <div class="flex flex-col md:flex-row gap-3">
+
+      <div class="relative flex-1">
+
+        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+          🔍
+        </span>
+
+        <input
+          type="text"
+          placeholder="Coloca palabras clave, cargo, habilidad o empresa"
+          class="w-full h-11 pl-11 pr-4 rounded-lg
+                 border border-[#DCEBEA]
+                 text-sm text-[#0F172A]
+                 placeholder:text-slate-400
+                 focus:outline-none
+                 focus:ring-2 focus:ring-[#0A9292]/20
+                 focus:border-[#0A9292]"
+        />
+
+      </div>
+
+      <a
+        routerLink="/candidate/jobs"
+        class="h-11 px-6 rounded-lg
+               bg-[#0BAFA5] text-white
+               text-sm font-semibold
+               flex items-center justify-center
+               hover:bg-[#09998F]
+               transition"
+      >
+        Buscar empleos
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- RESUMEN -->
+  <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+
+    <!-- POSTULACIONES -->
+    <div class="bg-white border border-[#DCEBEA] rounded-xl p-5">
+
+      <p class="text-sm text-slate-500">
+        Postulaciones activas
+      </p>
+
+      <p class="mt-2 text-3xl font-semibold text-[#0F172A]">
+        4
+      </p>
+
+      <a
+        routerLink="/candidate/applications"
+        class="inline-block mt-4
+               text-sm font-medium
+               text-[#0A9292]
+               hover:text-[#07575B]
+               hover:underline"
+      >
+        Ver postulaciones →
+      </a>
+
+    </div>
+
+
+    <!-- SEGUIMIENTO -->
+    <div class="bg-white border border-[#DCEBEA] rounded-xl p-5">
+
+      <p class="text-sm text-slate-500">
+        Seguimiento
+      </p>
+
+      <p class="mt-2 text-3xl font-semibold text-[#0F172A]">
+        2
+      </p>
+
+      <p class="mt-1 text-xs text-slate-400">
+        Postulaciones con novedades
+      </p>
+
+      <a
+        routerLink="/candidate/applications"
+        class="inline-block mt-3
+               text-sm font-medium
+               text-[#0A9292]
+               hover:text-[#07575B]
+               hover:underline"
+      >
+        Revisar seguimiento →
+      </a>
+
+    </div>
+
+
+    <!-- GUARDADOS -->
+    <div class="bg-white border border-[#DCEBEA] rounded-xl p-5">
+
+      <p class="text-sm text-slate-500">
+        Empleos guardados
+      </p>
+
+      <p class="mt-2 text-3xl font-semibold text-[#0F172A]">
+        7
+      </p>
+
+      <a
+        routerLink="/candidate/saved"
+        class="inline-block mt-4
+               text-sm font-medium
+               text-[#0A9292]
+               hover:text-[#07575B]
+               hover:underline"
+      >
+        Ver guardados →
+      </a>
+
+    </div>
+
+
+    <!-- PERFIL -->
+    <div class="bg-white border border-[#DCEBEA] rounded-xl p-5">
+
+      <p class="text-sm text-slate-500">
+        Estado de tu perfil
+      </p>
+
+      <p class="mt-2 text-3xl font-semibold text-[#0A9292]">
+        100%
+      </p>
+
+      <a
+        routerLink="/candidate/profile"
+        class="inline-block mt-4
+               text-sm font-medium
+               text-[#0A9292]
+               hover:text-[#07575B]
+               hover:underline"
+      >
+        Ver mi perfil →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- ACTIVIDAD RECIENTE -->
+  <section class="bg-white border border-[#DCEBEA] rounded-xl">
+
+    <div class="p-5 border-b border-[#E7F0EF]">
+
+      <h2 class="text-lg font-semibold text-[#0F172A]">
+        Actividad reciente
+      </h2>
+
+      <p class="text-sm text-slate-500 mt-1">
+        Revisa los últimos movimientos de tus postulaciones y empleos.
+      </p>
+
+    </div>
+
+
+    <div class="divide-y divide-[#EDF3F2]">
+
+      <!-- ACTIVIDAD 1 -->
+      <div class="p-5 flex items-center justify-between gap-4">
+
+        <div>
+
+          <p class="font-medium text-[#0F172A]">
+            Analista de Datos
+          </p>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Postulación enviada · Hace 2 días
+          </p>
+
+        </div>
+
+        <span class="text-sm text-[#0A9292] font-medium whitespace-nowrap">
+          En revisión
+        </span>
+
+      </div>
+
+
+      <!-- ACTIVIDAD 2 -->
+      <div class="p-5 flex items-center justify-between gap-4">
+
+        <div>
+
+          <p class="font-medium text-[#0F172A]">
+            Desarrollador Junior
+          </p>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Oferta guardada · Hace 4 días
+          </p>
+
+        </div>
+
+        <span class="text-sm text-slate-500 whitespace-nowrap">
+          Guardado
+        </span>
+
+      </div>
+
+
+      <!-- ACTIVIDAD 3 -->
+      <div class="p-5 flex items-center justify-between gap-4">
+
+        <div>
+
+          <p class="font-medium text-[#0F172A]">
+            Analista BI
+          </p>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Actualización de postulación · Ayer
+          </p>
+
+        </div>
+
+        <span class="text-sm text-[#0A9292] font-medium whitespace-nowrap">
+          Entrevista
+        </span>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- ACCIÓN PRINCIPAL -->
+  <section
+    class="mt-6
+           bg-[#07575B]
+           rounded-xl
+           p-6
+           flex flex-col
+           md:flex-row
+           items-start
+           md:items-center
+           justify-between
+           gap-4"
+  >
+
+    <div>
+
+      <h2 class="text-lg font-semibold text-white">
+        Encuentra nuevas oportunidades
+      </h2>
+
+      <p class="text-sm text-white/70 mt-1">
+        Explora ofertas según tus intereses y experiencia.
+      </p>
+
+    </div>
+
+
+    <a
+      routerLink="/candidate/jobs"
+      class="bg-[#0BAFA5]
+             text-white
+             px-5
+             py-2.5
+             rounded-lg
+             text-sm
+             font-semibold
+             hover:bg-[#09998F]
+             transition
+             whitespace-nowrap"
+    >
+      Buscar empleos
+    </a>
+
+  </section>
+
+</div>
