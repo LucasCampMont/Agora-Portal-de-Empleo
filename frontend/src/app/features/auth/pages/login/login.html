@@ -1,152 +1,178 @@
-<div class="min-h-screen flex items-center justify-center bg-[#F1F5F9] p-4">
+<main class="grid min-h-screen bg-[#F4F7FB] lg:grid-cols-[1fr_1fr]">
+  <section
+    class="relative hidden overflow-hidden bg-[#102A43] p-12 text-white lg:flex lg:flex-col lg:justify-between"
+  >
+    <a routerLink="/" class="text-2xl font-bold tracking-tight">
+      ÁGORA<span class="text-blue-300">.</span>
+    </a>
 
-    <div class="w-full max-w-lg bg-white rounded-2xl shadow-lg p-10">
+    <div class="relative z-10 max-w-xl">
+      <p class="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-blue-200">
+        Un espacio para avanzar
+      </p>
 
-        <!-- Encabezado -->
-        <div class="text-center mb-8">
+      <h1 class="text-5xl font-semibold leading-tight">
+        Oportunidades y talento, conectados con propósito.
+      </h1>
 
-            <h1 class="text-4xl font-bold tracking-tight text-[#064635]">
-                Ágora
-            </h1>
-
-            <h2 class="text-2xl font-semibold text-[#0F172A] mt-4">
-                Tu próximo paso profesional
-            </h2>
-
-            <p class="text-gray-500 mt-3">
-                Encuentra oportunidades laborales de forma
-                eficaz y simple.
-            </p>
-
-        </div>
-
-
-        <!-- Formulario -->
-        <form [formGroup]="loginForm">
-
-            <div class="mb-5">
-
-                <label
-                    for="email"
-                    class="block text-sm font-medium text-[#0F172A] mb-2"
-                >
-                    Correo electrónico
-                </label>
-
-                <input
-                    id="email"
-                    type="email"
-                    formControlName="email"
-                    placeholder="tu@email.com"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-xl
-                           focus:outline-none focus:ring-2 focus:ring-[#0B7A6B]"
-                />
-
-            </div>
-
-
-            <div class="mb-3">
-
-                <label
-                    for="password"
-                    class="block text-sm font-medium text-[#0F172A] mb-2"
-                >
-                    Contraseña
-                </label>
-
-                <input
-                    id="password"
-                    type="password"
-                    formControlName="password"
-                    placeholder="••••••••"
-                    class="w-full px-4 py-3 border border-gray-300 rounded-xl
-                           focus:outline-none focus:ring-2 focus:ring-[#0B7A6B]"
-                />
-
-            </div>
-
-
-            <!-- Recuperar contraseña -->
-            <div class="text-right mb-6">
-
-                <a
-                    href="#"
-                    class="text-sm text-[#0B7A6B] hover:text-[#064635]"
-                >
-                    ¿Olvidaste tu contraseña?
-                </a>
-
-            </div>
-
-
-            <!-- Login -->
-            <button
-                type="submit"
-                class="w-full py-3 bg-[#0B7A6B] text-white
-                       font-semibold rounded-xl
-                       hover:bg-[#064635] transition"
-            >
-                Iniciar sesión
-            </button>
-
-        </form>
-
-
-        <!-- Separador -->
-        <div class="flex items-center gap-3 my-7">
-
-            <div class="flex-1 h-px bg-gray-200"></div>
-
-            <span class="text-sm text-gray-400 whitespace-nowrap">
-                o continúa con
-            </span>
-
-            <div class="flex-1 h-px bg-gray-200"></div>
-
-        </div>
-
-
-        <!-- Login social -->
-        <div class="space-y-3">
-
-            <button
-                type="button"
-                class="w-full py-3 border border-gray-300
-                       rounded-xl font-medium text-[#0F172A]
-                       hover:bg-gray-50 transition"
-            >
-                Continuar con Google
-            </button>
-
-            <button
-                type="button"
-                class="w-full py-3 border border-gray-300
-                       rounded-xl font-medium text-[#0F172A]
-                       hover:bg-gray-50 transition"
-            >
-                Continuar con LinkedIn
-            </button>
-
-        </div>
-
-
-        <!-- Registro -->
-        <div class="text-center mt-8">
-
-            <p class="text-sm text-gray-500">
-                ¿Aún no tienes una cuenta?
-            </p>
-
-            <a
-                href="#"
-                class="inline-block mt-1 font-semibold
-                       text-[#0B7A6B] hover:text-[#064635]"
-            >
-                Crea tu cuenta en Ágora
-            </a>
-
-        </div>
-
+      <p class="mt-6 max-w-lg text-lg leading-8 text-blue-50/80">
+        Encuentra un trabajo que se ajuste a tu perfil o gestiona procesos de
+        selección desde un solo lugar.
+      </p>
     </div>
 
-</div>
+    <p class="text-sm text-blue-100/70">
+      Una experiencia clara para postulantes y equipos de selección.
+    </p>
+
+    <div
+      class="absolute -bottom-32 -right-24 size-96 rounded-full border border-blue-200/15"
+      aria-hidden="true"
+    ></div>
+  </section>
+
+  <section class="flex items-center justify-center px-5 py-10 sm:px-10">
+    <div class="w-full max-w-md">
+      <a
+        routerLink="/"
+        class="mb-10 inline-block text-xl font-bold tracking-tight text-[#102A43] lg:hidden"
+      >
+        ÁGORA<span class="text-blue-600">.</span>
+      </a>
+
+      <p class="text-sm font-semibold text-blue-700">Bienvenido/a de vuelta</p>
+      <h2 class="mt-2 text-3xl font-semibold tracking-tight text-slate-900">
+        Inicia sesión
+      </h2>
+      <p class="mt-2 text-slate-600">
+        Elige el espacio al que quieres acceder.
+      </p>
+
+      <div class="mt-7 grid grid-cols-2 rounded-xl bg-slate-100 p-1">
+        <button
+          type="button"
+          (click)="selectAccountType('candidate')"
+          [class]="accountType() === 'candidate'
+            ? 'rounded-lg bg-white px-3 py-3 text-sm font-semibold text-[#102A43] shadow-sm ring-1 ring-slate-200'
+            : 'rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:text-slate-900'"
+          [attr.aria-pressed]="accountType() === 'candidate'"
+        >
+          Soy postulante
+        </button>
+
+        <button
+          type="button"
+          (click)="selectAccountType('company')"
+          [class]="accountType() === 'company'
+            ? 'rounded-lg bg-white px-3 py-3 text-sm font-semibold text-[#102A43] shadow-sm ring-1 ring-slate-200'
+            : 'rounded-lg px-3 py-3 text-sm font-medium text-slate-600 hover:text-slate-900'"
+          [attr.aria-pressed]="accountType() === 'company'"
+        >
+          Soy empresa
+        </button>
+      </div>
+
+      <form
+        class="mt-6 space-y-5"
+        [formGroup]="loginForm"
+        (ngSubmit)="submitLogin()"
+        novalidate
+      >
+        <div>
+          <label for="email" class="mb-2 block text-sm font-medium text-slate-800">
+            Correo electrónico
+          </label>
+          <input
+            id="email"
+            type="email"
+            autocomplete="email"
+            formControlName="email"
+            placeholder="nombre@correo.com"
+            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10"
+          />
+          @if (loginForm.controls.email.touched && loginForm.controls.email.invalid) {
+            <p class="mt-1 text-sm text-red-700">Ingresa un correo válido.</p>
+          }
+        </div>
+
+        <div>
+          <div class="mb-2 flex items-center justify-between gap-3">
+            <label for="password" class="text-sm font-medium text-slate-800">
+              Contraseña
+            </label>
+            <a
+              routerLink="/forgot-password"
+              class="text-sm font-medium text-blue-700 hover:underline"
+            >
+              ¿La olvidaste?
+            </a>
+          </div>
+
+          <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            formControlName="password"
+            placeholder="Tu contraseña"
+            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10"
+          />
+          @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+            <p class="mt-1 text-sm text-red-700">Ingresa tu contraseña.</p>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-xl bg-[#168C8C] px-5 py-3.5 font-semibold text-white transition hover:bg-[#238789] focus:outline-none focus:ring-4 focus:ring-[#2A9D9F]/20"
+        >
+          Entrar a mi espacio
+        </button>
+      </form>
+
+      <div class="my-6 flex items-center gap-4">
+        <span class="h-px flex-1 bg-slate-200"></span>
+        <span class="text-xs font-medium uppercase tracking-wider text-slate-500">
+          O continúa con
+        </span>
+        <span class="h-px flex-1 bg-slate-200"></span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <button
+          type="button"
+          (click)="continueWith('Google')"
+          class="rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-50"
+        >
+          Google
+        </button>
+        <button
+          type="button"
+          (click)="continueWith('LinkedIn')"
+          class="rounded-xl border border-slate-300 bg-white px-3 py-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-50"
+        >
+          LinkedIn
+        </button>
+      </div>
+
+      @if (notice()) {
+        <p
+          class="mt-5 rounded-xl border border-blue-200 bg-blue-50 p-3 text-sm text-[#102A43]"
+          role="status"
+        >
+          {{ notice() }}
+        </p>
+      }
+
+      <p class="mt-7 text-center text-sm text-slate-600">
+        ¿Aún no tienes cuenta?
+        <a
+          routerLink="/register"
+          [queryParams]="{ type: accountType() }"
+          class="font-semibold text-blue-700 hover:underline"
+        >
+          Regístrate
+        </a>
+      </p>
+    </div>
+  </section>
+</main>

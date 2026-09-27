@@ -1,0 +1,115 @@
+<section aria-labelledby="vacancies-title" class="mx-auto max-w-7xl space-y-6">
+  <div>
+    <p class="text-sm font-medium text-[#0A9292]">Reclutamiento</p>
+    <h1
+      id="vacancies-title"
+      class="mt-1 text-2xl font-semibold tracking-tight text-[#0F172A] sm:text-3xl"
+    >
+      Vacantes
+    </h1>
+    <p class="mt-2 text-sm text-slate-600">
+      Organiza las oportunidades de tu empresa y revisa su actividad.
+    </p>
+  </div>
+
+  <section
+    aria-label="Buscar y filtrar vacantes"
+    class="rounded-xl border border-[#DCEBEA] bg-white p-4 sm:p-5"
+  >
+    <label for="vacancy-search" class="mb-2 block text-sm font-medium text-[#0F172A]">
+      Buscar vacante
+    </label>
+
+    <input
+      id="vacancy-search"
+      type="search"
+      placeholder="Cargo, área o ubicación"
+      (input)="updateSearch($event)"
+      class="h-11 w-full rounded-lg border border-[#DCEBEA] px-3 text-sm text-[#0F172A] outline-none placeholder:text-slate-400 focus:border-[#0A9292] focus:ring-2 focus:ring-[#0A9292]/20"
+    />
+
+    <div class="mt-4 flex flex-wrap gap-2" aria-label="Filtrar por estado">
+      <button
+        type="button"
+        (click)="setStatus('todas')"
+        [attr.aria-pressed]="selectedStatus() === 'todas'"
+        class="rounded-full border px-3 py-1.5 text-sm"
+        [class.border-[#07575B]]="selectedStatus() === 'todas'"
+        [class.bg-[#E6F4F1]]="selectedStatus() === 'todas'"
+        [class.text-[#07575B]]="selectedStatus() === 'todas'"
+        [class.border-[#DCEBEA]]="selectedStatus() !== 'todas'"
+        [class.text-slate-600]="selectedStatus() !== 'todas'"
+      >
+        Todas
+      </button>
+
+      <button
+        type="button"
+        (click)="setStatus('publicada')"
+        [attr.aria-pressed]="selectedStatus() === 'publicada'"
+        class="rounded-full border px-3 py-1.5 text-sm"
+        [class.border-[#07575B]]="selectedStatus() === 'publicada'"
+        [class.bg-[#E6F4F1]]="selectedStatus() === 'publicada'"
+        [class.text-[#07575B]]="selectedStatus() === 'publicada'"
+        [class.border-[#DCEBEA]]="selectedStatus() !== 'publicada'"
+        [class.text-slate-600]="selectedStatus() !== 'publicada'"
+      >
+        Publicadas
+      </button>
+
+      <button
+        type="button"
+        (click)="setStatus('borrador')"
+        [attr.aria-pressed]="selectedStatus() === 'borrador'"
+        class="rounded-full border px-3 py-1.5 text-sm"
+        [class.border-[#07575B]]="selectedStatus() === 'borrador'"
+        [class.bg-[#E6F4F1]]="selectedStatus() === 'borrador'"
+        [class.text-[#07575B]]="selectedStatus() === 'borrador'"
+        [class.border-[#DCEBEA]]="selectedStatus() !== 'borrador'"
+        [class.text-slate-600]="selectedStatus() !== 'borrador'"
+      >
+        Borradores
+      </button>
+    </div>
+  </section>
+
+  <section aria-label="Resultados de vacantes" class="space-y-3">
+    @for (vacancy of visibleVacancies(); track vacancy.id) {
+      <article class="rounded-xl border border-[#DCEBEA] bg-white p-5">
+        <div class="flex flex-col justify-between gap-4 sm:flex-row sm:items-start">
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <h2 class="font-semibold text-[#0F172A]">{{ vacancy.title }}</h2>
+
+              @if (vacancy.status === 'publicada') {
+                <span class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-800">
+                  Publicada
+                </span>
+              } @else {
+                <span class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700">
+                  Borrador
+                </span>
+              }
+            </div>
+
+            <p class="mt-2 text-sm text-slate-600">
+              {{ vacancy.area }} · {{ vacancy.location }}
+            </p>
+            <p class="mt-1 text-xs text-slate-500">{{ vacancy.updatedAt }}</p>
+          </div>
+
+          <div class="text-sm text-slate-600">
+            {{ vacancy.applications }} postulaciones
+          </div>
+        </div>
+      </article>
+    } @empty {
+      <div class="rounded-xl border border-dashed border-[#B8D7D4] bg-white p-8 text-center">
+        <h2 class="font-medium text-[#0F172A]">No encontramos vacantes</h2>
+        <p class="mt-1 text-sm text-slate-500">
+          Prueba con otra búsqueda o selecciona otro estado.
+        </p>
+      </div>
+    }
+  </section>
+</section>

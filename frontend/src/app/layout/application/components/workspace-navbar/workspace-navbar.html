@@ -1,0 +1,42 @@
+<header
+  class="flex min-h-16 items-center justify-between gap-4 border-b border-[#DCEBEA] bg-white px-4 sm:px-6"
+>
+  <a routerLink="/" class="flex shrink-0 items-center gap-3" aria-label="Ágora">
+    <img
+      src="/images/Logos Agora 1.png"
+      alt="Ágora"
+      class="h-9 w-auto"
+    />
+  </a>
+
+  <div class="hidden min-w-0 flex-1 sm:block">
+    <p class="truncate text-sm font-semibold text-[#0F172A]">
+      {{ config().workspaceName }}
+    </p>
+    <p class="text-xs text-slate-500">{{ config().roleLabel }}</p>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <a
+      [routerLink]="config().switchPath"
+      class="rounded-lg border border-[#DCEBEA] px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-[#F4FAFA]"
+      [style.color]="accentColor()"
+    >
+      Cambiar a {{ config().switchLabel }}
+    </a>
+
+    <div class="flex items-center gap-2">
+      <span
+        class="flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold text-white"
+        [style.backgroundColor]="accentColor()"
+        aria-hidden="true"
+      >
+        {{ config().userName.slice(0, 1).toUpperCase() }}
+      </span>
+
+      <span class="hidden text-sm font-medium text-[#0F172A] md:block">
+        {{ config().userName }}
+      </span>
+    </div>
+  </div>
+</header>

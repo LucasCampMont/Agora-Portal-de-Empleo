@@ -1,0 +1,291 @@
+<form class="space-y-6" (ngSubmit)="saveProfile()">
+  <header>
+    <h2 class="text-lg font-semibold text-slate-900">Mi perfil profesional</h2>
+    <p class="mt-1 text-sm text-slate-500">
+      Completa y corrige la información que podrás reutilizar al postular.
+    </p>
+  </header>
+
+  @if (savedMessage()) {
+    <p role="status" class="rounded-lg border border-teal-200 bg-teal-50 p-3 text-sm text-teal-900">
+      {{ savedMessage() }}
+    </p>
+  }
+
+  <section class="space-y-4 rounded-xl border border-slate-200 p-4">
+    <h3 class="font-semibold text-slate-900">Presentación y contacto</h3>
+
+    <label class="block text-sm font-medium text-slate-700">
+      Foto de perfil <span class="font-normal text-slate-500">(opcional)</span>
+      <input
+        type="file"
+        accept="image/*"
+        (change)="selectPhoto($event)"
+        class="mt-1.5 block w-full text-sm"
+      />
+      @if (profile.photoFileName) {
+        <span class="mt-1 block text-xs text-slate-500">
+          Seleccionada: {{ profile.photoFileName }}
+        </span>
+      }
+    </label>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="text-sm font-medium text-slate-700">
+        Nombre
+        <input
+          name="fullName"
+          [(ngModel)]="profile.fullName"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+
+      <label class="text-sm font-medium text-slate-700">
+        Cargo o título profesional
+        <input
+          name="professionalTitle"
+          [(ngModel)]="profile.professionalTitle"
+          placeholder="Ej. Analista de Datos"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+
+      <label class="text-sm font-medium text-slate-700">
+        Correo
+        <input
+          name="email"
+          type="email"
+          [(ngModel)]="profile.email"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+
+      <label class="text-sm font-medium text-slate-700">
+        Teléfono
+        <input
+          name="phone"
+          type="tel"
+          [(ngModel)]="profile.phone"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+
+      <label class="text-sm font-medium text-slate-700 sm:col-span-2">
+        Carrera o profesión <span class="font-normal text-slate-500">(opcional)</span>
+        <input
+          name="career"
+          [(ngModel)]="profile.career"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+
+      <label class="text-sm font-medium text-slate-700 sm:col-span-2">
+        Resumen profesional
+        <textarea
+          name="summary"
+          rows="4"
+          [(ngModel)]="profile.summary"
+          placeholder="Experiencia, fortalezas y objetivos profesionales."
+          class="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 font-normal"
+        ></textarea>
+      </label>
+    </div>
+  </section>
+
+  <section class="space-y-4 rounded-xl border border-slate-200 p-4">
+    <h3 class="font-semibold text-slate-900">Búsqueda laboral</h3>
+
+    <label class="flex items-start gap-3 text-sm">
+      <input
+        name="activelySearching"
+        type="checkbox"
+        [(ngModel)]="profile.activelySearching"
+        class="mt-1 size-4 accent-teal-700"
+      />
+      <span>
+        <span class="block font-medium text-slate-800">Estoy buscando empleo activamente</span>
+        <span class="mt-1 block text-slate-500">
+          Es una preferencia para Ágora; no se publicará fuera de la plataforma.
+        </span>
+      </span>
+    </label>
+
+    <label class="flex items-start gap-3 text-sm">
+      <input
+        name="visibleToCompanies"
+        type="checkbox"
+        [(ngModel)]="profile.visibleToCompanies"
+        class="mt-1 size-4 accent-teal-700"
+      />
+      <span>
+        <span class="block font-medium text-slate-800">Permitir que empresas descubran mi perfil</span>
+        <span class="mt-1 block text-slate-500">
+          Es opcional y se podrá cambiar cuando quieras.
+        </span>
+      </span>
+    </label>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="text-sm font-medium text-slate-700">
+        Cargos de interés
+        <input
+          name="desiredRoles"
+          [(ngModel)]="profile.desiredRoles"
+          placeholder="Ej. Analista, Asistente"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+
+      <label class="text-sm font-medium text-slate-700">
+        Áreas de interés
+        <input
+          name="desiredAreas"
+          [(ngModel)]="profile.desiredAreas"
+          placeholder="Ej. Datos, Finanzas"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+
+      <label class="text-sm font-medium text-slate-700">
+        Ubicación
+        <input
+          name="location"
+          [(ngModel)]="profile.location"
+          placeholder="Ciudad o región"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+
+      <label class="text-sm font-medium text-slate-700">
+        Modalidad preferida
+        <select
+          name="workMode"
+          [(ngModel)]="profile.workMode"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 bg-white px-3 font-normal"
+        >
+          <option value="">Sin preferencia</option>
+          <option value="presencial">Presencial</option>
+          <option value="hibrido">Híbrida</option>
+          <option value="remoto">Remota</option>
+        </select>
+      </label>
+    </div>
+  </section>
+
+  <section class="space-y-4 rounded-xl border border-slate-200 p-4">
+    <h3 class="font-semibold text-slate-900">Trayectoria y formación</h3>
+    <p class="text-sm text-slate-500">
+      Puedes corregir manualmente la información sugerida a partir de tu CV.
+      Escribe una experiencia o registro por línea.
+    </p>
+
+    <label class="block text-sm font-medium text-slate-700">
+      Experiencia laboral
+      <textarea
+        name="experience"
+        rows="5"
+        [(ngModel)]="profile.experience"
+        placeholder="Cargo — Empresa — fechas — logros principales"
+        class="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 font-normal"
+      ></textarea>
+    </label>
+
+    <label class="block text-sm font-medium text-slate-700">
+      Estudios
+      <textarea
+        name="education"
+        rows="3"
+        [(ngModel)]="profile.education"
+        placeholder="Título — institución — fechas"
+        class="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 font-normal"
+      ></textarea>
+    </label>
+
+    <label class="block text-sm font-medium text-slate-700">
+      Estudios complementarios
+      <textarea
+        name="complementaryStudies"
+        rows="3"
+        [(ngModel)]="profile.complementaryStudies"
+        class="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 font-normal"
+      ></textarea>
+    </label>
+
+    <label class="block text-sm font-medium text-slate-700">
+      Certificaciones
+      <textarea
+        name="certifications"
+        rows="3"
+        [(ngModel)]="profile.certifications"
+        placeholder="Certificación — institución — fecha o enlace"
+        class="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 font-normal"
+      ></textarea>
+    </label>
+  </section>
+
+  <section class="space-y-4 rounded-xl border border-slate-200 p-4">
+    <h3 class="font-semibold text-slate-900">Habilidades y enlaces</h3>
+
+    <label class="block text-sm font-medium text-slate-700">
+      Habilidades
+      <textarea
+        name="skills"
+        rows="2"
+        [(ngModel)]="profile.skills"
+        placeholder="Separa tus habilidades con comas"
+        class="mt-1.5 w-full rounded-lg border border-slate-300 px-3 py-2 font-normal"
+      ></textarea>
+    </label>
+
+    <label class="block text-sm font-medium text-slate-700">
+      Idiomas
+      <input
+        name="languages"
+        [(ngModel)]="profile.languages"
+        placeholder="Ej. Español nativo, Inglés intermedio"
+        class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+      />
+    </label>
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="text-sm font-medium text-slate-700">
+        LinkedIn
+        <input
+          name="linkedin"
+          type="url"
+          [(ngModel)]="profile.linkedin"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+
+      <label class="text-sm font-medium text-slate-700">
+        GitHub
+        <input
+          name="github"
+          type="url"
+          [(ngModel)]="profile.github"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+
+      <label class="text-sm font-medium text-slate-700 sm:col-span-2">
+        Portafolio u otro enlace
+        <input
+          name="portfolio"
+          type="url"
+          [(ngModel)]="profile.portfolio"
+          class="mt-1.5 h-11 w-full rounded-lg border border-slate-300 px-3 font-normal"
+        />
+      </label>
+    </div>
+  </section>
+
+  <div class="flex justify-end border-t border-slate-200 pt-4">
+    <button
+      type="submit"
+      class="rounded-lg bg-teal-700 px-5 py-2.5 text-sm font-semibold text-white hover:bg-teal-800"
+    >
+      Guardar cambios
+    </button>
+  </div>
+</form>

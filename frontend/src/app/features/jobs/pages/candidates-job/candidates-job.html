@@ -1,0 +1,748 @@
+<div class="min-h-[calc(100vh-72px)] bg-[#F4FAFA]">
+  <!-- Página de empleos, permanece detrás del modal -->
+  <div class="px-6 pb-6 pt-6">
+    <header>
+      <h1 class="text-2xl font-semibold text-[#0F172A]">Empleos</h1>
+      <p class="mt-1 text-sm text-slate-500">
+        Encuentra oportunidades que se ajusten a tu perfil.
+      </p>
+
+      <div class="mt-5">
+        <app-job-search-bar
+          (searchRequested)="handleSearch($event)"
+        />
+
+        @if (searchQuery()) {
+          <p class="mt-2 text-sm text-slate-600">
+            Consulta recibida: <strong>{{ searchQuery() }}</strong>
+          </p>
+        }
+      </div>
+    </header>
+
+    <!-- Filtros -->
+    <div class="mt-4">
+      <button
+        type="button"
+        (click)="toggleFilters()"
+        [attr.aria-expanded]="showFilters()"
+        class="h-9 rounded-lg border border-[#DCEBEA] bg-white px-4 text-sm font-medium text-[#0F172A] transition hover:border-[#0A9292] hover:text-[#087A78]"
+      >
+        ⚙ Filtros
+      </button>
+
+      @if (showFilters()) {
+        <div class="mt-3 rounded-xl border border-[#DCEBEA] bg-white p-5">
+          <div class="flex items-start justify-between">
+            <div>
+              <h2 class="font-semibold text-[#0F172A]">Filtros</h2>
+              <p class="mt-1 text-sm text-slate-500">
+                Refina los resultados según tus preferencias.
+              </p>
+            </div>
+
+            <button
+              type="button"
+              (click)="toggleFilters()"
+              aria-label="Cerrar filtros"
+              class="rounded-lg px-3 py-1 text-slate-500 hover:bg-slate-100"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div class="mt-5 grid gap-5 md:grid-cols-2">
+            <div>
+              <h3 class="text-sm font-semibold">Área de trabajo</h3>
+              <div class="mt-2 flex flex-wrap gap-2">
+                @for (
+                  area of ['Tecnología', 'Datos', 'Finanzas', 'Ventas', 'Salud', 'Operaciones'];
+                  track area
+                ) {
+                  <button
+                    type="button"
+                    class="rounded-lg border border-[#D5E5E3] px-3 py-2 text-sm text-slate-600 hover:border-[#0A9292] hover:text-[#087A78]"
+                  >
+                    {{ area }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold">Experiencia</h3>
+              <div class="mt-2 flex flex-wrap gap-2">
+                @for (
+                  level of ['Práctica', 'Junior', 'Intermedio', 'Senior', 'Dirección'];
+                  track level
+                ) {
+                  <button
+                    type="button"
+                    class="rounded-lg border border-[#D5E5E3] px-3 py-2 text-sm text-slate-600 hover:border-[#0A9292] hover:text-[#087A78]"
+                  >
+                    {{ level }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold">Modalidad</h3>
+              <div class="mt-2 flex flex-wrap gap-2">
+                @for (mode of ['Presencial', 'Híbrido', 'Remoto']; track mode) {
+                  <button
+                    type="button"
+                    class="rounded-lg border border-[#D5E5E3] px-3 py-2 text-sm text-slate-600 hover:border-[#0A9292] hover:text-[#087A78]"
+                  >
+                    {{ mode }}
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold">Tipo de empleo</h3>
+              <div class="mt-2 flex flex-wrap gap-2">
+                @for (
+                  type of ['Jornada completa', 'Media jornada', 'Temporal', 'Práctica', 'Freelance'];
+                  track type
+                ) {
+                  <button
+                    type="button"
+                    class="rounded-lg border border-[#D5E5E3] px-3 py-2 text-sm text-slate-600 hover:border-[#0A9292] hover:text-[#087A78]"
+                  >
+                    {{ type }}
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 flex justify-end border-t border-[#EDF3F2] pt-4">
+            <button
+              type="button"
+              (click)="toggleFilters()"
+              class="rounded-lg bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#09998F]"
+            >
+              Aplicar filtros
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Pestañas y resultados -->
+    <div class="mt-6 flex items-center justify-between border-b border-[#DCEBEA]">
+      <nav aria-label="Categorías de empleos" class="flex gap-6">
+        <button class="border-b-2 border-[#0BAFA5] pb-3 text-sm font-semibold text-[#087A78]">
+          Para ti
+        </button>
+        <button class="pb-3 text-sm text-slate-500">Todos</button>
+        <button class="pb-3 text-sm text-slate-500">Guardados</button>
+      </nav>
+
+      <span class="pb-3 text-sm text-slate-500">248 empleos encontrados</span>
+    </div>
+
+    <!-- Lista y detalle -->
+    <div class="mt-4 grid items-start gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
+      <!-- Cada empleo tiene su propia tarjeta -->
+      <div class="space-y-3">
+        <article
+          class="cursor-pointer rounded-xl border border-[#A9D9D3] bg-[#F2FAF9] p-5 shadow-sm ring-1 ring-[#0BAFA5]/10 transition hover:-translate-y-0.5 hover:shadow-md"
+        >
+          <div class="flex justify-between gap-3">
+            <div>
+              <h2 class="font-semibold text-[#0F172A]">Analista de Datos</h2>
+              <p class="mt-1 text-sm text-slate-500">Empresa XYZ</p>
+            </div>
+            <button
+              type="button"
+              aria-label="Guardar empleo"
+              class="text-slate-400 transition hover:text-[#0A9292]"
+            >
+              ♡
+            </button>
+          </div>
+
+          <p class="mt-3 text-sm text-slate-600">📍 Santiago · Híbrido</p>
+          <p class="mt-1 text-sm font-medium text-[#0F172A]">
+            $1.200.000 – $1.500.000
+          </p>
+
+          <div class="mt-3 flex flex-wrap gap-2">
+            @for (skill of ['Python', 'SQL', 'Power BI']; track skill) {
+              <span class="rounded-md bg-[#E7F7F5] px-2.5 py-1 text-xs font-medium text-[#087A78]">
+                {{ skill }}
+              </span>
+            }
+          </div>
+
+          <div class="mt-4 flex justify-between text-xs">
+            <span class="text-slate-400">Hace 2 horas</span>
+            <span class="font-medium text-[#0A9292]">Buena coincidencia</span>
+          </div>
+        </article>
+
+        @for (
+          job of [
+            { title: 'Desarrollador Backend Junior', company: 'Tech Solutions', place: 'Remoto', salary: '$1.000.000 – $1.300.000', skills: ['NestJS', 'TypeScript'] },
+            { title: 'Analista BI', company: 'Data Corp', place: 'Santiago · Presencial', salary: '$1.100.000 – $1.400.000', skills: ['Power BI', 'SQL'] },
+            { title: 'Ingeniero de Datos Junior', company: 'DataLab', place: 'Santiago · Híbrido', salary: '$1.300.000 – $1.600.000', skills: ['Python', 'SQL', 'GCP'] }
+          ];
+          track job.title
+        ) {
+          <article
+            class="cursor-pointer rounded-xl border border-[#DCEBEA] bg-white p-5 transition hover:-translate-y-0.5 hover:border-[#A9D9D3] hover:shadow-md"
+          >
+            <div class="flex justify-between gap-3">
+              <div>
+                <h2 class="font-semibold text-[#0F172A]">{{ job.title }}</h2>
+                <p class="mt-1 text-sm text-slate-500">{{ job.company }}</p>
+              </div>
+              <button
+                type="button"
+                aria-label="Guardar empleo"
+                class="text-slate-400 transition hover:text-[#0A9292]"
+              >
+                ♡
+              </button>
+            </div>
+
+            <p class="mt-3 text-sm text-slate-600">📍 {{ job.place }}</p>
+            <p class="mt-1 text-sm font-medium text-[#0F172A]">{{ job.salary }}</p>
+
+            <div class="mt-3 flex flex-wrap gap-2">
+              @for (skill of job.skills; track skill) {
+                <span class="rounded-md bg-[#E7F7F5] px-2.5 py-1 text-xs font-medium text-[#087A78]">
+                  {{ skill }}
+                </span>
+              }
+            </div>
+          </article>
+        }
+      </div>
+
+      <!-- Detalle de la oferta seleccionada -->
+      <div class="min-h-[600px] rounded-xl border border-[#DCEBEA] bg-white">
+        <div class="border-b border-[#EDF3F2] p-6">
+          <div class="flex justify-between gap-4">
+            <div>
+              <h2 class="text-2xl font-semibold text-[#0F172A]">Analista de Datos</h2>
+              <p class="mt-1 text-sm text-slate-500">Empresa XYZ</p>
+            </div>
+            <button
+              type="button"
+              aria-label="Guardar oferta"
+              class="text-slate-400 transition hover:text-[#0A9292]"
+            >
+              ♡
+            </button>
+          </div>
+
+          <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
+            <span>📍 Santiago · Híbrido</span>
+            <span>💼 Jornada completa</span>
+            <span>🕐 Hace 2 horas</span>
+          </div>
+
+          <p class="mt-4 text-lg font-semibold">$1.200.000 – $1.500.000</p>
+
+          <div class="mt-5 flex gap-3">
+            <button
+              type="button"
+              (click)="startApplication()"
+              class="rounded-lg bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#09998F]"
+            >
+              Postular
+            </button>
+            <button
+              type="button"
+              class="rounded-lg border border-[#DCEBEA] px-5 py-2.5 text-sm font-semibold text-[#087A78] hover:bg-[#F4FAFA]"
+            >
+              ♡ Guardar
+            </button>
+          </div>
+        </div>
+
+        <div class="border-b border-[#EDF3F2] p-6">
+          <div class="rounded-lg border border-[#CDEDEA] bg-[#EAF8F6] p-4">
+            <p class="text-sm font-semibold text-[#07575B]">✦ Coincidencia con tu perfil</p>
+            <p class="mt-1 text-sm text-slate-600">
+              Revisa cómo se relacionan tus habilidades con los requisitos de esta oferta.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-7 p-6">
+          <div>
+            <h3 class="font-semibold text-[#0F172A]">Descripción del empleo</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              Buscamos un Analista de Datos para analizar información, construir
+              reportes y generar indicadores que apoyen la toma de decisiones.
+            </p>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-[#0F172A]">Requisitos</h3>
+            <ul class="mt-3 space-y-2 text-sm text-slate-600">
+              <li>✓ Experiencia trabajando con SQL.</li>
+              <li>✓ Manejo de Python para análisis de datos.</li>
+              <li>✓ Experiencia con Power BI.</li>
+              <li>✓ Capacidad para analizar y comunicar información.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-[#0F172A]">Beneficios</h3>
+            <ul class="mt-3 space-y-2 text-sm text-slate-600">
+              <li>✓ Modalidad híbrida.</li>
+              <li>✓ Seguro complementario.</li>
+              <li>✓ Capacitación y desarrollo profesional.</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-semibold text-[#0F172A]">Sobre la empresa</h3>
+            <p class="mt-3 text-sm leading-6 text-slate-600">
+              Empresa orientada al desarrollo de soluciones basadas en datos
+              y tecnología para distintas industrias.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de postulación, centrado sobre toda la página -->
+  @if (isApplicationOpen()) {
+    <div class="fixed inset-0 z-50 grid place-items-center p-4 sm:p-6">
+      <button
+        type="button"
+        class="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px]"
+        aria-label="Cerrar postulación"
+        (click)="returnToOffer()"
+      ></button>
+
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="application-title"
+        class="relative z-10 flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
+      >
+        <header class="flex items-start justify-between gap-4 border-b border-[#EDF3F2] px-6 py-5">
+          <div>
+            <p class="text-sm text-slate-500">Empresa XYZ · Analista de Datos</p>
+            <h2 id="application-title" class="mt-1 text-xl font-semibold text-[#0F172A]">
+              Tu postulación
+            </h2>
+          </div>
+
+          <button
+            type="button"
+            (click)="returnToOffer()"
+            aria-label="Cerrar postulación"
+            class="grid size-9 shrink-0 place-items-center rounded-lg text-slate-500 hover:bg-slate-100"
+          >
+            ✕
+          </button>
+        </header>
+
+        @if (applicationSent()) {
+          <div class="overflow-y-auto p-8">
+            <div class="mx-auto max-w-lg rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center">
+              <h3 class="text-lg font-semibold text-emerald-900">
+                Postulación preparada
+              </h3>
+              <p class="mt-2 text-sm text-emerald-800">
+                Confirmación local de prueba. Aún no se envían datos al servidor.
+              </p>
+              <button
+                type="button"
+                (click)="returnToOffer()"
+                class="mt-5 rounded-lg bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#09998F]"
+              >
+                Volver a empleos
+              </button>
+            </div>
+          </div>
+        } @else {
+          <nav aria-label="Pasos de postulación" class="border-b border-[#EDF3F2] px-6 py-4">
+            <ol class="flex flex-wrap items-center gap-x-3 gap-y-2">
+              @for (step of applicationSteps; track step.number) {
+                <li class="flex items-center gap-3">
+                  <button
+                    type="button"
+                    [disabled]="step.number > applicationStep() + 1"
+                    (click)="goToApplicationStep(step.number - 1)"
+                    class="flex items-center gap-2 text-sm disabled:cursor-default"
+                    [class.font-semibold]="applicationStep() === step.number - 1"
+                    [class.text-[#087A78]]="applicationStep() === step.number - 1"
+                    [class.text-slate-500]="applicationStep() !== step.number - 1"
+                  >
+                    <span
+                      class="grid size-7 place-items-center rounded-full text-xs font-semibold"
+                      [class.bg-[#087A78]]="applicationStep() === step.number - 1"
+                      [class.text-white]="applicationStep() === step.number - 1"
+                      [class.bg-slate-200]="applicationStep() !== step.number - 1"
+                    >
+                      {{ step.number }}
+                    </span>
+                    {{ step.label }}
+                  </button>
+
+                  @if (step.number < 4) {
+                    <span aria-hidden="true" class="text-slate-300">›</span>
+                  }
+                </li>
+              }
+            </ol>
+          </nav>
+
+          <div class="grid min-h-0 flex-1 overflow-y-auto lg:grid-cols-[minmax(0,1fr)_280px]">
+            <main class="p-6 sm:p-8">
+              @switch (applicationStep()) {
+                @case (0) {
+                  <p class="text-sm font-medium text-[#087A78]">Paso 1 de 4</p>
+                  <h3 class="mt-2 text-xl font-semibold text-[#0F172A]">Revisa la oferta</h3>
+                  <p class="mt-2 text-sm text-slate-600">
+                    Confirma que esta es la oportunidad a la que quieres postular.
+                  </p>
+
+                  <div class="mt-6 rounded-xl border border-[#DCEBEA] bg-[#F8FCFC] p-5">
+                    <h4 class="text-lg font-semibold">Analista de Datos</h4>
+                    <p class="mt-1 text-sm text-slate-500">
+                      Empresa XYZ · Santiago · Híbrido
+                    </p>
+                    <p class="mt-4 text-sm leading-6 text-slate-600">
+                      Analizar información, construir reportes y generar indicadores
+                      para apoyar la toma de decisiones.
+                    </p>
+                    <p class="mt-4 font-semibold">$1.200.000 – $1.500.000</p>
+                  </div>
+                }
+
+                @case (1) {
+                  <p class="text-sm font-medium text-[#087A78]">Paso 2 de 4</p>
+                  <h3 class="mt-2 text-xl font-semibold text-[#0F172A]">
+                    Perfil y condiciones
+                  </h3>
+                  <p class="mt-2 text-sm text-slate-600">
+                    Tus datos vienen de tu perfil. Elige el CV y completa tu expectativa salarial.
+                  </p>
+
+                  <div class="mt-6 rounded-xl border border-[#DCEBEA] p-5">
+                    <div class="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <h4 class="font-semibold">Información de tu perfil</h4>
+                        <p class="mt-1 text-xs text-slate-500">
+                          Se compartirá con la empresa en esta postulación.
+                        </p>
+                      </div>
+                      <a
+                        href="/candidate/setup"
+                        class="text-sm font-medium text-[#087A78] hover:underline"
+                      >
+                        Editar perfil
+                      </a>
+                    </div>
+
+                    <dl class="mt-4 grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <dt class="text-xs text-slate-500">Nombre</dt>
+                        <dd class="mt-1 font-medium">{{ candidateProfile.fullName }}</dd>
+                      </div>
+                      <div>
+                        <dt class="text-xs text-slate-500">Correo</dt>
+                        <dd class="mt-1 break-all font-medium">{{ candidateProfile.email }}</dd>
+                      </div>
+                      <div>
+                        <dt class="text-xs text-slate-500">Teléfono</dt>
+                        <dd class="mt-1 font-medium">{{ candidateProfile.phone }}</dd>
+                      </div>
+                      <div>
+                        <dt class="text-xs text-slate-500">Ubicación</dt>
+                        <dd class="mt-1 font-medium">{{ candidateProfile.location }}</dd>
+                      </div>
+                    </dl>
+                  </div>
+
+                  <fieldset class="mt-6 space-y-3">
+                    <legend class="font-semibold">¿Qué CV enviarás?</legend>
+
+                    @for (cv of cvs(); track cv.id) {
+                      <label
+                        class="flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition"
+                        [class.border-[#0A9292]]="selectedCvId() === cv.id"
+                        [class.bg-[#EAF8F6]]="selectedCvId() === cv.id"
+                        [class.border-[#DCEBEA]]="selectedCvId() !== cv.id"
+                      >
+                        <input
+                          type="radio"
+                          name="applicationCv"
+                          [value]="cv.id"
+                          [checked]="selectedCvId() === cv.id"
+                          (change)="selectCv(cv.id)"
+                          class="mt-1 accent-[#0A9292]"
+                        />
+                        <span class="min-w-0 flex-1">
+                          <span class="block font-semibold">{{ cv.label }}</span>
+                          <span class="mt-1 block break-all text-sm text-slate-600">
+                            {{ cv.fileName }}
+                          </span>
+                          <span class="mt-1 block text-xs text-slate-500">
+                            {{ cv.updatedAt }}
+                          </span>
+                        </span>
+                        @if (selectedCvId() === cv.id) {
+                          <span class="text-sm font-semibold text-[#087A78]">
+                            Seleccionado
+                          </span>
+                        }
+                      </label>
+                    }
+
+                    <label class="inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#087A78] hover:underline">
+                      <span>＋ Subir otro CV</span>
+                      <input
+                        class="sr-only"
+                        type="file"
+                        accept=".pdf,.doc,.docx"
+                        (change)="addCv($event)"
+                      />
+                    </label>
+                  </fieldset>
+
+                  <div class="mt-6">
+                    <label for="expected-salary" class="font-semibold">
+                      Expectativa salarial
+                    </label>
+                    <div class="mt-2 flex max-w-sm items-center gap-3">
+                      <input
+                        id="expected-salary"
+                        type="number"
+                        min="0"
+                        [value]="expectedSalary()"
+                        (input)="updateExpectedSalary($event)"
+                        placeholder="Ej. 1400000"
+                        class="h-11 w-full rounded-lg border border-[#DCEBEA] px-3 text-sm outline-none focus:border-[#0A9292]"
+                      />
+                      <span class="shrink-0 text-sm text-slate-500">
+                        CLP bruto mensual
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="mt-6 rounded-xl bg-[#F8FCFC] p-5">
+                    <h4 class="font-semibold">Coincidencia con los requisitos</h4>
+                    <p class="mt-1 text-sm text-slate-600">
+                      Basada en las habilidades registradas en tu perfil.
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                      @for (skill of vacancySkills; track skill.name) {
+                        <span
+                          class="rounded-full px-3 py-1.5 text-xs font-medium"
+                          [class.bg-emerald-100]="skill.matches"
+                          [class.text-emerald-800]="skill.matches"
+                          [class.bg-amber-100]="!skill.matches"
+                          [class.text-amber-800]="!skill.matches"
+                        >
+                          {{ skill.name }} ·
+                          {{ skill.matches ? 'En tu perfil' : 'Sin evidencia en tu perfil' }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+
+                @case (2) {
+                  <p class="text-sm font-medium text-[#087A78]">Paso 3 de 4</p>
+                  <h3 class="mt-2 text-xl font-semibold text-[#0F172A]">
+                    Preguntas de la empresa
+                  </h3>
+                  <p class="mt-2 text-sm text-slate-600">
+                    Estas preguntas fueron configuradas para esta oferta.
+                  </p>
+
+                  <div class="mt-6 space-y-6">
+                    @for (question of applicationQuestions; track question.id) {
+                      <div>
+                        <label [for]="question.id" class="mb-2 block font-medium">
+                          {{ question.prompt }}
+                          @if (question.required) {
+                            <span class="text-red-600">*</span>
+                          }
+                        </label>
+
+                        @if (question.type === 'long-text') {
+                          <textarea
+                            [id]="question.id"
+                            rows="4"
+                            [value]="applicationAnswers()[question.id] ?? ''"
+                            (input)="updateApplicationAnswer(question.id, $event)"
+                            [required]="question.required"
+                            class="w-full rounded-lg border border-[#DCEBEA] px-3 py-2.5 text-sm outline-none focus:border-[#0A9292]"
+                          ></textarea>
+                        } @else if (question.type === 'single-choice') {
+                          <select
+                            [id]="question.id"
+                            [value]="applicationAnswers()[question.id] ?? ''"
+                            (change)="updateApplicationAnswer(question.id, $event)"
+                            [required]="question.required"
+                            class="h-11 w-full rounded-lg border border-[#DCEBEA] bg-white px-3 text-sm outline-none focus:border-[#0A9292]"
+                          >
+                            <option value="">Selecciona una opción</option>
+                            @for (option of question.options; track option) {
+                              <option [value]="option">{{ option }}</option>
+                            }
+                          </select>
+                        } @else {
+                          <input
+                            [id]="question.id"
+                            type="text"
+                            [value]="applicationAnswers()[question.id] ?? ''"
+                            (input)="updateApplicationAnswer(question.id, $event)"
+                            [required]="question.required"
+                            class="h-11 w-full rounded-lg border border-[#DCEBEA] px-3 text-sm outline-none focus:border-[#0A9292]"
+                          />
+                        }
+
+                        @if (question.helpText) {
+                          <p class="mt-1 text-xs text-slate-500">{{ question.helpText }}</p>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+
+                @case (3) {
+                  <p class="text-sm font-medium text-[#087A78]">Paso 4 de 4</p>
+                  <h3 class="mt-2 text-xl font-semibold text-[#0F172A]">
+                    Revisa tu postulación
+                  </h3>
+                  <p class="mt-2 text-sm text-slate-600">
+                    Confirma la información antes de enviarla a la empresa.
+                  </p>
+
+                  <div class="mt-6 space-y-4">
+                    <div class="rounded-xl border border-[#DCEBEA] p-5">
+                      <div class="flex justify-between gap-3">
+                        <h4 class="font-semibold">Oferta</h4>
+                        <button
+                          type="button"
+                          (click)="goToApplicationStep(0)"
+                          class="text-sm text-[#087A78] hover:underline"
+                        >
+                          Editar
+                        </button>
+                      </div>
+                      <p class="mt-2">Analista de Datos · Empresa XYZ</p>
+                      <p class="mt-1 text-sm text-slate-500">Santiago · Híbrido</p>
+                    </div>
+
+                    <div class="rounded-xl border border-[#DCEBEA] p-5">
+                      <div class="flex justify-between gap-3">
+                        <h4 class="font-semibold">Perfil y condiciones</h4>
+                        <button
+                          type="button"
+                          (click)="goToApplicationStep(1)"
+                          class="text-sm text-[#087A78] hover:underline"
+                        >
+                          Editar
+                        </button>
+                      </div>
+                      <p class="mt-2">{{ candidateProfile.fullName }}</p>
+                      <p class="text-sm text-slate-500">{{ candidateProfile.email }}</p>
+                      <p class="mt-3 text-sm">
+                        CV seleccionado: <strong>{{ selectedCv()?.fileName }}</strong>
+                      </p>
+                      <p class="mt-1 text-sm">
+                        Expectativa:
+                        <strong>{{ expectedSalary() }} CLP bruto mensual</strong>
+                      </p>
+                    </div>
+
+                    <div class="rounded-xl border border-[#DCEBEA] p-5">
+                      <div class="flex justify-between gap-3">
+                        <h4 class="font-semibold">Respuestas</h4>
+                        <button
+                          type="button"
+                          (click)="goToApplicationStep(2)"
+                          class="text-sm text-[#087A78] hover:underline"
+                        >
+                          Editar
+                        </button>
+                      </div>
+
+                      @for (question of applicationQuestions; track question.id) {
+                        <div class="mt-4">
+                          <p class="text-sm font-medium">{{ question.prompt }}</p>
+                          <p class="mt-1 whitespace-pre-wrap text-sm text-slate-600">
+                            {{ applicationAnswers()[question.id] || 'Sin respuesta' }}
+                          </p>
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              }
+            </main>
+
+            <!-- Resumen lateral del perfil -->
+            <aside class="border-t border-[#EDF3F2] bg-[#F8FCFC] p-6 lg:border-l lg:border-t-0">
+              <p class="text-sm text-slate-500">Postulando a</p>
+              <h3 class="mt-1 font-semibold text-[#0F172A]">Analista de Datos</h3>
+              <p class="text-sm text-slate-500">Empresa XYZ</p>
+
+              <div class="my-5 border-t border-[#DCEBEA]"></div>
+
+              <h4 class="font-semibold">Tu perfil</h4>
+              <p class="mt-3 font-medium">{{ candidateProfile.fullName }}</p>
+              <p class="mt-1 break-all text-sm text-slate-500">
+                {{ candidateProfile.email }}
+              </p>
+              <p class="mt-1 text-sm text-slate-500">
+                {{ candidateProfile.professionalTitle }}
+              </p>
+              <p class="mt-1 text-sm text-slate-500">
+                {{ candidateProfile.location }}
+              </p>
+
+              <p class="mt-5 text-xs leading-5 text-slate-500">
+                Tus datos personales se completan desde tu perfil. No necesitas escribirlos otra vez.
+              </p>
+            </aside>
+          </div>
+
+          <footer class="flex items-center justify-between border-t border-[#EDF3F2] px-6 py-4">
+            <button
+              type="button"
+              (click)="previousApplicationStep()"
+              class="rounded-lg border border-[#DCEBEA] px-5 py-2.5 text-sm font-semibold text-[#087A78] hover:bg-[#F4FAFA]"
+            >
+              Atrás
+            </button>
+
+            @if (applicationStep() < 3) {
+              <button
+                type="button"
+                (click)="nextApplicationStep()"
+                class="rounded-lg bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#09998F]"
+              >
+                Continuar
+              </button>
+            } @else {
+              <button
+                type="button"
+                (click)="submitApplication()"
+                class="rounded-lg bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#09998F]"
+              >
+                Enviar postulación
+              </button>
+            }
+          </footer>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,30 @@
+<div class="space-y-5">
+  @switch (section()) {
+    @case ('profile') {
+      <app-candidate-profile-editor></app-candidate-profile-editor>
+    }
+
+    @case ('cv') {
+      <app-candidate-cv-manager></app-candidate-cv-manager>
+    }
+
+    @case ('settings') {
+      <div>
+        <h2 class="text-lg font-semibold text-slate-900">Configuración</h2>
+        <p class="mt-1 text-sm text-slate-500">
+          Ajusta las preferencias de tu espacio de candidato.
+        </p>
+      </div>
+
+      <label class="flex items-center justify-between gap-4 rounded-xl border border-slate-200 p-4">
+        <span>
+          <span class="block font-medium text-slate-900">Alertas de empleos</span>
+          <span class="mt-1 block text-sm text-slate-500">
+            Recibir novedades sobre oportunidades.
+          </span>
+        </span>
+        <input type="checkbox" class="size-4 accent-teal-700" />
+      </label>
+    }
+  }
+</div>

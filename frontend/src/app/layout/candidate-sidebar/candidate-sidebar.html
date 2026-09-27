@@ -1,0 +1,116 @@
+<aside
+  class="flex min-h-[calc(100vh-72px)] w-64 shrink-0 flex-col border-r border-slate-200 bg-white"
+  aria-label="Espacio del candidato"
+>
+  <header class="border-b border-slate-200 px-5 py-4">
+    <div class="flex items-center gap-3">
+      <div
+        class="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#0B7A6B] font-semibold text-white"
+        aria-hidden="true"
+      >
+        LC
+      </div>
+
+      <div class="min-w-0">
+        <p class="truncate font-semibold text-[#0F172A]">Lucas</p>
+        <p class="mt-0.5 text-sm text-slate-500">Candidato</p>
+      </div>
+    </div>
+  </header>
+
+  <nav
+    class="flex-1 space-y-6 overflow-y-auto px-3 py-5"
+    aria-label="Navegación del candidato"
+  >
+    @for (section of sections; track section.label) {
+      <section>
+        <h2
+          class="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-500"
+        >
+          {{ section.label }}
+        </h2>
+
+        <div class="space-y-1">
+          @for (item of section.items; track item.label) {
+            @if (item.setupSection) {
+              <button
+                type="button"
+                (click)="openSetup(item.setupSection)"
+                class="group flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-medium text-slate-600 transition hover:bg-[#E6F4F1] hover:text-[#064635] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B7A6B]"
+              >
+                <span
+                  class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-base text-slate-500"
+                  aria-hidden="true"
+                >
+                  {{ item.icon }}
+                </span>
+                <span class="min-w-0 flex-1">{{ item.label }}</span>
+              </button>
+            } @else if (item.route) {
+              <a
+                [routerLink]="item.route"
+                routerLinkActive="bg-[#E6F4F1] text-[#064635]"
+                [routerLinkActiveOptions]="{ exact: item.exact ?? false }"
+                ariaCurrentWhenActive="page"
+                class="group flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium text-slate-600 transition hover:bg-slate-50 hover:text-[#064635] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B7A6B]"
+              >
+                <span
+                  class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-base text-slate-500"
+                  aria-hidden="true"
+                >
+                  {{ item.icon }}
+                </span>
+                <span class="min-w-0 flex-1">{{ item.label }}</span>
+              </a>
+            } @else {
+              <button
+                type="button"
+                disabled
+                class="group flex min-h-11 w-full cursor-not-allowed items-center gap-3 rounded-xl px-3 text-left text-sm font-medium text-slate-400"
+              >
+                <span
+                  class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-base"
+                  aria-hidden="true"
+                >
+                  {{ item.icon }}
+                </span>
+                <span class="min-w-0 flex-1">{{ item.label }}</span>
+              </button>
+            }
+          }
+        </div>
+      </section>
+    }
+  </nav>
+
+  <footer class="space-y-1 border-t border-slate-200 p-3">
+    <button
+      type="button"
+      (click)="openSetup('settings')"
+      class="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-medium text-slate-600 transition hover:bg-[#E6F4F1] hover:text-[#064635] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B7A6B]"
+    >
+      <span
+        class="flex size-8 items-center justify-center rounded-lg bg-slate-100 text-slate-500"
+        aria-hidden="true"
+      >
+        ⚙
+      </span>
+      <span>Configuración</span>
+    </button>
+
+    <button
+      type="button"
+      disabled
+      title="Aún falta conectar el cierre de sesión"
+      class="flex min-h-11 w-full cursor-not-allowed items-center gap-3 rounded-xl px-3 text-left text-sm font-medium text-slate-400"
+    >
+      <span
+        class="flex size-8 items-center justify-center rounded-lg bg-slate-100"
+        aria-hidden="true"
+      >
+        ↪
+      </span>
+      <span>Cerrar sesión</span>
+    </button>
+  </footer>
+</aside>

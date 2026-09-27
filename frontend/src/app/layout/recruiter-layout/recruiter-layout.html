@@ -1,0 +1,54 @@
+<div class="min-h-screen bg-[#F4FAFA]">
+  <app-workspace-navbar [config]="navbarConfig" />
+
+  <div class="flex min-h-[calc(100dvh-4rem)]">
+    <!-- Sidebar permanente en escritorio -->
+    <div class="hidden lg:block">
+      <app-recruiter-sidebar />
+    </div>
+
+    <main class="min-w-0 flex-1">
+      <!-- Control del sidebar en móvil -->
+      <div class="border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
+        <button
+          type="button"
+          class="inline-flex min-h-10 items-center gap-2 rounded-lg border border-slate-200 px-3 text-sm font-medium text-slate-700 hover:bg-slate-50"
+          [attr.aria-expanded]="isSidebarOpen()"
+          aria-controls="recruiter-mobile-sidebar"
+          (click)="toggleSidebar()"
+        >
+          <span aria-hidden="true">☰</span>
+          Menú
+        </button>
+      </div>
+
+      <!-- Sidebar móvil desplegable -->
+      @if (isSidebarOpen()) {
+        <div
+          id="recruiter-mobile-sidebar"
+          class="fixed inset-0 z-50 flex lg:hidden"
+        >
+          <button
+            type="button"
+            class="absolute inset-0 bg-slate-950/40"
+            aria-label="Cerrar menú"
+            (click)="closeSidebar()"
+          ></button>
+
+          <div
+            class="relative z-10 h-full w-64 max-w-[85vw] bg-white shadow-xl"
+            (click)="closeSidebar()"
+          >
+            <app-recruiter-sidebar />
+          </div>
+        </div>
+      }
+
+      <div class="p-4 sm:p-6 lg:p-8">
+        <router-outlet />
+      </div>
+    </main>
+  </div>
+</div>
+
+<app-footer />
