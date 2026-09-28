@@ -1,0 +1,603 @@
+<section class="min-h-full bg-[#F4FAFA]">
+
+  <!-- HEADER -->
+  <div class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-[1500px] px-6 py-7 lg:px-8">
+
+      <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+
+        <div>
+          <div class="mb-2 flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-[#0BAFA5]"></span>
+
+            <span
+              class="text-xs font-semibold uppercase tracking-[0.14em] text-[#0A9292]"
+            >
+              Para ti
+            </span>
+          </div>
+
+          <h1 class="text-2xl font-bold tracking-tight text-[#0F172A]">
+            Empleos recomendados
+          </h1>
+
+          <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
+            Ofertas seleccionadas según tu perfil profesional, experiencia,
+            habilidades y preferencias laborales.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+
+          <div class="rounded-xl border border-slate-200 bg-white px-4 py-3">
+            <p class="text-xs text-slate-400">
+              Recomendaciones
+            </p>
+
+            <p class="mt-1 text-lg font-bold text-[#0F172A]">
+              {{ totalRecommendations() }}
+            </p>
+          </div>
+
+          <div class="rounded-xl border border-slate-200 bg-white px-4 py-3">
+            <p class="text-xs text-slate-400">
+              Alta compatibilidad
+            </p>
+
+            <p class="mt-1 text-lg font-bold text-[#0A9292]">
+              {{ highCompatibilityCount() }}
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- CONTENIDO -->
+  <div class="mx-auto max-w-[1500px] px-6 py-6 lg:px-8">
+
+    <!-- FILTROS -->
+    <div class="mb-6 flex gap-2 overflow-x-auto pb-1">
+
+      @for (
+        filter of [
+          'Todos',
+          'Alta compatibilidad',
+          'Nuevos',
+          'Remoto',
+          'Híbrido',
+          'Presencial'
+        ];
+        track filter
+      ) {
+
+        <button
+          type="button"
+          (click)="setFilter($any(filter))"
+          class="whitespace-nowrap rounded-full border px-4 py-2 text-xs font-semibold transition"
+          [ngClass]="
+            activeFilter() === filter
+              ? 'border-[#0BAFA5] bg-[#0BAFA5] text-white'
+              : 'border-slate-200 bg-white text-slate-600 hover:border-[#0BAFA5] hover:text-[#0A9292]'
+          "
+        >
+          {{ filter }}
+        </button>
+
+      }
+
+    </div>
+
+
+    <!-- LISTA + DETALLE -->
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_390px]">
+
+      <!-- LISTA -->
+      <div class="space-y-3">
+
+        <div class="mb-4 flex items-center justify-between">
+
+          <div>
+            <h2 class="text-sm font-bold text-[#0F172A]">
+              Ofertas para ti
+            </h2>
+
+            <p class="mt-1 text-xs text-slate-400">
+              {{ filteredJobs().length }} ofertas disponibles
+            </p>
+          </div>
+
+          <span
+            class="rounded-full bg-[#E8F7F6] px-3 py-1.5 text-xs font-semibold text-[#0A9292]"
+          >
+            Actualizado recientemente
+          </span>
+
+        </div>
+
+
+        @for (job of filteredJobs(); track job.id) {
+
+          <article
+            class="group cursor-pointer rounded-2xl border bg-white p-5 transition"
+            [ngClass]="
+              selectedJob()?.id === job.id
+                ? 'border-[#0BAFA5] shadow-sm'
+                : 'border-slate-200 hover:border-[#9BD9D5] hover:shadow-sm'
+            "
+            (click)="selectJob(job)"
+          >
+
+            <div class="flex gap-4">
+
+              <!-- LOGO / EMPRESA -->
+              <div
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#E8F7F6] text-sm font-bold text-[#0A9292]"
+              >
+                {{ job.company.charAt(0) }}
+              </div>
+
+
+              <!-- INFORMACIÓN -->
+              <div class="min-w-0 flex-1">
+
+                <div
+                  class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between"
+                >
+
+                  <div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+
+                      <h3
+                        class="text-sm font-bold text-[#0F172A] transition group-hover:text-[#0A9292]"
+                      >
+                        {{ job.title }}
+                      </h3>
+
+                      @if (job.isNew) {
+
+                        <span
+                          class="rounded-full bg-[#E8F7F6] px-2 py-0.5 text-[10px] font-bold text-[#0A9292]"
+                        >
+                          NUEVO
+                        </span>
+
+                      }
+
+                    </div>
+
+                    <p class="mt-1 text-xs font-medium text-slate-500">
+                      {{ job.company }}
+                    </p>
+
+                  </div>
+
+
+                  <!-- COMPATIBILIDAD -->
+                  <div class="shrink-0 text-left sm:text-right">
+
+                    <p
+                      class="text-[10px] font-semibold uppercase tracking-wide text-slate-400"
+                    >
+                      Compatibilidad
+                    </p>
+
+                    <p class="mt-0.5 text-lg font-bold text-[#0A9292]">
+                      {{ job.compatibility }}%
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+                <!-- INFORMACIÓN GENERAL -->
+                <div class="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-slate-500">
+
+                  <span class="flex items-center gap-1">
+                    <span>⌖</span>
+                    {{ job.location }}
+                  </span>
+
+                  <span class="flex items-center gap-1">
+                    <span>◌</span>
+                    {{ job.modality }}
+                  </span>
+
+                  <span class="flex items-center gap-1">
+                    <span>$</span>
+                    {{ job.salary }}
+                  </span>
+
+                  <span>
+                    {{ job.published }}
+                  </span>
+
+                </div>
+
+
+                <!-- SKILLS -->
+                <div class="mt-4 flex flex-wrap gap-1.5">
+
+                  @for (skill of job.skills; track skill) {
+
+                    <span
+                      class="rounded-md bg-slate-100 px-2.5 py-1 text-[11px] font-medium text-slate-600"
+                    >
+                      {{ skill }}
+                    </span>
+
+                  }
+
+                </div>
+
+
+                <!-- ACCIONES -->
+                <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+
+                  <button
+                    type="button"
+                    class="text-left text-xs font-semibold text-[#0A9292] hover:underline"
+                    (click)="selectJob(job); $event.stopPropagation()"
+                  >
+                    Ver por qué te recomendamos
+                  </button>
+
+                  <div class="flex items-center gap-2">
+
+                    <button
+                      type="button"
+                      (click)="toggleSaved(job); $event.stopPropagation()"
+                      class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-[#0BAFA5] hover:text-[#0A9292]"
+                    >
+                      {{ job.isSaved ? 'Guardado' : 'Guardar' }}
+                    </button>
+
+                    <button
+                      type="button"
+                      (click)="applyToJob(job); $event.stopPropagation()"
+                      class="rounded-lg bg-[#0BAFA5] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#0A9292]"
+                    >
+                      Postular
+                    </button>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        }
+
+
+        <!-- SIN RESULTADOS -->
+        @if (filteredJobs().length === 0) {
+
+          <div
+            class="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center"
+          >
+
+            <div
+              class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400"
+            >
+              ?
+            </div>
+
+            <h3 class="mt-4 text-sm font-bold text-[#0F172A]">
+              No encontramos recomendaciones
+            </h3>
+
+            <p class="mx-auto mt-2 max-w-md text-xs leading-5 text-slate-500">
+              Prueba con otro filtro. A medida que completes tu perfil y
+              registres actividad en Agora, podremos generar recomendaciones
+              más relevantes.
+            </p>
+
+          </div>
+
+        }
+
+      </div>
+
+
+      <!-- PANEL DERECHO -->
+      <aside class="hidden xl:block">
+
+        @if (selectedJob(); as job) {
+
+          <div
+            class="sticky top-6 overflow-hidden rounded-2xl border border-slate-200 bg-white"
+          >
+
+            <!-- HEADER DETALLE -->
+            <div class="border-b border-slate-200 p-6">
+
+              <div class="flex items-start justify-between gap-4">
+
+                <div>
+
+                  <div
+                    class="flex h-12 w-12 items-center justify-center rounded-xl bg-[#E8F7F6] text-sm font-bold text-[#0A9292]"
+                  >
+                    {{ job.company.charAt(0) }}
+                  </div>
+
+                  <h2 class="mt-4 text-lg font-bold text-[#0F172A]">
+                    {{ job.title }}
+                  </h2>
+
+                  <p class="mt-1 text-sm text-slate-500">
+                    {{ job.company }}
+                  </p>
+
+                </div>
+
+                <button
+                  type="button"
+                  (click)="closeJobDetail()"
+                  class="rounded-lg p-2 text-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+                  aria-label="Cerrar detalle"
+                >
+                  ×
+                </button>
+
+              </div>
+
+
+              <!-- COMPATIBILIDAD -->
+              <div class="mt-6 rounded-xl bg-[#F4FAFA] p-4">
+
+                <div class="flex items-center justify-between gap-4">
+
+                  <div>
+
+                    <p class="text-xs font-semibold text-slate-500">
+                      Compatibilidad con tu perfil
+                    </p>
+
+                    <p class="mt-1 text-2xl font-bold text-[#0A9292]">
+                      {{ job.compatibility }}%
+                    </p>
+
+                  </div>
+
+                  <div
+                    class="flex h-14 w-14 items-center justify-center rounded-full border-4 border-[#0BAFA5] text-xs font-bold text-[#0A9292]"
+                  >
+                    {{ job.compatibility }}%
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- BODY DETALLE -->
+            <div class="space-y-6 p-6">
+
+              <!-- MOTIVOS -->
+              <div>
+
+                <h3
+                  class="text-xs font-bold uppercase tracking-wide text-slate-400"
+                >
+                  ¿Por qué te la recomendamos?
+                </h3>
+
+                <div class="mt-3 space-y-2">
+
+                  @for (reason of job.reasons; track reason) {
+
+                    <div class="flex gap-2.5">
+
+                      <span
+                        class="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#E8F7F6] text-[9px] font-bold text-[#0A9292]"
+                      >
+                        ✓
+                      </span>
+
+                      <p class="text-xs leading-5 text-slate-600">
+                        {{ reason }}
+                      </p>
+
+                    </div>
+
+                  }
+
+                </div>
+
+              </div>
+
+
+              <!-- SKILLS -->
+              <div>
+
+                <h3
+                  class="text-xs font-bold uppercase tracking-wide text-slate-400"
+                >
+                  Habilidades relacionadas
+                </h3>
+
+                <div class="mt-3 flex flex-wrap gap-1.5">
+
+                  @for (skill of job.skills; track skill) {
+
+                    <span
+                      class="rounded-md bg-[#E8F7F6] px-2.5 py-1.5 text-[11px] font-semibold text-[#0A9292]"
+                    >
+                      {{ skill }}
+                    </span>
+
+                  }
+
+                </div>
+
+              </div>
+
+
+              <!-- SKILLS FALTANTES -->
+              @if (job.missingSkills.length > 0) {
+
+                <div>
+
+                  <h3
+                    class="text-xs font-bold uppercase tracking-wide text-slate-400"
+                  >
+                    Aspectos a considerar
+                  </h3>
+
+                  <div
+                    class="mt-3 rounded-xl border border-amber-100 bg-amber-50 p-3"
+                  >
+
+                    <p class="text-xs leading-5 text-amber-800">
+                      Esta oferta también solicita experiencia o conocimientos
+                      en:
+                    </p>
+
+                    <div class="mt-2 flex flex-wrap gap-1.5">
+
+                      @for (skill of job.missingSkills; track skill) {
+
+                        <span
+                          class="rounded-md bg-white px-2 py-1 text-[10px] font-semibold text-amber-700"
+                        >
+                          {{ skill }}
+                        </span>
+
+                      }
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+              }
+
+
+              <!-- DESCRIPCIÓN -->
+              <div>
+
+                <h3
+                  class="text-xs font-bold uppercase tracking-wide text-slate-400"
+                >
+                  Sobre el cargo
+                </h3>
+
+                <p class="mt-3 text-xs leading-6 text-slate-600">
+                  {{ job.description }}
+                </p>
+
+              </div>
+
+
+              <!-- DATOS -->
+              <div class="border-t border-slate-100 pt-5">
+
+                <div class="grid grid-cols-2 gap-4 text-xs">
+
+                  <div>
+                    <p class="text-slate-400">
+                      Modalidad
+                    </p>
+
+                    <p class="mt-1 font-semibold text-slate-700">
+                      {{ job.modality }}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p class="text-slate-400">
+                      Ubicación
+                    </p>
+
+                    <p class="mt-1 font-semibold text-slate-700">
+                      {{ job.location }}
+                    </p>
+                  </div>
+
+                  <div class="col-span-2">
+                    <p class="text-slate-400">
+                      Rango salarial
+                    </p>
+
+                    <p class="mt-1 font-semibold text-slate-700">
+                      {{ job.salary }}
+                    </p>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <!-- ACCIONES -->
+              <div class="flex gap-2">
+
+                <button
+                  type="button"
+                  (click)="toggleSaved(job)"
+                  class="flex-1 rounded-xl border border-slate-200 px-4 py-3 text-xs font-semibold text-slate-600 transition hover:border-[#0BAFA5] hover:text-[#0A9292]"
+                >
+                  {{ job.isSaved ? 'Guardado' : 'Guardar empleo' }}
+                </button>
+
+                <button
+                  type="button"
+                  (click)="applyToJob(job)"
+                  class="flex-1 rounded-xl bg-[#0BAFA5] px-4 py-3 text-xs font-semibold text-white transition hover:bg-[#0A9292]"
+                >
+                  Postular
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        } @else {
+
+          <!-- ESTADO INICIAL -->
+          <div
+            class="sticky top-6 rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center"
+          >
+
+            <div
+              class="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[#E8F7F6] text-[#0A9292]"
+            >
+              →
+            </div>
+
+            <h3 class="mt-4 text-sm font-bold text-[#0F172A]">
+              Explora tus recomendaciones
+            </h3>
+
+            <p class="mt-2 text-xs leading-5 text-slate-500">
+              Selecciona una oferta para conocer por qué Agora considera que
+              puede ser relevante para ti.
+            </p>
+
+          </div>
+
+        }
+
+      </aside>
+
+    </div>
+
+  </div>
+
+</section>

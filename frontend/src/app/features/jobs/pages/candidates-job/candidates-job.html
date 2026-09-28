@@ -1,748 +1,1909 @@
-<div class="min-h-[calc(100vh-72px)] bg-[#F4FAFA]">
-  <!-- Página de empleos, permanece detrás del modal -->
-  <div class="px-6 pb-6 pt-6">
-    <header>
-      <h1 class="text-2xl font-semibold text-[#0F172A]">Empleos</h1>
-      <p class="mt-1 text-sm text-slate-500">
-        Encuentra oportunidades que se ajusten a tu perfil.
-      </p>
+<div class="min-h-full bg-[#F4FAFA]">
 
-      <div class="mt-5">
+  <!-- ========================================================= -->
+  <!-- HEADER / BUSCADOR                                         -->
+  <!-- ========================================================= -->
+
+  <section class="bg-white border-b border-slate-200">
+    <div class="px-6 py-5">
+
+      <div class="max-w-[1500px] mx-auto">
+
+        <div class="mb-4">
+          <h1 class="text-xl font-semibold text-[#0F172A]">
+            Buscar empleos
+          </h1>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Encuentra oportunidades que se ajusten a tu perfil.
+          </p>
+        </div>
+
         <app-job-search-bar
           (searchRequested)="handleSearch($event)"
-        />
+        ></app-job-search-bar>
 
-        @if (searchQuery()) {
-          <p class="mt-2 text-sm text-slate-600">
-            Consulta recibida: <strong>{{ searchQuery() }}</strong>
-          </p>
-        }
-      </div>
-    </header>
 
-    <!-- Filtros -->
-    <div class="mt-4">
-      <button
-        type="button"
-        (click)="toggleFilters()"
-        [attr.aria-expanded]="showFilters()"
-        class="h-9 rounded-lg border border-[#DCEBEA] bg-white px-4 text-sm font-medium text-[#0F172A] transition hover:border-[#0A9292] hover:text-[#087A78]"
-      >
-        ⚙ Filtros
-      </button>
+        <!-- ===================================================== -->
+        <!-- FILTROS RAPIDOS                                      -->
+        <!-- ===================================================== -->
 
-      @if (showFilters()) {
-        <div class="mt-3 rounded-xl border border-[#DCEBEA] bg-white p-5">
-          <div class="flex items-start justify-between">
-            <div>
-              <h2 class="font-semibold text-[#0F172A]">Filtros</h2>
-              <p class="mt-1 text-sm text-slate-500">
-                Refina los resultados según tus preferencias.
-              </p>
-            </div>
+        <div class="flex flex-wrap items-center gap-2 mt-4">
+
+
+          <!-- FECHA -->
+
+          <div class="relative">
 
             <button
               type="button"
-              (click)="toggleFilters()"
-              aria-label="Cerrar filtros"
-              class="rounded-lg px-3 py-1 text-slate-500 hover:bg-slate-100"
+              (click)="toggleQuickFilter('date')"
+              class="h-9 inline-flex items-center gap-2 px-3 rounded-lg border text-sm font-medium transition"
+              [class.bg-[#E6F7F6]]="selectedDatePosted() !== 'any'"
+              [class.border-[#0BAFA5]]="selectedDatePosted() !== 'any'"
+              [class.text-[#087F7A]]="selectedDatePosted() !== 'any'"
+              [class.bg-white]="selectedDatePosted() === 'any'"
+              [class.border-slate-200]="selectedDatePosted() === 'any'"
+              [class.text-slate-700]="selectedDatePosted() === 'any'"
             >
-              ✕
-            </button>
-          </div>
-
-          <div class="mt-5 grid gap-5 md:grid-cols-2">
-            <div>
-              <h3 class="text-sm font-semibold">Área de trabajo</h3>
-              <div class="mt-2 flex flex-wrap gap-2">
-                @for (
-                  area of ['Tecnología', 'Datos', 'Finanzas', 'Ventas', 'Salud', 'Operaciones'];
-                  track area
-                ) {
-                  <button
-                    type="button"
-                    class="rounded-lg border border-[#D5E5E3] px-3 py-2 text-sm text-slate-600 hover:border-[#0A9292] hover:text-[#087A78]"
-                  >
-                    {{ area }}
-                  </button>
-                }
-              </div>
-            </div>
-
-            <div>
-              <h3 class="text-sm font-semibold">Experiencia</h3>
-              <div class="mt-2 flex flex-wrap gap-2">
-                @for (
-                  level of ['Práctica', 'Junior', 'Intermedio', 'Senior', 'Dirección'];
-                  track level
-                ) {
-                  <button
-                    type="button"
-                    class="rounded-lg border border-[#D5E5E3] px-3 py-2 text-sm text-slate-600 hover:border-[#0A9292] hover:text-[#087A78]"
-                  >
-                    {{ level }}
-                  </button>
-                }
-              </div>
-            </div>
-
-            <div>
-              <h3 class="text-sm font-semibold">Modalidad</h3>
-              <div class="mt-2 flex flex-wrap gap-2">
-                @for (mode of ['Presencial', 'Híbrido', 'Remoto']; track mode) {
-                  <button
-                    type="button"
-                    class="rounded-lg border border-[#D5E5E3] px-3 py-2 text-sm text-slate-600 hover:border-[#0A9292] hover:text-[#087A78]"
-                  >
-                    {{ mode }}
-                  </button>
-                }
-              </div>
-            </div>
-
-            <div>
-              <h3 class="text-sm font-semibold">Tipo de empleo</h3>
-              <div class="mt-2 flex flex-wrap gap-2">
-                @for (
-                  type of ['Jornada completa', 'Media jornada', 'Temporal', 'Práctica', 'Freelance'];
-                  track type
-                ) {
-                  <button
-                    type="button"
-                    class="rounded-lg border border-[#D5E5E3] px-3 py-2 text-sm text-slate-600 hover:border-[#0A9292] hover:text-[#087A78]"
-                  >
-                    {{ type }}
-                  </button>
-                }
-              </div>
-            </div>
-          </div>
-
-          <div class="mt-5 flex justify-end border-t border-[#EDF3F2] pt-4">
-            <button
-              type="button"
-              (click)="toggleFilters()"
-              class="rounded-lg bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#09998F]"
-            >
-              Aplicar filtros
-            </button>
-          </div>
-        </div>
-      }
-    </div>
-
-    <!-- Pestañas y resultados -->
-    <div class="mt-6 flex items-center justify-between border-b border-[#DCEBEA]">
-      <nav aria-label="Categorías de empleos" class="flex gap-6">
-        <button class="border-b-2 border-[#0BAFA5] pb-3 text-sm font-semibold text-[#087A78]">
-          Para ti
-        </button>
-        <button class="pb-3 text-sm text-slate-500">Todos</button>
-        <button class="pb-3 text-sm text-slate-500">Guardados</button>
-      </nav>
-
-      <span class="pb-3 text-sm text-slate-500">248 empleos encontrados</span>
-    </div>
-
-    <!-- Lista y detalle -->
-    <div class="mt-4 grid items-start gap-4 lg:grid-cols-[360px_minmax(0,1fr)]">
-      <!-- Cada empleo tiene su propia tarjeta -->
-      <div class="space-y-3">
-        <article
-          class="cursor-pointer rounded-xl border border-[#A9D9D3] bg-[#F2FAF9] p-5 shadow-sm ring-1 ring-[#0BAFA5]/10 transition hover:-translate-y-0.5 hover:shadow-md"
-        >
-          <div class="flex justify-between gap-3">
-            <div>
-              <h2 class="font-semibold text-[#0F172A]">Analista de Datos</h2>
-              <p class="mt-1 text-sm text-slate-500">Empresa XYZ</p>
-            </div>
-            <button
-              type="button"
-              aria-label="Guardar empleo"
-              class="text-slate-400 transition hover:text-[#0A9292]"
-            >
-              ♡
-            </button>
-          </div>
-
-          <p class="mt-3 text-sm text-slate-600">📍 Santiago · Híbrido</p>
-          <p class="mt-1 text-sm font-medium text-[#0F172A]">
-            $1.200.000 – $1.500.000
-          </p>
-
-          <div class="mt-3 flex flex-wrap gap-2">
-            @for (skill of ['Python', 'SQL', 'Power BI']; track skill) {
-              <span class="rounded-md bg-[#E7F7F5] px-2.5 py-1 text-xs font-medium text-[#087A78]">
-                {{ skill }}
+              <span>
+                Fecha
               </span>
-            }
-          </div>
 
-          <div class="mt-4 flex justify-between text-xs">
-            <span class="text-slate-400">Hace 2 horas</span>
-            <span class="font-medium text-[#0A9292]">Buena coincidencia</span>
-          </div>
-        </article>
+              <svg
+                class="w-3.5 h-3.5 transition-transform"
+                [class.rotate-180]="openQuickFilter() === 'date'"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M5 7.5 10 12.5 15 7.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
 
-        @for (
-          job of [
-            { title: 'Desarrollador Backend Junior', company: 'Tech Solutions', place: 'Remoto', salary: '$1.000.000 – $1.300.000', skills: ['NestJS', 'TypeScript'] },
-            { title: 'Analista BI', company: 'Data Corp', place: 'Santiago · Presencial', salary: '$1.100.000 – $1.400.000', skills: ['Power BI', 'SQL'] },
-            { title: 'Ingeniero de Datos Junior', company: 'DataLab', place: 'Santiago · Híbrido', salary: '$1.300.000 – $1.600.000', skills: ['Python', 'SQL', 'GCP'] }
-          ];
-          track job.title
-        ) {
-          <article
-            class="cursor-pointer rounded-xl border border-[#DCEBEA] bg-white p-5 transition hover:-translate-y-0.5 hover:border-[#A9D9D3] hover:shadow-md"
-          >
-            <div class="flex justify-between gap-3">
-              <div>
-                <h2 class="font-semibold text-[#0F172A]">{{ job.title }}</h2>
-                <p class="mt-1 text-sm text-slate-500">{{ job.company }}</p>
+
+            @if (openQuickFilter() === 'date') {
+
+              <div class="absolute z-30 top-11 left-0 w-56 bg-white border border-slate-200 rounded-xl shadow-lg p-2">
+
+                @for (option of dateOptions; track option.value) {
+
+                  <button
+                    type="button"
+                    (click)="selectDatePosted(option.value)"
+                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition hover:bg-slate-50"
+                    [class.bg-[#E6F7F6]]="selectedDatePosted() === option.value"
+                    [class.text-[#087F7A]]="selectedDatePosted() === option.value"
+                    [class.font-medium]="selectedDatePosted() === option.value"
+                    [class.text-slate-700]="selectedDatePosted() !== option.value"
+                  >
+                    {{ option.label }}
+                  </button>
+
+                }
+
               </div>
+
+            }
+
+          </div>
+
+
+          <!-- MODALIDAD -->
+
+          <div class="relative">
+
+            <button
+              type="button"
+              (click)="toggleQuickFilter('modality')"
+              class="h-9 inline-flex items-center gap-2 px-3 rounded-lg border text-sm font-medium transition"
+              [class.bg-[#E6F7F6]]="selectedModality()"
+              [class.border-[#0BAFA5]]="selectedModality()"
+              [class.text-[#087F7A]]="selectedModality()"
+              [class.bg-white]="!selectedModality()"
+              [class.border-slate-200]="!selectedModality()"
+              [class.text-slate-700]="!selectedModality()"
+            >
+              <span>
+                {{ selectedModality() ?? 'Modalidad' }}
+              </span>
+
+              <svg
+                class="w-3.5 h-3.5 transition-transform"
+                [class.rotate-180]="openQuickFilter() === 'modality'"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M5 7.5 10 12.5 15 7.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+
+
+            @if (openQuickFilter() === 'modality') {
+
+              <div class="absolute z-30 top-11 left-0 w-48 bg-white border border-slate-200 rounded-xl shadow-lg p-2">
+
+                <button
+                  type="button"
+                  (click)="selectModality(null)"
+                  class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50"
+                >
+                  Todas
+                </button>
+
+                @for (modality of filterModalities; track modality) {
+
+                  <button
+                    type="button"
+                    (click)="selectModality(modality)"
+                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition hover:bg-slate-50"
+                    [class.bg-[#E6F7F6]]="selectedModality() === modality"
+                    [class.text-[#087F7A]]="selectedModality() === modality"
+                    [class.font-medium]="selectedModality() === modality"
+                    [class.text-slate-700]="selectedModality() !== modality"
+                  >
+                    {{ modality }}
+                  </button>
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- EXPERIENCIA -->
+
+          <div class="relative">
+
+            <button
+              type="button"
+              (click)="toggleQuickFilter('experience')"
+              class="h-9 inline-flex items-center gap-2 px-3 rounded-lg border text-sm font-medium transition"
+              [class.bg-[#E6F7F6]]="selectedExperience()"
+              [class.border-[#0BAFA5]]="selectedExperience()"
+              [class.text-[#087F7A]]="selectedExperience()"
+              [class.bg-white]="!selectedExperience()"
+              [class.border-slate-200]="!selectedExperience()"
+              [class.text-slate-700]="!selectedExperience()"
+            >
+              <span>
+                {{ selectedExperience() ?? 'Experiencia' }}
+              </span>
+
+              <svg
+                class="w-3.5 h-3.5 transition-transform"
+                [class.rotate-180]="openQuickFilter() === 'experience'"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M5 7.5 10 12.5 15 7.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+
+
+            @if (openQuickFilter() === 'experience') {
+
+              <div class="absolute z-30 top-11 left-0 w-48 bg-white border border-slate-200 rounded-xl shadow-lg p-2">
+
+                <button
+                  type="button"
+                  (click)="selectExperience(null)"
+                  class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50"
+                >
+                  Todas
+                </button>
+
+                @for (experience of filterExperiences; track experience) {
+
+                  <button
+                    type="button"
+                    (click)="selectExperience(experience)"
+                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition hover:bg-slate-50"
+                    [class.bg-[#E6F7F6]]="selectedExperience() === experience"
+                    [class.text-[#087F7A]]="selectedExperience() === experience"
+                    [class.font-medium]="selectedExperience() === experience"
+                    [class.text-slate-700]="selectedExperience() !== experience"
+                  >
+                    {{ experience }}
+                  </button>
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- SUELDO -->
+
+          <div class="relative">
+
+            <button
+              type="button"
+              (click)="toggleQuickFilter('salary')"
+              class="h-9 inline-flex items-center gap-2 px-3 rounded-lg border text-sm font-medium transition"
+              [class.bg-[#E6F7F6]]="salaryMin() !== null || salaryMax() !== null"
+              [class.border-[#0BAFA5]]="salaryMin() !== null || salaryMax() !== null"
+              [class.text-[#087F7A]]="salaryMin() !== null || salaryMax() !== null"
+              [class.bg-white]="salaryMin() === null && salaryMax() === null"
+              [class.border-slate-200]="salaryMin() === null && salaryMax() === null"
+              [class.text-slate-700]="salaryMin() === null && salaryMax() === null"
+            >
+              <span>
+                Sueldo
+              </span>
+
+              <svg
+                class="w-3.5 h-3.5 transition-transform"
+                [class.rotate-180]="openQuickFilter() === 'salary'"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M5 7.5 10 12.5 15 7.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+
+
+            @if (openQuickFilter() === 'salary') {
+
+              <div class="absolute z-30 top-11 left-0 w-72 bg-white border border-slate-200 rounded-xl shadow-lg p-4">
+
+                <p class="text-sm font-semibold text-[#0F172A] mb-3">
+                  Rango salarial
+                </p>
+
+                <div class="grid grid-cols-2 gap-2">
+
+                  <div>
+
+                    <label class="block text-xs text-slate-500 mb-1">
+                      Mínimo
+                    </label>
+
+                    <select
+                      [value]="salaryMin() ?? ''"
+                      (change)="selectSalaryMin($any($event.target).value ? +$any($event.target).value : null)"
+                      class="w-full h-9 px-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-700 outline-none focus:border-[#0BAFA5]"
+                    >
+                      <option value="">
+                        Sin mínimo
+                      </option>
+
+                      @for (salary of salaryOptions; track salary.value) {
+
+                        <option [value]="salary.value">
+                          {{ salary.label }}
+                        </option>
+
+                      }
+
+                    </select>
+
+                  </div>
+
+
+                  <div>
+
+                    <label class="block text-xs text-slate-500 mb-1">
+                      Máximo
+                    </label>
+
+                    <select
+                      [value]="salaryMax() ?? ''"
+                      (change)="selectSalaryMax($any($event.target).value ? +$any($event.target).value : null)"
+                      class="w-full h-9 px-2 rounded-lg border border-slate-200 bg-white text-sm text-slate-700 outline-none focus:border-[#0BAFA5]"
+                    >
+                      <option value="">
+                        Sin máximo
+                      </option>
+
+                      @for (salary of salaryOptions; track salary.value) {
+
+                        <option [value]="salary.value">
+                          {{ salary.label }}
+                        </option>
+
+                      }
+
+                    </select>
+
+                  </div>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  (click)="applySalaryFilter()"
+                  class="w-full mt-3 h-9 rounded-lg bg-[#0BAFA5] text-white text-sm font-medium hover:bg-[#0A9292] transition"
+                >
+                  Aplicar
+                </button>
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- DISTANCIA -->
+
+          <div class="relative">
+
+            <button
+              type="button"
+              (click)="toggleQuickFilter('distance')"
+              class="h-9 inline-flex items-center gap-2 px-3 rounded-lg border text-sm font-medium transition"
+              [class.bg-[#E6F7F6]]="selectedDistance() !== 'any'"
+              [class.border-[#0BAFA5]]="selectedDistance() !== 'any'"
+              [class.text-[#087F7A]]="selectedDistance() !== 'any'"
+              [class.bg-white]="selectedDistance() === 'any'"
+              [class.border-slate-200]="selectedDistance() === 'any'"
+              [class.text-slate-700]="selectedDistance() === 'any'"
+            >
+              <span>
+                Distancia
+              </span>
+
+              <svg
+                class="w-3.5 h-3.5 transition-transform"
+                [class.rotate-180]="openQuickFilter() === 'distance'"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M5 7.5 10 12.5 15 7.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+
+
+            @if (openQuickFilter() === 'distance') {
+
+              <div class="absolute z-30 top-11 left-0 w-52 bg-white border border-slate-200 rounded-xl shadow-lg p-2">
+
+                @for (option of distanceOptions; track option.value) {
+
+                  <button
+                    type="button"
+                    (click)="selectDistance(option.value)"
+                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition hover:bg-slate-50"
+                    [class.bg-[#E6F7F6]]="selectedDistance() === option.value"
+                    [class.text-[#087F7A]]="selectedDistance() === option.value"
+                    [class.font-medium]="selectedDistance() === option.value"
+                    [class.text-slate-700]="selectedDistance() !== option.value"
+                  >
+                    {{ option.label }}
+                  </button>
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- TIPO DE EMPLEO -->
+
+          <div class="relative">
+
+            <button
+              type="button"
+              (click)="toggleQuickFilter('contract')"
+              class="h-9 inline-flex items-center gap-2 px-3 rounded-lg border text-sm font-medium transition"
+              [class.bg-[#E6F7F6]]="selectedContractType()"
+              [class.border-[#0BAFA5]]="selectedContractType()"
+              [class.text-[#087F7A]]="selectedContractType()"
+              [class.bg-white]="!selectedContractType()"
+              [class.border-slate-200]="!selectedContractType()"
+              [class.text-slate-700]="!selectedContractType()"
+            >
+              <span>
+                {{ selectedContractType() ?? 'Tipo de empleo' }}
+              </span>
+
+              <svg
+                class="w-3.5 h-3.5 transition-transform"
+                [class.rotate-180]="openQuickFilter() === 'contract'"
+                viewBox="0 0 20 20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+              >
+                <path
+                  d="M5 7.5 10 12.5 15 7.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+
+
+            @if (openQuickFilter() === 'contract') {
+
+              <div class="absolute z-30 top-11 left-0 w-52 bg-white border border-slate-200 rounded-xl shadow-lg p-2">
+
+                <button
+                  type="button"
+                  (click)="selectContractType(null)"
+                  class="w-full text-left px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-50"
+                >
+                  Todos
+                </button>
+
+                @for (contract of filterContractTypes; track contract) {
+
+                  <button
+                    type="button"
+                    (click)="selectContractType(contract)"
+                    class="w-full text-left px-3 py-2 rounded-lg text-sm transition hover:bg-slate-50"
+                    [class.bg-[#E6F7F6]]="selectedContractType() === contract"
+                    [class.text-[#087F7A]]="selectedContractType() === contract"
+                    [class.font-medium]="selectedContractType() === contract"
+                    [class.text-slate-700]="selectedContractType() !== contract"
+                  >
+                    {{ contract }}
+                  </button>
+
+                }
+
+              </div>
+
+            }
+
+          </div>
+
+
+          <!-- MAS FILTROS -->
+
+          <button
+            type="button"
+            (click)="toggleFilters()"
+            class="h-9 inline-flex items-center gap-2 px-3 rounded-lg border border-slate-200 bg-white text-slate-700 text-sm font-medium hover:bg-slate-50 transition"
+          >
+            <span>
+              Más filtros
+            </span>
+
+            @if (advancedFilterCount() > 0) {
+
+              <span class="min-w-5 h-5 px-1.5 rounded-full bg-[#E6F7F6] text-[#087F7A] text-xs flex items-center justify-center">
+                {{ advancedFilterCount() }}
+              </span>
+
+            }
+
+          </button>
+
+
+          @if (activeFilterCount() > 0) {
+
+            <button
+              type="button"
+              (click)="clearFilters()"
+              class="h-9 px-3 rounded-lg text-sm font-medium text-slate-500 hover:text-[#087F7A] hover:bg-slate-50 transition"
+            >
+              Limpiar filtros
+            </button>
+
+          }
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ========================================================= -->
+  <!-- RESULTADOS                                                -->
+  <!-- ========================================================= -->
+
+  <section class="px-6 py-5">
+
+    <div class="max-w-[1500px] mx-auto">
+
+
+      <!-- TABS + ORDEN -->
+
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+
+
+        <!-- TABS -->
+
+        <div class="flex items-center gap-1 border-b border-slate-200">
+
+          <button
+            type="button"
+            (click)="setJobTab('for-you')"
+            class="relative px-4 py-2.5 text-sm font-medium transition"
+            [class.text-[#087F7A]]="activeTab() === 'for-you'"
+            [class.text-slate-500]="activeTab() !== 'for-you'"
+          >
+            Para ti
+
+            @if (activeTab() === 'for-you') {
+
+              <span class="absolute bottom-0 left-3 right-3 h-0.5 bg-[#0BAFA5] rounded-full"></span>
+
+            }
+
+          </button>
+
+
+          <button
+            type="button"
+            (click)="setJobTab('all')"
+            class="relative px-4 py-2.5 text-sm font-medium transition"
+            [class.text-[#087F7A]]="activeTab() === 'all'"
+            [class.text-slate-500]="activeTab() !== 'all'"
+          >
+            Todos
+
+            @if (activeTab() === 'all') {
+
+              <span class="absolute bottom-0 left-3 right-3 h-0.5 bg-[#0BAFA5] rounded-full"></span>
+
+            }
+
+          </button>
+
+
+          <button
+            type="button"
+            (click)="setJobTab('saved')"
+            class="relative px-4 py-2.5 text-sm font-medium transition"
+            [class.text-[#087F7A]]="activeTab() === 'saved'"
+            [class.text-slate-500]="activeTab() !== 'saved'"
+          >
+            Guardados
+
+            @if (activeTab() === 'saved') {
+
+              <span class="absolute bottom-0 left-3 right-3 h-0.5 bg-[#0BAFA5] rounded-full"></span>
+
+            }
+
+          </button>
+
+        </div>
+
+
+        <!-- ORDEN -->
+
+        <div class="flex items-center gap-3">
+
+          <span class="text-sm text-slate-500">
+            {{ visibleJobs().length }} empleos
+          </span>
+
+          <div class="flex items-center gap-2">
+
+            <span class="text-sm text-slate-500">
+              Ordenar
+            </span>
+
+            <select
+              [value]="sortOption()"
+              (change)="setSortOption($any($event.target).value)"
+              class="h-9 px-3 rounded-lg border border-slate-200 bg-white text-sm text-slate-700 outline-none focus:border-[#0BAFA5]"
+            >
+              @for (option of sortOptions; track option.value) {
+
+                <option [value]="option.value">
+                  {{ option.label }}
+                </option>
+
+              }
+            </select>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ========================================================= -->
+      <!-- LISTA + DETALLE                                           -->
+      <!-- ========================================================= -->
+
+      <div class="grid grid-cols-[minmax(360px,520px)_minmax(0,1fr)] gap-4 items-start">
+
+
+        <!-- ======================================================= -->
+        <!-- LISTA                                                    -->
+        <!-- ======================================================= -->
+
+        <div class="space-y-3">
+
+          @for (job of visibleJobs(); track job.id) {
+
+            <article
+              class="bg-white border rounded-xl transition cursor-pointer"
+              [class.border-[#0BAFA5]]="selectedJobId() === job.id"
+              [class.border-slate-200]="selectedJobId() !== job.id"
+              [class.shadow-sm]="selectedJobId() === job.id"
+              (click)="selectJob(job.id)"
+            >
+
+              <div class="p-5">
+
+
+                <!-- TITULO -->
+
+                <div class="flex items-start justify-between gap-3">
+
+                  <div class="min-w-0">
+
+                    <h2 class="text-base font-semibold text-[#0F172A]">
+                      {{ job.title }}
+                    </h2>
+
+                    <p class="text-sm text-slate-600 mt-1">
+                      {{ job.company }}
+                    </p>
+
+                  </div>
+
+
+                  <button
+                    type="button"
+                    (click)="toggleSavedJob(job.id); $event.stopPropagation()"
+                    class="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition"
+                    [class.bg-[#E6F7F6]]="job.saved"
+                    [class.text-[#0A9292]]="job.saved"
+                    [class.text-slate-400]="!job.saved"
+                    [class.hover:bg-slate-100]="!job.saved"
+                    [attr.aria-label]="job.saved ? 'Quitar de guardados' : 'Guardar empleo'"
+                  >
+                    <svg
+                      class="w-5 h-5"
+                      [attr.fill]="job.saved ? 'currentColor' : 'none'"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      stroke-width="1.7"
+                    >
+                      <path
+                        d="M6 4.75A1.75 1.75 0 0 1 7.75 3h8.5A1.75 1.75 0 0 1 18 4.75V21l-6-3.75L6 21V4.75Z"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+
+                </div>
+
+
+                <!-- INFO -->
+
+                <div class="flex flex-wrap gap-x-4 gap-y-2 mt-3 text-sm text-slate-500">
+
+                  <span>
+                    📍 {{ job.location }}
+                  </span>
+
+                  <span>
+                    {{ job.distanceKm }} km
+                  </span>
+
+                  <span>
+                    {{ job.modality }}
+                  </span>
+
+                  <span>
+                    {{ job.experienceLevel }}
+                  </span>
+
+                </div>
+
+
+                <!-- SUELDO -->
+
+                <div class="mt-3">
+
+                  <span class="text-sm font-semibold text-[#0F172A]">
+                    {{ formatSalary(job.salaryMin) }}
+                    –
+                    {{ formatSalary(job.salaryMax) }}
+                  </span>
+
+                </div>
+
+
+                <!-- HABILIDADES -->
+
+                <div class="flex flex-wrap gap-1.5 mt-3">
+
+                  @for (skill of job.skills; track skill) {
+
+                    <span class="px-2 py-1 rounded-md bg-slate-100 text-xs text-slate-600">
+                      {{ skill }}
+                    </span>
+
+                  }
+
+                </div>
+
+
+                <!-- PUBLICACION + COMPATIBILIDAD -->
+
+                <div class="flex items-center justify-between gap-3 mt-4">
+
+                  <span class="text-xs text-slate-400">
+                    {{ job.publishedAt }}
+                  </span>
+
+                  <!-- SOLO INDICADOR. NO SE EXPANDE -->
+                  <div class="inline-flex items-center text-sm font-semibold text-[#087F7A]">
+                    {{ getCompatibility(job) }}% compatible
+                  </div>
+
+                </div>
+
+              </div>
+
+            </article>
+
+          }
+
+
+          @if (visibleJobs().length === 0) {
+
+            <div class="bg-white border border-slate-200 rounded-xl p-8 text-center">
+
+              <div class="text-3xl mb-3">
+                🔎
+              </div>
+
+              <h3 class="font-semibold text-[#0F172A]">
+                No encontramos empleos
+              </h3>
+
+              <p class="text-sm text-slate-500 mt-1">
+                Prueba modificando los filtros o la búsqueda.
+              </p>
+
               <button
                 type="button"
-                aria-label="Guardar empleo"
-                class="text-slate-400 transition hover:text-[#0A9292]"
+                (click)="clearFilters()"
+                class="mt-4 px-4 py-2 rounded-lg bg-[#0BAFA5] text-white text-sm font-medium hover:bg-[#0A9292] transition"
               >
-                ♡
+                Limpiar filtros
               </button>
+
             </div>
 
-            <p class="mt-3 text-sm text-slate-600">📍 {{ job.place }}</p>
-            <p class="mt-1 text-sm font-medium text-[#0F172A]">{{ job.salary }}</p>
+          }
 
-            <div class="mt-3 flex flex-wrap gap-2">
-              @for (skill of job.skills; track skill) {
-                <span class="rounded-md bg-[#E7F7F5] px-2.5 py-1 text-xs font-medium text-[#087A78]">
-                  {{ skill }}
+        </div>
+
+
+        <!-- ======================================================= -->
+        <!-- DETALLE                                                  -->
+        <!-- ======================================================= -->
+
+        <aside class="bg-white border border-slate-200 rounded-xl sticky top-5 overflow-hidden">
+
+          @if (selectedJob(); as job) {
+
+            <div class="p-6">
+
+
+              <!-- CABECERA -->
+
+              <div class="flex items-start justify-between gap-4">
+
+                <div class="flex items-start gap-3">
+
+                  <div class="w-12 h-12 rounded-xl bg-[#DCEBEA] text-[#087F7A] flex items-center justify-center font-bold text-lg shrink-0">
+                    {{ job.company.charAt(0) }}
+                  </div>
+
+                  <div>
+
+                    <h2 class="text-xl font-semibold text-[#0F172A]">
+                      {{ job.title }}
+                    </h2>
+
+                    <p class="text-sm text-slate-600 mt-1">
+                      {{ job.company }}
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  (click)="toggleSavedJob(job.id)"
+                  class="w-9 h-9 rounded-lg flex items-center justify-center transition"
+                  [class.bg-[#E6F7F6]]="job.saved"
+                  [class.text-[#0A9292]]="job.saved"
+                  [class.text-slate-400]="!job.saved"
+                  [class.hover:bg-slate-100]="!job.saved"
+                  [attr.aria-label]="job.saved ? 'Quitar de guardados' : 'Guardar empleo'"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    [attr.fill]="job.saved ? 'currentColor' : 'none'"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                  >
+                    <path
+                      d="M6 4.75A1.75 1.75 0 0 1 7.75 3h8.5A1.75 1.75 0 0 1 18 4.75V21l-6-3.75L6 21V4.75Z"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+
+              </div>
+
+
+              <!-- INFORMACION -->
+
+              <div class="flex flex-wrap gap-2 mt-5">
+
+                <span class="px-2.5 py-1 rounded-md bg-slate-100 text-xs text-slate-600">
+                  📍 {{ job.location }}
                 </span>
-              }
+
+                <span class="px-2.5 py-1 rounded-md bg-slate-100 text-xs text-slate-600">
+                  {{ job.modality }}
+                </span>
+
+                <span class="px-2.5 py-1 rounded-md bg-slate-100 text-xs text-slate-600">
+                  {{ job.experienceLevel }}
+                </span>
+
+                <span class="px-2.5 py-1 rounded-md bg-slate-100 text-xs text-slate-600">
+                  {{ job.contractType }}
+                </span>
+
+              </div>
+
+
+              <!-- SUELDO -->
+
+              <div class="mt-5">
+
+                <p class="text-xs text-slate-500">
+                  Rango salarial
+                </p>
+
+                <p class="text-lg font-semibold text-[#0F172A] mt-1">
+                  {{ formatSalary(job.salaryMin) }}
+                  –
+                  {{ formatSalary(job.salaryMax) }}
+                </p>
+
+              </div>
+
+
+              <!-- ================================================= -->
+              <!-- COMPATIBILIDAD - SOLO PANEL DERECHO             -->
+              <!-- ================================================= -->
+
+              <div class="mt-5 rounded-xl border border-[#CFE8E6] bg-[#F4FAFA] p-4">
+
+                <button
+                  type="button"
+                  (click)="toggleSelectedJobCompatibility()"
+                  class="w-full flex items-center justify-between gap-4 text-left"
+                >
+
+                  <div>
+
+                    <p class="text-sm font-semibold text-[#0F172A]">
+                      Compatibilidad con tu perfil
+                    </p>
+
+                    <p class="text-xs text-slate-500 mt-1">
+                      {{ getCompatibility(job) }}% compatible
+                    </p>
+
+                  </div>
+
+
+                  <div class="flex items-center gap-2 shrink-0">
+
+                    <svg
+                      class="w-4 h-4 text-[#087F7A] transition-transform"
+                      [class.rotate-180]="showSelectedJobCompatibility()"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <path
+                        d="M5 7.5 10 12.5 15 7.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+
+                  </div>
+
+                </button>
+
+
+                @if (showSelectedJobCompatibility()) {
+
+                  <div class="mt-4 pt-4 border-t border-[#DCEBEA]">
+
+
+                    <!-- HABILIDADES -->
+
+                    <div class="mb-4">
+
+                      <div class="flex items-center justify-between mb-1.5">
+
+                        <span class="text-xs font-medium text-slate-600">
+                          Habilidades
+                        </span>
+
+                        <span class="text-xs font-semibold text-slate-700">
+                          {{ job.match.skills }}%
+                        </span>
+
+                      </div>
+
+                      <div class="h-1.5 bg-white rounded-full overflow-hidden">
+
+                        <div
+                          class="h-full bg-[#0BAFA5] rounded-full"
+                          [style.width.%]="job.match.skills"
+                        ></div>
+
+                      </div>
+
+                    </div>
+
+
+                    <!-- EXPERIENCIA -->
+
+                    <div class="mb-4">
+
+                      <div class="flex items-center justify-between mb-1.5">
+
+                        <span class="text-xs font-medium text-slate-600">
+                          Experiencia
+                        </span>
+
+                        <span class="text-xs font-semibold text-slate-700">
+                          {{ job.match.experience }}%
+                        </span>
+
+                      </div>
+
+                      <div class="h-1.5 bg-white rounded-full overflow-hidden">
+
+                        <div
+                          class="h-full bg-[#0BAFA5] rounded-full"
+                          [style.width.%]="job.match.experience"
+                        ></div>
+
+                      </div>
+
+                    </div>
+
+
+                    <!-- SUELDO -->
+
+                    <div class="mb-4">
+
+                      <div class="flex items-center justify-between mb-1.5">
+
+                        <span class="text-xs font-medium text-slate-600">
+                          Sueldo esperado
+                        </span>
+
+                        <span class="text-xs font-semibold text-slate-700">
+                          {{ getSalaryCompatibility(job) }}%
+                        </span>
+
+                      </div>
+
+                      <div class="h-1.5 bg-white rounded-full overflow-hidden">
+
+                        <div
+                          class="h-full bg-[#0BAFA5] rounded-full"
+                          [style.width.%]="getSalaryCompatibility(job)"
+                        ></div>
+
+                      </div>
+
+
+                      <div class="mt-2 p-2.5 rounded-lg bg-white">
+
+                        <div class="flex justify-between gap-3 text-xs">
+
+                          <span class="text-slate-500">
+                            Tu expectativa
+                          </span>
+
+                          <span class="font-medium text-slate-700">
+                            {{ formatSalary(candidateExpectedSalary()) }}
+                          </span>
+
+                        </div>
+
+                        <div class="flex justify-between gap-3 text-xs mt-1">
+
+                          <span class="text-slate-500">
+                            Oferta
+                          </span>
+
+                          <span class="font-medium text-slate-700">
+                            {{ formatSalary(job.salaryMin) }}
+                            –
+                            {{ formatSalary(job.salaryMax) }}
+                          </span>
+
+                        </div>
+
+                        <p class="text-[11px] text-[#087F7A] mt-2">
+                          {{ getSalaryCompatibilityLabel(job) }}
+                        </p>
+
+                      </div>
+
+                    </div>
+
+
+                    <!-- UBICACION -->
+
+                    <div>
+
+                      <div class="flex items-center justify-between mb-1.5">
+
+                        <span class="text-xs font-medium text-slate-600">
+                          Ubicación
+                        </span>
+
+                        <span class="text-xs font-semibold text-slate-700">
+                          {{ job.match.location }}%
+                        </span>
+
+                      </div>
+
+                      <div class="h-1.5 bg-white rounded-full overflow-hidden">
+
+                        <div
+                          class="h-full bg-[#0BAFA5] rounded-full"
+                          [style.width.%]="job.match.location"
+                        ></div>
+
+                      </div>
+
+                      <p class="text-[11px] text-slate-400 mt-1.5">
+                        {{ job.distanceKm }} km de tu ubicación
+                      </p>
+
+                    </div>
+
+                  </div>
+
+                }
+
+              </div>
+
+
+              <!-- POSTULAR -->
+
+              <button
+                type="button"
+                (click)="startApplication()"
+                class="w-full mt-5 h-11 rounded-lg bg-[#0BAFA5] text-white font-semibold text-sm hover:bg-[#0A9292] transition"
+              >
+                Postular
+              </button>
+
+
+              <!-- DESCRIPCION -->
+
+              <div class="mt-7">
+
+                <h3 class="text-sm font-semibold text-[#0F172A]">
+                  Descripción del empleo
+                </h3>
+
+                <p class="text-sm leading-6 text-slate-600 mt-2">
+                  {{ job.description }}
+                </p>
+
+              </div>
+
+
+              <!-- HABILIDADES -->
+
+              <div class="mt-6">
+
+                <h3 class="text-sm font-semibold text-[#0F172A]">
+                  Habilidades requeridas
+                </h3>
+
+                <div class="flex flex-wrap gap-2 mt-3">
+
+                  @for (skill of job.skills; track skill) {
+
+                    <span class="px-2.5 py-1 rounded-md bg-slate-100 text-xs text-slate-600">
+                      {{ skill }}
+                    </span>
+
+                  }
+
+                </div>
+
+              </div>
+
             </div>
-          </article>
-        }
+
+          } @else {
+
+            <div class="p-10 text-center">
+
+              <p class="text-sm text-slate-500">
+                Selecciona un empleo para ver sus detalles.
+              </p>
+
+            </div>
+
+          }
+
+        </aside>
+
       </div>
 
-      <!-- Detalle de la oferta seleccionada -->
-      <div class="min-h-[600px] rounded-xl border border-[#DCEBEA] bg-white">
-        <div class="border-b border-[#EDF3F2] p-6">
-          <div class="flex justify-between gap-4">
-            <div>
-              <h2 class="text-2xl font-semibold text-[#0F172A]">Analista de Datos</h2>
-              <p class="mt-1 text-sm text-slate-500">Empresa XYZ</p>
-            </div>
-            <button
-              type="button"
-              aria-label="Guardar oferta"
-              class="text-slate-400 transition hover:text-[#0A9292]"
-            >
-              ♡
-            </button>
-          </div>
-
-          <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600">
-            <span>📍 Santiago · Híbrido</span>
-            <span>💼 Jornada completa</span>
-            <span>🕐 Hace 2 horas</span>
-          </div>
-
-          <p class="mt-4 text-lg font-semibold">$1.200.000 – $1.500.000</p>
-
-          <div class="mt-5 flex gap-3">
-            <button
-              type="button"
-              (click)="startApplication()"
-              class="rounded-lg bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#09998F]"
-            >
-              Postular
-            </button>
-            <button
-              type="button"
-              class="rounded-lg border border-[#DCEBEA] px-5 py-2.5 text-sm font-semibold text-[#087A78] hover:bg-[#F4FAFA]"
-            >
-              ♡ Guardar
-            </button>
-          </div>
-        </div>
-
-        <div class="border-b border-[#EDF3F2] p-6">
-          <div class="rounded-lg border border-[#CDEDEA] bg-[#EAF8F6] p-4">
-            <p class="text-sm font-semibold text-[#07575B]">✦ Coincidencia con tu perfil</p>
-            <p class="mt-1 text-sm text-slate-600">
-              Revisa cómo se relacionan tus habilidades con los requisitos de esta oferta.
-            </p>
-          </div>
-        </div>
-
-        <div class="space-y-7 p-6">
-          <div>
-            <h3 class="font-semibold text-[#0F172A]">Descripción del empleo</h3>
-            <p class="mt-3 text-sm leading-6 text-slate-600">
-              Buscamos un Analista de Datos para analizar información, construir
-              reportes y generar indicadores que apoyen la toma de decisiones.
-            </p>
-          </div>
-
-          <div>
-            <h3 class="font-semibold text-[#0F172A]">Requisitos</h3>
-            <ul class="mt-3 space-y-2 text-sm text-slate-600">
-              <li>✓ Experiencia trabajando con SQL.</li>
-              <li>✓ Manejo de Python para análisis de datos.</li>
-              <li>✓ Experiencia con Power BI.</li>
-              <li>✓ Capacidad para analizar y comunicar información.</li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 class="font-semibold text-[#0F172A]">Beneficios</h3>
-            <ul class="mt-3 space-y-2 text-sm text-slate-600">
-              <li>✓ Modalidad híbrida.</li>
-              <li>✓ Seguro complementario.</li>
-              <li>✓ Capacitación y desarrollo profesional.</li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 class="font-semibold text-[#0F172A]">Sobre la empresa</h3>
-            <p class="mt-3 text-sm leading-6 text-slate-600">
-              Empresa orientada al desarrollo de soluciones basadas en datos
-              y tecnología para distintas industrias.
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <!-- Modal de postulación, centrado sobre toda la página -->
-  @if (isApplicationOpen()) {
-    <div class="fixed inset-0 z-50 grid place-items-center p-4 sm:p-6">
-      <button
-        type="button"
-        class="absolute inset-0 bg-slate-950/50 backdrop-blur-[2px]"
-        aria-label="Cerrar postulación"
-        (click)="returnToOffer()"
-      ></button>
+  </section>
 
-      <div
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="application-title"
-        class="relative z-10 flex max-h-[92vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl"
-      >
-        <header class="flex items-start justify-between gap-4 border-b border-[#EDF3F2] px-6 py-5">
-          <div>
-            <p class="text-sm text-slate-500">Empresa XYZ · Analista de Datos</p>
-            <h2 id="application-title" class="mt-1 text-xl font-semibold text-[#0F172A]">
-              Tu postulación
-            </h2>
+
+  <!-- ========================================================= -->
+  <!-- DRAWER FILTROS AVANZADOS                                  -->
+  <!-- ========================================================= -->
+
+  @if (showFilters()) {
+
+    <div
+      class="fixed inset-0 z-40 bg-black/20"
+      (click)="toggleFilters()"
+    ></div>
+
+
+    <aside class="fixed z-50 top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl flex flex-col">
+
+      <div class="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
+
+        <div>
+
+          <h2 class="text-lg font-semibold text-[#0F172A]">
+            Más filtros
+          </h2>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Ajusta tu búsqueda con más detalle.
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          (click)="toggleFilters()"
+          class="w-9 h-9 rounded-lg text-slate-500 hover:bg-slate-100 transition flex items-center justify-center"
+          aria-label="Cerrar filtros"
+        >
+
+          <svg
+            class="w-5 h-5"
+            viewBox="0 0 20 20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+          >
+            <path
+              d="M5 5 15 15M15 5 5 15"
+              stroke-linecap="round"
+            />
+          </svg>
+
+        </button>
+
+      </div>
+
+
+      <div class="flex-1 overflow-y-auto px-6 py-5 space-y-7">
+
+
+        <!-- AREA -->
+
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A] mb-3">
+            Área profesional
+          </h3>
+
+          <div class="space-y-1">
+
+            @for (area of filterAreas; track area) {
+
+              <button
+                type="button"
+                (click)="toggleArea(area)"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm transition hover:bg-slate-50"
+                [class.bg-[#E6F7F6]]="selectedArea() === area"
+                [class.text-[#087F7A]]="selectedArea() === area"
+                [class.font-medium]="selectedArea() === area"
+                [class.text-slate-600]="selectedArea() !== area"
+              >
+                {{ area }}
+              </button>
+
+            }
+
           </div>
+
+        </div>
+
+
+        <!-- CATEGORIA -->
+
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A] mb-3">
+            Categoría profesional
+          </h3>
+
+          <div class="space-y-1">
+
+            @for (cluster of filterClusters; track cluster) {
+
+              <button
+                type="button"
+                (click)="toggleCluster(cluster)"
+                class="w-full text-left px-3 py-2 rounded-lg text-sm transition hover:bg-slate-50"
+                [class.bg-[#E6F7F6]]="selectedCluster() === cluster"
+                [class.text-[#087F7A]]="selectedCluster() === cluster"
+                [class.font-medium]="selectedCluster() === cluster"
+                [class.text-slate-600]="selectedCluster() !== cluster"
+              >
+                {{ cluster }}
+              </button>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- EXPERIENCIA -->
+
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A] mb-3">
+            Experiencia
+          </h3>
+
+          <div class="flex flex-wrap gap-2">
+
+            @for (experience of filterExperiences; track experience) {
+
+              <button
+                type="button"
+                (click)="selectExperience(experience)"
+                class="px-3 py-2 rounded-lg border text-sm transition"
+                [class.bg-[#E6F7F6]]="selectedExperience() === experience"
+                [class.border-[#0BAFA5]]="selectedExperience() === experience"
+                [class.text-[#087F7A]]="selectedExperience() === experience"
+                [class.border-slate-200]="selectedExperience() !== experience"
+                [class.text-slate-600]="selectedExperience() !== experience"
+              >
+                {{ experience }}
+              </button>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- MODALIDAD -->
+
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A] mb-3">
+            Modalidad
+          </h3>
+
+          <div class="flex flex-wrap gap-2">
+
+            @for (modality of filterModalities; track modality) {
+
+              <button
+                type="button"
+                (click)="selectModality(modality)"
+                class="px-3 py-2 rounded-lg border text-sm transition"
+                [class.bg-[#E6F7F6]]="selectedModality() === modality"
+                [class.border-[#0BAFA5]]="selectedModality() === modality"
+                [class.text-[#087F7A]]="selectedModality() === modality"
+                [class.border-slate-200]="selectedModality() !== modality"
+                [class.text-slate-600]="selectedModality() !== modality"
+              >
+                {{ modality }}
+              </button>
+
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- TIPO DE EMPLEO -->
+
+        <div>
+
+          <h3 class="text-sm font-semibold text-[#0F172A] mb-3">
+            Tipo de empleo
+          </h3>
+
+          <div class="flex flex-wrap gap-2">
+
+            @for (contract of filterContractTypes; track contract) {
+
+              <button
+                type="button"
+                (click)="selectContractType(contract)"
+                class="px-3 py-2 rounded-lg border text-sm transition"
+                [class.bg-[#E6F7F6]]="selectedContractType() === contract"
+                [class.border-[#0BAFA5]]="selectedContractType() === contract"
+                [class.text-[#087F7A]]="selectedContractType() === contract"
+                [class.border-slate-200]="selectedContractType() !== contract"
+                [class.text-slate-600]="selectedContractType() !== contract"
+              >
+                {{ contract }}
+              </button>
+
+            }
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- FOOTER -->
+
+      <div class="border-t border-slate-200 p-4 flex items-center justify-between gap-3">
+
+        <button
+          type="button"
+          (click)="clearFilters()"
+          class="h-10 px-4 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 transition"
+        >
+          Limpiar
+        </button>
+
+        <button
+          type="button"
+          (click)="toggleFilters()"
+          class="h-10 px-5 rounded-lg bg-[#0BAFA5] text-white text-sm font-semibold hover:bg-[#0A9292] transition"
+        >
+          Ver {{ visibleJobs().length }} empleos
+        </button>
+
+      </div>
+
+    </aside>
+
+  }
+
+
+  <!-- ========================================================= -->
+  <!-- MODAL DE POSTULACION                                      -->
+  <!-- ========================================================= -->
+
+  @if (isApplicationOpen()) {
+
+    <div class="fixed inset-0 z-[60] bg-black/40 flex items-center justify-center p-4">
+
+      <div class="w-full max-w-3xl max-h-[90vh] overflow-hidden bg-white rounded-2xl shadow-2xl flex flex-col">
+
+
+        <!-- HEADER -->
+
+        <div class="px-6 py-5 border-b border-slate-200 flex items-center justify-between">
+
+          <div>
+
+            <p class="text-xs font-medium text-[#0A9292]">
+              Postulación
+            </p>
+
+            <h2 class="text-lg font-semibold text-[#0F172A] mt-1">
+              {{ selectedJob()?.title }}
+            </h2>
+
+          </div>
+
 
           <button
             type="button"
             (click)="returnToOffer()"
+            class="w-9 h-9 rounded-lg text-slate-500 hover:bg-slate-100 flex items-center justify-center"
             aria-label="Cerrar postulación"
-            class="grid size-9 shrink-0 place-items-center rounded-lg text-slate-500 hover:bg-slate-100"
           >
-            ✕
+
+            <svg
+              class="w-5 h-5"
+              viewBox="0 0 20 20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path
+                d="M5 5 15 15M15 5 5 15"
+                stroke-linecap="round"
+              />
+            </svg>
+
           </button>
-        </header>
 
-        @if (applicationSent()) {
-          <div class="overflow-y-auto p-8">
-            <div class="mx-auto max-w-lg rounded-xl border border-emerald-200 bg-emerald-50 p-6 text-center">
-              <h3 class="text-lg font-semibold text-emerald-900">
-                Postulación preparada
-              </h3>
-              <p class="mt-2 text-sm text-emerald-800">
-                Confirmación local de prueba. Aún no se envían datos al servidor.
-              </p>
-              <button
-                type="button"
-                (click)="returnToOffer()"
-                class="mt-5 rounded-lg bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#09998F]"
-              >
-                Volver a empleos
-              </button>
-            </div>
-          </div>
-        } @else {
-          <nav aria-label="Pasos de postulación" class="border-b border-[#EDF3F2] px-6 py-4">
-            <ol class="flex flex-wrap items-center gap-x-3 gap-y-2">
+        </div>
+
+
+        @if (!applicationSent()) {
+
+
+          <!-- PASOS -->
+
+          <div class="px-6 py-4 border-b border-slate-100">
+
+            <div class="flex items-center justify-between gap-2">
+
               @for (step of applicationSteps; track step.number) {
-                <li class="flex items-center gap-3">
-                  <button
-                    type="button"
-                    [disabled]="step.number > applicationStep() + 1"
-                    (click)="goToApplicationStep(step.number - 1)"
-                    class="flex items-center gap-2 text-sm disabled:cursor-default"
-                    [class.font-semibold]="applicationStep() === step.number - 1"
-                    [class.text-[#087A78]]="applicationStep() === step.number - 1"
-                    [class.text-slate-500]="applicationStep() !== step.number - 1"
+
+                <button
+                  type="button"
+                  (click)="goToApplicationStep(step.number - 1)"
+                  class="flex items-center gap-2 text-sm"
+                  [class.text-[#087F7A]]="applicationStep() === step.number - 1"
+                  [class.font-semibold]="applicationStep() === step.number - 1"
+                  [class.text-slate-400]="applicationStep() !== step.number - 1"
+                >
+
+                  <span
+                    class="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold"
+                    [class.bg-[#0BAFA5]]="applicationStep() === step.number - 1"
+                    [class.text-white]="applicationStep() === step.number - 1"
+                    [class.bg-slate-100]="applicationStep() !== step.number - 1"
                   >
-                    <span
-                      class="grid size-7 place-items-center rounded-full text-xs font-semibold"
-                      [class.bg-[#087A78]]="applicationStep() === step.number - 1"
-                      [class.text-white]="applicationStep() === step.number - 1"
-                      [class.bg-slate-200]="applicationStep() !== step.number - 1"
-                    >
-                      {{ step.number }}
-                    </span>
+                    {{ step.number }}
+                  </span>
+
+                  <span class="hidden sm:inline">
                     {{ step.label }}
-                  </button>
+                  </span>
 
-                  @if (step.number < 4) {
-                    <span aria-hidden="true" class="text-slate-300">›</span>
-                  }
-                </li>
+                </button>
+
               }
-            </ol>
-          </nav>
 
-          <div class="grid min-h-0 flex-1 overflow-y-auto lg:grid-cols-[minmax(0,1fr)_280px]">
-            <main class="p-6 sm:p-8">
-              @switch (applicationStep()) {
-                @case (0) {
-                  <p class="text-sm font-medium text-[#087A78]">Paso 1 de 4</p>
-                  <h3 class="mt-2 text-xl font-semibold text-[#0F172A]">Revisa la oferta</h3>
-                  <p class="mt-2 text-sm text-slate-600">
-                    Confirma que esta es la oportunidad a la que quieres postular.
+            </div>
+
+          </div>
+
+
+          <!-- CONTENIDO -->
+
+          <div class="flex-1 overflow-y-auto p-6">
+
+            @switch (applicationStep()) {
+
+
+              @case (0) {
+
+                <div>
+
+                  <h3 class="text-base font-semibold text-[#0F172A]">
+                    Revisa la oferta
+                  </h3>
+
+                  <p class="text-sm text-slate-500 mt-1">
+                    Antes de continuar, revisa los datos principales de la oportunidad.
                   </p>
 
-                  <div class="mt-6 rounded-xl border border-[#DCEBEA] bg-[#F8FCFC] p-5">
-                    <h4 class="text-lg font-semibold">Analista de Datos</h4>
-                    <p class="mt-1 text-sm text-slate-500">
-                      Empresa XYZ · Santiago · Híbrido
-                    </p>
-                    <p class="mt-4 text-sm leading-6 text-slate-600">
-                      Analizar información, construir reportes y generar indicadores
-                      para apoyar la toma de decisiones.
-                    </p>
-                    <p class="mt-4 font-semibold">$1.200.000 – $1.500.000</p>
-                  </div>
-                }
 
-                @case (1) {
-                  <p class="text-sm font-medium text-[#087A78]">Paso 2 de 4</p>
-                  <h3 class="mt-2 text-xl font-semibold text-[#0F172A]">
+                  @if (selectedJob(); as job) {
+
+                    <div class="mt-5 p-4 rounded-xl bg-[#F4FAFA] border border-[#DCEBEA]">
+
+                      <p class="font-semibold text-[#0F172A]">
+                        {{ job.title }}
+                      </p>
+
+                      <p class="text-sm text-slate-600 mt-1">
+                        {{ job.company }}
+                      </p>
+
+
+                      <div class="flex flex-wrap gap-2 mt-3">
+
+                        <span class="px-2.5 py-1 rounded-md bg-white text-xs text-slate-600">
+                          {{ job.modality }}
+                        </span>
+
+                        <span class="px-2.5 py-1 rounded-md bg-white text-xs text-slate-600">
+                          {{ job.experienceLevel }}
+                        </span>
+
+                        <span class="px-2.5 py-1 rounded-md bg-white text-xs text-slate-600">
+                          {{ formatSalary(job.salaryMin) }}
+                          –
+                          {{ formatSalary(job.salaryMax) }}
+                        </span>
+
+                      </div>
+
+                    </div>
+
+                  }
+
+                </div>
+
+              }
+
+
+              @case (1) {
+
+                <div>
+
+                  <h3 class="text-base font-semibold text-[#0F172A]">
                     Perfil y condiciones
                   </h3>
-                  <p class="mt-2 text-sm text-slate-600">
-                    Tus datos vienen de tu perfil. Elige el CV y completa tu expectativa salarial.
+
+                  <p class="text-sm text-slate-500 mt-1">
+                    Selecciona el CV que quieres utilizar en esta postulación.
                   </p>
 
-                  <div class="mt-6 rounded-xl border border-[#DCEBEA] p-5">
-                    <div class="flex flex-wrap items-start justify-between gap-3">
-                      <div>
-                        <h4 class="font-semibold">Información de tu perfil</h4>
-                        <p class="mt-1 text-xs text-slate-500">
-                          Se compartirá con la empresa en esta postulación.
-                        </p>
-                      </div>
-                      <a
-                        href="/candidate/setup"
-                        class="text-sm font-medium text-[#087A78] hover:underline"
-                      >
-                        Editar perfil
-                      </a>
-                    </div>
 
-                    <dl class="mt-4 grid gap-4 sm:grid-cols-2">
-                      <div>
-                        <dt class="text-xs text-slate-500">Nombre</dt>
-                        <dd class="mt-1 font-medium">{{ candidateProfile.fullName }}</dd>
-                      </div>
-                      <div>
-                        <dt class="text-xs text-slate-500">Correo</dt>
-                        <dd class="mt-1 break-all font-medium">{{ candidateProfile.email }}</dd>
-                      </div>
-                      <div>
-                        <dt class="text-xs text-slate-500">Teléfono</dt>
-                        <dd class="mt-1 font-medium">{{ candidateProfile.phone }}</dd>
-                      </div>
-                      <div>
-                        <dt class="text-xs text-slate-500">Ubicación</dt>
-                        <dd class="mt-1 font-medium">{{ candidateProfile.location }}</dd>
-                      </div>
-                    </dl>
-                  </div>
-
-                  <fieldset class="mt-6 space-y-3">
-                    <legend class="font-semibold">¿Qué CV enviarás?</legend>
+                  <div class="space-y-2 mt-5">
 
                     @for (cv of cvs(); track cv.id) {
-                      <label
-                        class="flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition"
-                        [class.border-[#0A9292]]="selectedCvId() === cv.id"
-                        [class.bg-[#EAF8F6]]="selectedCvId() === cv.id"
-                        [class.border-[#DCEBEA]]="selectedCvId() !== cv.id"
+
+                      <button
+                        type="button"
+                        (click)="selectCv(cv.id)"
+                        class="w-full text-left p-4 rounded-xl border transition"
+                        [class.border-[#0BAFA5]]="selectedCvId() === cv.id"
+                        [class.bg-[#F4FAFA]]="selectedCvId() === cv.id"
+                        [class.border-slate-200]="selectedCvId() !== cv.id"
                       >
-                        <input
-                          type="radio"
-                          name="applicationCv"
-                          [value]="cv.id"
-                          [checked]="selectedCvId() === cv.id"
-                          (change)="selectCv(cv.id)"
-                          class="mt-1 accent-[#0A9292]"
-                        />
-                        <span class="min-w-0 flex-1">
-                          <span class="block font-semibold">{{ cv.label }}</span>
-                          <span class="mt-1 block break-all text-sm text-slate-600">
-                            {{ cv.fileName }}
-                          </span>
-                          <span class="mt-1 block text-xs text-slate-500">
-                            {{ cv.updatedAt }}
-                          </span>
-                        </span>
-                        @if (selectedCvId() === cv.id) {
-                          <span class="text-sm font-semibold text-[#087A78]">
-                            Seleccionado
-                          </span>
-                        }
-                      </label>
+
+                        <div class="flex items-center justify-between gap-3">
+
+                          <div>
+
+                            <p class="text-sm font-semibold text-[#0F172A]">
+                              {{ cv.label }}
+                            </p>
+
+                            <p class="text-xs text-slate-500 mt-1">
+                              {{ cv.fileName }}
+                            </p>
+
+                            <p class="text-xs text-slate-400 mt-1">
+                              {{ cv.updatedAt }}
+                            </p>
+
+                          </div>
+
+
+                          @if (selectedCvId() === cv.id) {
+
+                            <span class="text-[#0A9292] font-bold">
+                              ✓
+                            </span>
+
+                          }
+
+                        </div>
+
+                      </button>
+
                     }
 
-                    <label class="inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#087A78] hover:underline">
-                      <span>＋ Subir otro CV</span>
-                      <input
-                        class="sr-only"
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        (change)="addCv($event)"
-                      />
-                    </label>
-                  </fieldset>
+                  </div>
 
-                  <div class="mt-6">
-                    <label for="expected-salary" class="font-semibold">
+
+                  <label
+                    class="mt-4 flex items-center justify-center h-11 rounded-lg border border-dashed border-slate-300 text-sm font-medium text-slate-600 hover:bg-slate-50 cursor-pointer"
+                  >
+                    + Agregar otro CV
+
+                    <input
+                      type="file"
+                      accept=".pdf"
+                      class="hidden"
+                      (change)="addCv($event)"
+                    />
+
+                  </label>
+
+
+                  <div class="mt-5">
+
+                    <label class="block text-sm font-medium text-slate-700 mb-2">
                       Expectativa salarial
                     </label>
-                    <div class="mt-2 flex max-w-sm items-center gap-3">
-                      <input
-                        id="expected-salary"
-                        type="number"
-                        min="0"
-                        [value]="expectedSalary()"
-                        (input)="updateExpectedSalary($event)"
-                        placeholder="Ej. 1400000"
-                        class="h-11 w-full rounded-lg border border-[#DCEBEA] px-3 text-sm outline-none focus:border-[#0A9292]"
-                      />
-                      <span class="shrink-0 text-sm text-slate-500">
-                        CLP bruto mensual
-                      </span>
-                    </div>
+
+                    <input
+                      type="number"
+                      [value]="expectedSalary()"
+                      (input)="updateExpectedSalary($event)"
+                      placeholder="Ej. 1300000"
+                      class="w-full h-11 px-3 rounded-lg border border-slate-200 outline-none focus:border-[#0BAFA5]"
+                    />
+
                   </div>
 
-                  <div class="mt-6 rounded-xl bg-[#F8FCFC] p-5">
-                    <h4 class="font-semibold">Coincidencia con los requisitos</h4>
-                    <p class="mt-1 text-sm text-slate-600">
-                      Basada en las habilidades registradas en tu perfil.
-                    </p>
-                    <div class="mt-4 flex flex-wrap gap-2">
-                      @for (skill of vacancySkills; track skill.name) {
-                        <span
-                          class="rounded-full px-3 py-1.5 text-xs font-medium"
-                          [class.bg-emerald-100]="skill.matches"
-                          [class.text-emerald-800]="skill.matches"
-                          [class.bg-amber-100]="!skill.matches"
-                          [class.text-amber-800]="!skill.matches"
-                        >
-                          {{ skill.name }} ·
-                          {{ skill.matches ? 'En tu perfil' : 'Sin evidencia en tu perfil' }}
-                        </span>
-                      }
-                    </div>
-                  </div>
-                }
+                </div>
 
-                @case (2) {
-                  <p class="text-sm font-medium text-[#087A78]">Paso 3 de 4</p>
-                  <h3 class="mt-2 text-xl font-semibold text-[#0F172A]">
-                    Preguntas de la empresa
+              }
+
+
+              @case (2) {
+
+                <div>
+
+                  <h3 class="text-base font-semibold text-[#0F172A]">
+                    Preguntas de la oferta
                   </h3>
-                  <p class="mt-2 text-sm text-slate-600">
-                    Estas preguntas fueron configuradas para esta oferta.
+
+                  <p class="text-sm text-slate-500 mt-1">
+                    Responde las preguntas requeridas por la empresa.
                   </p>
 
-                  <div class="mt-6 space-y-6">
+
+                  <div class="space-y-6 mt-5">
+
                     @for (question of applicationQuestions; track question.id) {
+
                       <div>
-                        <label [for]="question.id" class="mb-2 block font-medium">
+
+                        <label class="block text-sm font-medium text-slate-700">
+
                           {{ question.prompt }}
+
                           @if (question.required) {
-                            <span class="text-red-600">*</span>
+                            <span class="text-red-500">*</span>
                           }
+
                         </label>
 
-                        @if (question.type === 'long-text') {
-                          <textarea
-                            [id]="question.id"
-                            rows="4"
-                            [value]="applicationAnswers()[question.id] ?? ''"
-                            (input)="updateApplicationAnswer(question.id, $event)"
-                            [required]="question.required"
-                            class="w-full rounded-lg border border-[#DCEBEA] px-3 py-2.5 text-sm outline-none focus:border-[#0A9292]"
-                          ></textarea>
-                        } @else if (question.type === 'single-choice') {
-                          <select
-                            [id]="question.id"
-                            [value]="applicationAnswers()[question.id] ?? ''"
-                            (change)="updateApplicationAnswer(question.id, $event)"
-                            [required]="question.required"
-                            class="h-11 w-full rounded-lg border border-[#DCEBEA] bg-white px-3 text-sm outline-none focus:border-[#0A9292]"
-                          >
-                            <option value="">Selecciona una opción</option>
-                            @for (option of question.options; track option) {
-                              <option [value]="option">{{ option }}</option>
-                            }
-                          </select>
-                        } @else {
-                          <input
-                            [id]="question.id"
-                            type="text"
-                            [value]="applicationAnswers()[question.id] ?? ''"
-                            (input)="updateApplicationAnswer(question.id, $event)"
-                            [required]="question.required"
-                            class="h-11 w-full rounded-lg border border-[#DCEBEA] px-3 text-sm outline-none focus:border-[#0A9292]"
-                          />
-                        }
 
                         @if (question.helpText) {
-                          <p class="mt-1 text-xs text-slate-500">{{ question.helpText }}</p>
-                        }
-                      </div>
-                    }
-                  </div>
-                }
 
-                @case (3) {
-                  <p class="text-sm font-medium text-[#087A78]">Paso 4 de 4</p>
-                  <h3 class="mt-2 text-xl font-semibold text-[#0F172A]">
+                          <p class="text-xs text-slate-400 mt-1">
+                            {{ question.helpText }}
+                          </p>
+
+                        }
+
+
+                        @if (question.type === 'long-text') {
+
+                          <textarea
+                            rows="5"
+                            [value]="applicationAnswers()[question.id] ?? ''"
+                            (input)="updateApplicationAnswer(question.id, $event)"
+                            class="w-full mt-2 px-3 py-2.5 rounded-lg border border-slate-200 outline-none focus:border-[#0BAFA5] text-sm"
+                          ></textarea>
+
+                        }
+
+
+                        @if (question.type === 'single-choice') {
+
+                          <select
+                            [value]="applicationAnswers()[question.id] ?? ''"
+                            (change)="updateApplicationAnswer(question.id, $event)"
+                            class="w-full mt-2 h-11 px-3 rounded-lg border border-slate-200 bg-white outline-none focus:border-[#0BAFA5] text-sm"
+                          >
+
+                            <option value="">
+                              Selecciona una opción
+                            </option>
+
+                            @for (option of question.options ?? []; track option) {
+
+                              <option [value]="option">
+                                {{ option }}
+                              </option>
+
+                            }
+
+                          </select>
+
+                        }
+
+                      </div>
+
+                    }
+
+                  </div>
+
+                </div>
+
+              }
+
+
+              @case (3) {
+
+                <div>
+
+                  <h3 class="text-base font-semibold text-[#0F172A]">
                     Revisa tu postulación
                   </h3>
-                  <p class="mt-2 text-sm text-slate-600">
-                    Confirma la información antes de enviarla a la empresa.
+
+                  <p class="text-sm text-slate-500 mt-1">
+                    Verifica la información antes de enviarla.
                   </p>
 
-                  <div class="mt-6 space-y-4">
-                    <div class="rounded-xl border border-[#DCEBEA] p-5">
-                      <div class="flex justify-between gap-3">
-                        <h4 class="font-semibold">Oferta</h4>
-                        <button
-                          type="button"
-                          (click)="goToApplicationStep(0)"
-                          class="text-sm text-[#087A78] hover:underline"
-                        >
-                          Editar
-                        </button>
-                      </div>
-                      <p class="mt-2">Analista de Datos · Empresa XYZ</p>
-                      <p class="mt-1 text-sm text-slate-500">Santiago · Híbrido</p>
-                    </div>
 
-                    <div class="rounded-xl border border-[#DCEBEA] p-5">
-                      <div class="flex justify-between gap-3">
-                        <h4 class="font-semibold">Perfil y condiciones</h4>
-                        <button
-                          type="button"
-                          (click)="goToApplicationStep(1)"
-                          class="text-sm text-[#087A78] hover:underline"
-                        >
-                          Editar
-                        </button>
-                      </div>
-                      <p class="mt-2">{{ candidateProfile.fullName }}</p>
-                      <p class="text-sm text-slate-500">{{ candidateProfile.email }}</p>
-                      <p class="mt-3 text-sm">
-                        CV seleccionado: <strong>{{ selectedCv()?.fileName }}</strong>
+                  <div class="mt-5 space-y-3">
+
+                    <div class="p-4 rounded-xl bg-slate-50">
+
+                      <p class="text-xs text-slate-500">
+                        CV seleccionado
                       </p>
-                      <p class="mt-1 text-sm">
-                        Expectativa:
-                        <strong>{{ expectedSalary() }} CLP bruto mensual</strong>
+
+                      <p class="text-sm font-medium text-[#0F172A] mt-1">
+                        {{ selectedCv()?.label ?? 'Sin CV seleccionado' }}
                       </p>
+
                     </div>
 
-                    <div class="rounded-xl border border-[#DCEBEA] p-5">
-                      <div class="flex justify-between gap-3">
-                        <h4 class="font-semibold">Respuestas</h4>
-                        <button
-                          type="button"
-                          (click)="goToApplicationStep(2)"
-                          class="text-sm text-[#087A78] hover:underline"
-                        >
-                          Editar
-                        </button>
-                      </div>
 
-                      @for (question of applicationQuestions; track question.id) {
-                        <div class="mt-4">
-                          <p class="text-sm font-medium">{{ question.prompt }}</p>
-                          <p class="mt-1 whitespace-pre-wrap text-sm text-slate-600">
-                            {{ applicationAnswers()[question.id] || 'Sin respuesta' }}
-                          </p>
-                        </div>
-                      }
+                    <div class="p-4 rounded-xl bg-slate-50">
+
+                      <p class="text-xs text-slate-500">
+                        Expectativa salarial
+                      </p>
+
+                      <p class="text-sm font-medium text-[#0F172A] mt-1">
+                        {{ expectedSalary() || 'No indicada' }}
+                      </p>
+
                     </div>
+
                   </div>
-                }
+
+                </div>
+
               }
-            </main>
 
-            <!-- Resumen lateral del perfil -->
-            <aside class="border-t border-[#EDF3F2] bg-[#F8FCFC] p-6 lg:border-l lg:border-t-0">
-              <p class="text-sm text-slate-500">Postulando a</p>
-              <h3 class="mt-1 font-semibold text-[#0F172A]">Analista de Datos</h3>
-              <p class="text-sm text-slate-500">Empresa XYZ</p>
+            }
 
-              <div class="my-5 border-t border-[#DCEBEA]"></div>
-
-              <h4 class="font-semibold">Tu perfil</h4>
-              <p class="mt-3 font-medium">{{ candidateProfile.fullName }}</p>
-              <p class="mt-1 break-all text-sm text-slate-500">
-                {{ candidateProfile.email }}
-              </p>
-              <p class="mt-1 text-sm text-slate-500">
-                {{ candidateProfile.professionalTitle }}
-              </p>
-              <p class="mt-1 text-sm text-slate-500">
-                {{ candidateProfile.location }}
-              </p>
-
-              <p class="mt-5 text-xs leading-5 text-slate-500">
-                Tus datos personales se completan desde tu perfil. No necesitas escribirlos otra vez.
-              </p>
-            </aside>
           </div>
 
-          <footer class="flex items-center justify-between border-t border-[#EDF3F2] px-6 py-4">
+
+          <!-- FOOTER POSTULACION -->
+
+          <div class="px-6 py-4 border-t border-slate-200 flex items-center justify-between gap-3">
+
             <button
               type="button"
               (click)="previousApplicationStep()"
-              class="rounded-lg border border-[#DCEBEA] px-5 py-2.5 text-sm font-semibold text-[#087A78] hover:bg-[#F4FAFA]"
+              class="h-10 px-4 rounded-lg border border-slate-200 text-sm font-medium text-slate-600 hover:bg-slate-50"
             >
               Atrás
             </button>
 
+
             @if (applicationStep() < 3) {
+
               <button
                 type="button"
                 (click)="nextApplicationStep()"
-                class="rounded-lg bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#09998F]"
+                class="h-10 px-5 rounded-lg bg-[#0BAFA5] text-white text-sm font-semibold hover:bg-[#0A9292]"
               >
                 Continuar
               </button>
+
             } @else {
+
               <button
                 type="button"
                 (click)="submitApplication()"
-                class="rounded-lg bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#09998F]"
+                class="h-10 px-5 rounded-lg bg-[#0BAFA5] text-white text-sm font-semibold hover:bg-[#0A9292]"
               >
                 Enviar postulación
               </button>
+
             }
-          </footer>
+
+          </div>
+
+
+        } @else {
+
+
+          <!-- POSTULACION ENVIADA -->
+
+          <div class="p-10 text-center">
+
+            <div class="w-14 h-14 mx-auto rounded-full bg-[#E6F7F6] text-[#0A9292] flex items-center justify-center text-2xl">
+              ✓
+            </div>
+
+            <h3 class="text-lg font-semibold text-[#0F172A] mt-4">
+              Postulación enviada
+            </h3>
+
+            <p class="text-sm text-slate-500 mt-2">
+              Tu postulación fue registrada correctamente.
+            </p>
+
+            <button
+              type="button"
+              (click)="returnToOffer()"
+              class="mt-6 h-10 px-5 rounded-lg bg-[#0BAFA5] text-white text-sm font-semibold hover:bg-[#0A9292]"
+            >
+              Volver a la oferta
+            </button>
+
+          </div>
+
         }
+
       </div>
+
     </div>
+
   }
+
 </div>

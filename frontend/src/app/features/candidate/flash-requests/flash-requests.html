@@ -1,0 +1,452 @@
+<section class="mx-auto max-w-6xl space-y-6">
+
+  <!-- HEADER -->
+  <header class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <div class="mb-2 flex items-center gap-2 text-sm text-slate-500">
+        <span>Postulaciones</span>
+        <span>›</span>
+        <span class="text-slate-700">Solicitudes Flash</span>
+      </div>
+
+      <h1 class="text-2xl font-semibold tracking-tight text-[#0F172A]">
+        Solicitudes Flash
+      </h1>
+
+      <p class="mt-1 max-w-2xl text-sm text-slate-500">
+        Invitaciones rápidas de empresas que quieren avanzar contigo en un
+        proceso de selección.
+      </p>
+    </div>
+
+    <div
+      class="flex w-fit items-center gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2"
+    >
+      <span class="text-lg">⚡</span>
+
+      <div>
+        <p class="text-xs font-medium text-amber-700">
+          Solicitudes pendientes
+        </p>
+
+        <p class="text-lg font-semibold text-amber-900">
+          {{ pendingRequests() }}
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- EXPLICACIÓN -->
+  <section
+    class="rounded-2xl border border-[#DCEBEA] bg-[#F4FAFA] p-5"
+  >
+    <div class="flex gap-4">
+      <div
+        class="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#0BAFA5] text-xl text-white"
+      >
+        ⚡
+      </div>
+
+      <div>
+        <h2 class="font-semibold text-[#0F172A]">
+          ¿Qué son las Solicitudes Flash?
+        </h2>
+
+        <p class="mt-1 max-w-3xl text-sm leading-6 text-slate-600">
+          Una empresa puede enviarte una invitación directa para conocer tu
+          disponibilidad e interés antes de continuar con un proceso de
+          selección. Tú decides si quieres aceptar o rechazar la solicitud.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTADO -->
+  <section class="space-y-4">
+
+    <div class="flex items-center justify-between">
+      <h2 class="text-lg font-semibold text-[#0F172A]">
+        Solicitudes recibidas
+      </h2>
+
+      <span class="text-sm text-slate-500">
+        {{ requests().length }} solicitudes
+      </span>
+    </div>
+
+    @if (requests().length === 0) {
+
+      <!-- EMPTY STATE -->
+      <div
+        class="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-14 text-center"
+      >
+        <div
+          class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-slate-100 text-2xl"
+        >
+          ⚡
+        </div>
+
+        <h3 class="mt-4 font-semibold text-slate-900">
+          No tienes Solicitudes Flash
+        </h3>
+
+        <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+          Cuando una empresa quiera avanzar rápidamente contigo en un proceso,
+          recibirás aquí su solicitud.
+        </p>
+      </div>
+
+    } @else {
+
+      <div class="space-y-4">
+
+        @for (request of requests(); track request.id) {
+
+          <article
+            class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-[#B7DAD6] hover:shadow-md"
+          >
+
+            <!-- CARD HEADER -->
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+
+              <div class="flex min-w-0 gap-4">
+
+                <div
+                  class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#E6F4F1] font-semibold text-[#087F79]"
+                >
+                  {{ request.company.charAt(0) }}
+                </div>
+
+                <div class="min-w-0">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <h3 class="font-semibold text-[#0F172A]">
+                      {{ request.role }}
+                    </h3>
+
+                    <span
+                      class="rounded-full border px-2.5 py-1 text-xs font-medium"
+                      [class]="getStatusClasses(request.status)"
+                    >
+                      {{ request.status }}
+                    </span>
+                  </div>
+
+                  <p class="mt-1 text-sm font-medium text-slate-700">
+                    {{ request.company }}
+                  </p>
+
+                  <p class="mt-1 text-sm text-slate-500">
+                    {{ request.location }} · {{ request.modality }}
+                  </p>
+                </div>
+
+              </div>
+
+              <span class="shrink-0 text-xs text-slate-400">
+                {{ request.receivedAt }}
+              </span>
+
+            </div>
+
+            <!-- INFO -->
+            <div
+              class="mt-5 grid gap-3 border-y border-slate-100 py-4 sm:grid-cols-3"
+            >
+
+              <div>
+                <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+                  Renta
+                </p>
+
+                <p class="mt-1 text-sm font-medium text-slate-700">
+                  {{ request.salary }}
+                </p>
+              </div>
+
+              <div>
+                <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+                  Reclutador
+                </p>
+
+                <p class="mt-1 text-sm font-medium text-slate-700">
+                  {{ request.recruiter }}
+                </p>
+              </div>
+
+              <div>
+                <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+                  Proceso
+                </p>
+
+                <p class="mt-1 text-sm font-medium text-slate-700">
+                  {{ request.process }}
+                </p>
+              </div>
+
+            </div>
+
+            <!-- MESSAGE -->
+            <div class="mt-4">
+              <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+                Mensaje de la empresa
+              </p>
+
+              <p class="mt-2 text-sm leading-6 text-slate-600">
+                {{ request.message }}
+              </p>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
+
+              <button
+                type="button"
+                (click)="openRequest(request)"
+                class="rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-100"
+              >
+                Ver detalles
+              </button>
+
+              @if (request.status === 'Pendiente') {
+
+                <div class="flex flex-col gap-2 sm:flex-row">
+
+                  <button
+                    type="button"
+                    (click)="rejectRequest(request.id)"
+                    class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+                  >
+                    Rechazar
+                  </button>
+
+                  <button
+                    type="button"
+                    (click)="acceptRequest(request.id)"
+                    class="rounded-xl bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0A9292]"
+                  >
+                    Aceptar solicitud
+                  </button>
+
+                </div>
+
+              }
+
+            </div>
+
+          </article>
+
+        }
+
+      </div>
+
+    }
+
+  </section>
+
+</section>
+
+
+<!-- DETALLES / MODAL -->
+@if (selectedRequest(); as request) {
+
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+  >
+
+    <!-- BACKDROP -->
+    <button
+      type="button"
+      class="absolute inset-0 bg-slate-950/50 backdrop-blur-sm"
+      aria-label="Cerrar detalles"
+      (click)="closeRequest()"
+    ></button>
+
+    <!-- WINDOW -->
+    <section
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="flash-request-title"
+      class="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-2xl"
+    >
+
+      <!-- MODAL HEADER -->
+      <header
+        class="flex items-start justify-between gap-4 border-b border-slate-200 p-6"
+      >
+
+        <div class="flex min-w-0 gap-4">
+
+          <div
+            class="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[#E6F4F1] font-semibold text-[#087F79]"
+          >
+            {{ request.company.charAt(0) }}
+          </div>
+
+          <div class="min-w-0">
+
+            <div class="flex flex-wrap items-center gap-2">
+              <h2
+                id="flash-request-title"
+                class="text-xl font-semibold text-[#0F172A]"
+              >
+                {{ request.role }}
+              </h2>
+
+              <span
+                class="rounded-full border px-2.5 py-1 text-xs font-medium"
+                [class]="getStatusClasses(request.status)"
+              >
+                {{ request.status }}
+              </span>
+            </div>
+
+            <p class="mt-1 text-sm font-medium text-slate-600">
+              {{ request.company }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <button
+          type="button"
+          (click)="closeRequest()"
+          aria-label="Cerrar ventana"
+          class="grid size-9 shrink-0 place-items-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
+        >
+          ✕
+        </button>
+
+      </header>
+
+      <!-- MODAL BODY -->
+      <div class="space-y-6 p-6">
+
+        <!-- QUICK INFO -->
+        <div class="grid gap-3 sm:grid-cols-2">
+
+          <div class="rounded-xl bg-slate-50 p-4">
+            <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+              Ubicación
+            </p>
+
+            <p class="mt-1 text-sm font-medium text-slate-700">
+              {{ request.location }}
+            </p>
+          </div>
+
+          <div class="rounded-xl bg-slate-50 p-4">
+            <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+              Modalidad
+            </p>
+
+            <p class="mt-1 text-sm font-medium text-slate-700">
+              {{ request.modality }}
+            </p>
+          </div>
+
+          <div class="rounded-xl bg-slate-50 p-4">
+            <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+              Renta estimada
+            </p>
+
+            <p class="mt-1 text-sm font-medium text-slate-700">
+              {{ request.salary }}
+            </p>
+          </div>
+
+          <div class="rounded-xl bg-slate-50 p-4">
+            <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+              Recibida
+            </p>
+
+            <p class="mt-1 text-sm font-medium text-slate-700">
+              {{ request.receivedAt }}
+            </p>
+          </div>
+
+        </div>
+
+        <!-- RECRUITER -->
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+            Reclutador
+          </p>
+
+          <p class="mt-2 text-sm font-medium text-slate-700">
+            {{ request.recruiter }}
+          </p>
+        </div>
+
+        <!-- MESSAGE -->
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+            Mensaje
+          </p>
+
+          <div
+            class="mt-2 rounded-xl border border-slate-200 bg-slate-50 p-4"
+          >
+            <p class="text-sm leading-6 text-slate-600">
+              {{ request.message }}
+            </p>
+          </div>
+        </div>
+
+        <!-- PROCESS -->
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+            Proceso de selección
+          </p>
+
+          <div
+            class="mt-2 rounded-xl border border-[#DCEBEA] bg-[#F4FAFA] p-4"
+          >
+            <p class="text-sm font-medium text-[#064635]">
+              {{ request.process }}
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MODAL FOOTER -->
+      <footer
+        class="flex flex-col-reverse gap-2 border-t border-slate-200 bg-slate-50 p-6 sm:flex-row sm:justify-end"
+      >
+
+        <button
+          type="button"
+          (click)="closeRequest()"
+          class="rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-white"
+        >
+          Cerrar
+        </button>
+
+        @if (request.status === 'Pendiente') {
+
+          <button
+            type="button"
+            (click)="rejectRequest(request.id)"
+            class="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
+          >
+            Rechazar
+          </button>
+
+          <button
+            type="button"
+            (click)="acceptRequest(request.id)"
+            class="rounded-xl bg-[#0BAFA5] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0A9292]"
+          >
+            Aceptar solicitud
+          </button>
+
+        }
+
+      </footer>
+
+    </section>
+
+  </div>
+
+}

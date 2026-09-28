@@ -1,0 +1,328 @@
+<section class="min-h-full bg-[#F4FAFA] px-4 py-6 sm:px-6 lg:px-8">
+
+  <div class="mx-auto max-w-6xl">
+
+    <!-- HEADER -->
+    <div class="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+
+      <div>
+        <div class="mb-2 flex items-center gap-2 text-sm text-slate-400">
+          <span>Inicio</span>
+          <span>/</span>
+          <span class="text-slate-600">Notificaciones</span>
+        </div>
+
+        <h1 class="text-2xl font-bold tracking-tight text-[#0F172A]">
+          Notificaciones
+        </h1>
+
+        <p class="mt-1 max-w-2xl text-sm text-slate-500">
+          Mantente al día con tus postulaciones, evaluaciones y oportunidades
+          dentro de Ágora.
+        </p>
+      </div>
+
+      @if (unreadCount() > 0) {
+        <button
+          type="button"
+          (click)="markAllAsRead()"
+          class="w-fit rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-[#0BAFA5] hover:text-[#0A9292]"
+        >
+          Marcar todas como leídas
+        </button>
+      }
+
+    </div>
+
+    <!-- RESUMEN -->
+    <div class="mb-6 grid gap-4 sm:grid-cols-3">
+
+      <!-- TOTAL -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+        <div class="flex items-center justify-between">
+
+          <span class="text-sm font-medium text-slate-500">
+            Total
+          </span>
+
+          <span
+            class="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-sm text-slate-600"
+          >
+            ◌
+          </span>
+
+        </div>
+
+        <p class="mt-3 text-2xl font-bold text-[#0F172A]">
+          {{ totalCount() }}
+        </p>
+
+        <p class="mt-1 text-xs text-slate-400">
+          Notificaciones registradas
+        </p>
+
+      </div>
+
+      <!-- SIN LEER -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+        <div class="flex items-center justify-between">
+
+          <span class="text-sm font-medium text-slate-500">
+            Sin leer
+          </span>
+
+          <span
+            class="flex h-9 w-9 items-center justify-center rounded-xl bg-[#0BAFA5]/10 text-sm font-bold text-[#0A9292]"
+          >
+            {{ unreadCount() }}
+          </span>
+
+        </div>
+
+        <p class="mt-3 text-2xl font-bold text-[#0F172A]">
+          {{ unreadCount() }}
+        </p>
+
+        <p class="mt-1 text-xs text-slate-400">
+          Requieren tu atención
+        </p>
+
+      </div>
+
+      <!-- ESTADO -->
+      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+
+        <div class="flex items-center justify-between">
+
+          <span class="text-sm font-medium text-slate-500">
+            Estado
+          </span>
+
+          <span
+            class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-sm text-emerald-600"
+          >
+            ✓
+          </span>
+
+        </div>
+
+        <p class="mt-3 text-2xl font-bold text-[#0F172A]">
+          {{ unreadCount() > 0 ? 'Pendiente' : 'Al día' }}
+        </p>
+
+        <p class="mt-1 text-xs text-slate-400">
+          {{ unreadCount() > 0 ? 'Tienes novedades por revisar' : 'No tienes pendientes' }}
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+      <!-- FILTROS -->
+      <div
+        class="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between"
+      >
+
+        <div class="flex items-center gap-1 rounded-xl bg-slate-100 p-1">
+
+          <button
+            type="button"
+            (click)="setFilter('all')"
+            class="rounded-lg px-3 py-2 text-sm font-semibold transition"
+            [class.bg-white]="activeFilter() === 'all'"
+            [class.text-[#0A9292]]="activeFilter() === 'all'"
+            [class.shadow-sm]="activeFilter() === 'all'"
+            [class.text-slate-500]="activeFilter() !== 'all'"
+          >
+            Todas
+          </button>
+
+          <button
+            type="button"
+            (click)="setFilter('unread')"
+            class="rounded-lg px-3 py-2 text-sm font-semibold transition"
+            [class.bg-white]="activeFilter() === 'unread'"
+            [class.text-[#0A9292]]="activeFilter() === 'unread'"
+            [class.shadow-sm]="activeFilter() === 'unread'"
+            [class.text-slate-500]="activeFilter() !== 'unread'"
+          >
+            Sin leer
+
+            @if (unreadCount() > 0) {
+              <span
+                class="ml-1.5 rounded-full bg-[#0BAFA5]/10 px-1.5 py-0.5 text-xs text-[#0A9292]"
+              >
+                {{ unreadCount() }}
+              </span>
+            }
+
+          </button>
+
+        </div>
+
+        <span class="text-xs text-slate-400">
+          {{ filteredNotifications().length }}
+          {{
+            filteredNotifications().length === 1
+              ? 'notificación'
+              : 'notificaciones'
+          }}
+        </span>
+
+      </div>
+
+      <!-- LISTA -->
+      @if (filteredNotifications().length > 0) {
+
+        <div class="divide-y divide-slate-100">
+
+          @for (
+            notification of filteredNotifications();
+            track notification.id
+          ) {
+
+            <article
+              class="px-5 py-5 transition hover:bg-[#F8FCFC]"
+              [class.bg-[#F4FAFA]]="notification.unread"
+            >
+
+              <div class="flex gap-4">
+
+                <!-- ICONO -->
+                <div
+                  class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border text-base font-semibold"
+                  [ngClass]="getTypeClasses(notification.type)"
+                >
+                  {{ getTypeIcon(notification.type) }}
+                </div>
+
+                <!-- CONTENIDO -->
+                <div class="min-w-0 flex-1">
+
+                  <div class="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+
+                    <div class="flex items-center gap-2">
+
+                      <h2 class="text-sm font-semibold text-[#0F172A]">
+                        {{ notification.title }}
+                      </h2>
+
+                      @if (notification.unread) {
+                        <span
+                          class="h-2 w-2 rounded-full bg-[#0BAFA5]"
+                          title="No leída"
+                        ></span>
+                      }
+
+                    </div>
+
+                    <span class="shrink-0 text-xs text-slate-400">
+                      {{ notification.time }}
+                    </span>
+
+                  </div>
+
+                  <p class="mt-1 max-w-3xl text-sm leading-6 text-slate-500">
+                    {{ notification.message }}
+                  </p>
+
+                  <div class="mt-3 flex flex-wrap items-center gap-2">
+
+                    <span
+                      class="rounded-full border px-2.5 py-1 text-xs font-medium"
+                      [ngClass]="getTypeClasses(notification.type)"
+                    >
+                      {{ getTypeLabel(notification.type) }}
+                    </span>
+
+                    @if (notification.route) {
+
+                      <button
+                        type="button"
+                        (click)="openNotification(notification)"
+                        class="rounded-lg px-2.5 py-1 text-xs font-semibold text-[#0A9292] transition hover:bg-[#0BAFA5]/10"
+                      >
+                        {{ notification.actionLabel || 'Ver' }}
+                      </button>
+
+                    } @else {
+
+                      <button
+                        type="button"
+                        (click)="markAsRead(notification)"
+                        class="rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-500 transition hover:bg-slate-100"
+                      >
+                        Marcar como leída
+                      </button>
+
+                    }
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </article>
+
+          }
+
+        </div>
+
+      } @else {
+
+        <!-- EMPTY STATE -->
+        <div class="flex min-h-[360px] flex-col items-center justify-center px-6 py-12 text-center">
+
+          <div
+            class="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#0BAFA5]/10 text-2xl text-[#0A9292]"
+          >
+            ✓
+          </div>
+
+          @if (activeFilter() === 'unread') {
+
+            <h2 class="text-lg font-semibold text-[#0F172A]">
+              No tienes notificaciones pendientes
+            </h2>
+
+            <p class="mt-2 max-w-md text-sm leading-6 text-slate-500">
+              Ya revisaste todas tus notificaciones. Cuando ocurra algo
+              importante en tus procesos, aparecerá aquí.
+            </p>
+
+            <button
+              type="button"
+              (click)="setFilter('all')"
+              class="mt-5 rounded-xl bg-[#0BAFA5] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0A9292]"
+            >
+              Ver todas
+            </button>
+
+          } @else {
+
+            <h2 class="text-lg font-semibold text-[#0F172A]">
+              No tienes notificaciones
+            </h2>
+
+            <p class="mt-2 max-w-md text-sm leading-6 text-slate-500">
+              Aquí aparecerán las novedades relacionadas con tus
+              postulaciones, empleos y actividad en Ágora.
+            </p>
+
+          }
+
+        </div>
+
+      }
+
+    </div>
+
+  </div>
+
+</section>

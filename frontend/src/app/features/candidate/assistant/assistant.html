@@ -1,0 +1,325 @@
+<div class="min-h-full bg-[#F4FAFA] px-4 py-6 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+
+    <!-- HEADER -->
+    <div class="mb-6">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <div class="mb-2 flex items-center gap-2 text-sm text-slate-500">
+            <span>Herramientas</span>
+            <span>›</span>
+            <span class="font-medium text-slate-700">Asistente Ágora</span>
+          </div>
+
+          <h1 class="text-2xl font-bold tracking-tight text-[#0F172A] sm:text-3xl">
+            Asistente Ágora
+          </h1>
+
+          <p class="mt-1 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
+            Tu asistente para explorar oportunidades, mejorar tu perfil y preparar
+            tus postulaciones.
+          </p>
+        </div>
+
+        <div
+          class="inline-flex w-fit items-center gap-2 rounded-full border border-teal-100 bg-white px-4 py-2 text-sm font-medium text-teal-700 shadow-sm"
+        >
+          <span class="relative flex h-2.5 w-2.5">
+            <span
+              class="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75"
+            ></span>
+            <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-teal-500"></span>
+          </span>
+          Asistente disponible
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="grid gap-6 xl:grid-cols-[minmax(0,1fr)_320px]">
+
+      <!-- COLUMNA PRINCIPAL -->
+      <section
+        class="flex min-h-[680px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+      >
+
+        <!-- CHAT HEADER -->
+        <div
+          class="flex items-center justify-between border-b border-slate-200 px-5 py-4 sm:px-6"
+        >
+          <div class="flex items-center gap-3">
+            <div
+              class="flex h-11 w-11 items-center justify-center rounded-xl bg-[#0BAFA5] text-xl text-white shadow-sm"
+            >
+              ✦
+            </div>
+
+            <div>
+              <h2 class="font-semibold text-[#0F172A]">
+                Asistente Ágora
+              </h2>
+              <p class="text-xs text-slate-500">
+                Contexto laboral y profesional
+              </p>
+            </div>
+          </div>
+
+          <div class="hidden text-right sm:block">
+            <p class="text-xs font-medium text-slate-500">
+              Contexto activo
+            </p>
+            <p class="text-sm font-semibold text-teal-700">
+              Perfil + CV + preferencias
+            </p>
+          </div>
+        </div>
+
+        <!-- MENSAJES -->
+        <div class="flex-1 space-y-5 overflow-y-auto bg-slate-50/60 p-4 sm:p-6">
+          @for (item of messages(); track item.id) {
+            <div
+              class="flex"
+              [class.justify-end]="item.sender === 'user'"
+              [class.justify-start]="item.sender === 'assistant'"
+            >
+              <div
+                class="flex max-w-[90%] gap-3 sm:max-w-[75%]"
+                [class.flex-row-reverse]="item.sender === 'user'"
+              >
+
+                <!-- AVATAR -->
+                <div
+                  class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold"
+                  [ngClass]="
+                    item.sender === 'assistant'
+                      ? 'bg-[#0BAFA5] text-white'
+                      : 'bg-slate-200 text-slate-700'
+                  "
+                >
+                  {{ item.sender === 'assistant' ? '✦' : 'LC' }}
+                </div>
+
+                <!-- MENSAJE -->
+                <div>
+                  <div
+                    class="rounded-2xl px-4 py-3 text-sm leading-6 shadow-sm"
+                    [ngClass]="
+                      item.sender === 'assistant'
+                        ? 'rounded-tl-md border border-slate-200 bg-white text-slate-700'
+                        : 'rounded-tr-md bg-[#0BAFA5] text-white'
+                    "
+                  >
+                    {{ item.text }}
+                  </div>
+
+                  <p
+                    class="mt-1 px-1 text-[11px] text-slate-400"
+                    [class.text-right]="item.sender === 'user'"
+                  >
+                    {{ item.time }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- ACCIONES RÁPIDAS -->
+        <div class="border-t border-slate-200 bg-white px-4 py-4 sm:px-6">
+          <div class="mb-3">
+            <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              ¿Qué quieres hacer?
+            </p>
+          </div>
+
+          <div class="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
+            @for (action of quickActions; track action.id) {
+              <button
+                type="button"
+                (click)="executeAction(action.id)"
+                class="group rounded-xl border border-slate-200 bg-white p-3 text-left transition hover:border-teal-200 hover:bg-teal-50/40 hover:shadow-sm"
+              >
+                <div class="flex items-start gap-3">
+                  <div
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-lg transition group-hover:bg-teal-100"
+                  >
+                    {{ action.icon }}
+                  </div>
+
+                  <div class="min-w-0">
+                    <p class="text-sm font-semibold text-slate-800">
+                      {{ action.title }}
+                    </p>
+
+                    <p class="mt-0.5 line-clamp-2 text-xs leading-5 text-slate-500">
+                      {{ action.description }}
+                    </p>
+                  </div>
+                </div>
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- INPUT -->
+        <div class="border-t border-slate-200 bg-white p-4 sm:p-5">
+          <div
+            class="rounded-2xl border border-slate-200 bg-slate-50 p-2 transition focus-within:border-teal-300 focus-within:ring-2 focus-within:ring-teal-100"
+          >
+            <textarea
+              [value]="message()"
+              (input)="setMessage($any($event.target).value)"
+              (keydown.enter)="handleEnter($event)"
+              rows="2"
+              placeholder="Escribe algo como: ¿cómo puedo mejorar mi CV para puestos de datos?"
+              class="w-full resize-none border-0 bg-transparent px-3 py-2 text-sm leading-6 text-slate-700 outline-none placeholder:text-slate-400"
+            ></textarea>
+
+            <div class="flex items-center justify-between px-2 pb-1">
+              <p class="text-[11px] text-slate-400">
+                Enter para enviar · Shift + Enter para una nueva línea
+              </p>
+
+              <button
+                type="button"
+                (click)="sendMessage()"
+                [disabled]="!message().trim()"
+                class="inline-flex items-center gap-2 rounded-xl bg-[#0BAFA5] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0A9292] disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <span>Enviar</span>
+                <span>➤</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMNA LATERAL -->
+      <aside class="space-y-6">
+
+        <!-- CONTEXTO -->
+        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div class="mb-4">
+            <h2 class="font-semibold text-[#0F172A]">
+              Contexto disponible
+            </h2>
+
+            <p class="mt-1 text-xs leading-5 text-slate-500">
+              El asistente podrá utilizar estos datos cuando estén conectados al
+              sistema real.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            @for (item of contextItems; track item.label) {
+              <div
+                class="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50 px-3 py-3"
+              >
+                <div class="flex min-w-0 items-center gap-3">
+                  <div
+                    class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-sm shadow-sm"
+                  >
+                    {{ item.icon }}
+                  </div>
+
+                  <div class="min-w-0">
+                    <p class="truncate text-sm font-medium text-slate-700">
+                      {{ item.label }}
+                    </p>
+
+                    <p class="text-xs text-slate-400">
+                      {{ item.value }}
+                    </p>
+                  </div>
+                </div>
+
+                <span
+                  class="ml-3 shrink-0 rounded-full bg-teal-50 px-2 py-1 text-[10px] font-semibold text-teal-700"
+                >
+                  Activo
+                </span>
+              </div>
+            }
+          </div>
+        </section>
+
+        <!-- QUÉ PUEDE HACER -->
+        <section class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h2 class="font-semibold text-[#0F172A]">
+            ¿Qué puede hacer Ágora?
+          </h2>
+
+          <div class="mt-4 space-y-3">
+            <div class="flex gap-3">
+              <span class="mt-0.5 text-teal-600">✓</span>
+              <p class="text-sm leading-5 text-slate-600">
+                Revisar y analizar tu CV.
+              </p>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="mt-0.5 text-teal-600">✓</span>
+              <p class="text-sm leading-5 text-slate-600">
+                Buscar oportunidades según tu perfil.
+              </p>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="mt-0.5 text-teal-600">✓</span>
+              <p class="text-sm leading-5 text-slate-600">
+                Analizar compatibilidad con vacantes.
+              </p>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="mt-0.5 text-teal-600">✓</span>
+              <p class="text-sm leading-5 text-slate-600">
+                Preparar respuestas para postulaciones.
+              </p>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="mt-0.5 text-teal-600">✓</span>
+              <p class="text-sm leading-5 text-slate-600">
+                Identificar brechas de habilidades.
+              </p>
+            </div>
+
+            <div class="flex gap-3">
+              <span class="mt-0.5 text-teal-600">✓</span>
+              <p class="text-sm leading-5 text-slate-600">
+                Prepararte para entrevistas.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- AVISO -->
+        <section
+          class="rounded-2xl border border-teal-100 bg-teal-50/70 p-5"
+        >
+          <div class="flex gap-3">
+            <div
+              class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white text-teal-700 shadow-sm"
+            >
+              ✦
+            </div>
+
+            <div>
+              <h3 class="text-sm font-semibold text-teal-900">
+                Una ayuda, no un reemplazo
+              </h3>
+
+              <p class="mt-1 text-xs leading-5 text-teal-800/80">
+                Ágora puede analizar información, proponer alternativas y
+                ayudarte a tomar decisiones. Las acciones importantes siempre
+                deben quedar bajo tu control.
+              </p>
+            </div>
+          </div>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+</div>

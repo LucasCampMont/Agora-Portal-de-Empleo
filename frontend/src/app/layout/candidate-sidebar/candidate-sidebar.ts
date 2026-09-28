@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { SetupSection } from '../../features/candidate/pages/setup/setup';
 
@@ -7,7 +7,9 @@ interface CandidateSidebarItem {
   icon: string;
   exact?: boolean;
   route?: string;
+  queryParams?: Record<string, string>;
   setupSection?: SetupSection;
+  badge?: number;
 }
 
 interface CandidateSidebarSection {
@@ -24,6 +26,8 @@ interface CandidateSidebarSection {
 export class CandidateSidebar {
   readonly setupRequested = output<SetupSection>();
 
+  readonly collapsed = signal(false);
+
   readonly sections: CandidateSidebarSection[] = [
     {
       label: 'Empleos',
@@ -34,38 +38,81 @@ export class CandidateSidebar {
           exact: true,
           route: '/candidate/jobs',
         },
-        { label: 'Empleos recomendados', icon: '✦' },
-        { label: 'Empleos guardados', icon: '♡' },
+        {
+          label: 'Empleos guardados',
+          icon: '♡',
+          route: '/candidate/jobs',
+          queryParams: {
+            tab: 'saved',
+          },
+        },
+        {
+          label: 'Empleos recomendados',
+          icon: '✦',
+          route: '/candidate/recommended',
+        },
       ],
     },
+
     {
-      label: 'Mis postulaciones',
+      label: 'Postulaciones',
       items: [
-        { label: 'Solicitudes Flash', icon: '⚡' },
-        { label: 'Respuestas para postulaciones', icon: '▤' },
-        { label: 'Evaluaciones', icon: '◉' },
+        {
+          label: 'Mis postulaciones',
+          icon: '▣',
+          route: '/candidate/applications',
+        },
+        {
+          label: 'Solicitudes Flash',
+          icon: '⚡',
+          route: '/candidate/flash-requests',
+          badge: 2,
+        },
+        {
+          label: 'Evaluaciones',
+          icon: '◉',
+          route: '/candidate/evaluations',
+          badge: 2,
+        },
+        {
+          label: 'Formularios y respuestas',
+          icon: '▤',
+          route: '/candidate/answers',
+        },
       ],
     },
+
     {
       label: 'Perfil profesional',
       items: [
-        {
-          label: 'Mis CV',
-          icon: '▤',
-          setupSection: 'cv',
-        },
         {
           label: 'Mi perfil',
           icon: '♙',
           setupSection: 'profile',
         },
+        {
+          label: 'Mis CV',
+          icon: '▤',
+          setupSection: 'cv',
+        },
       ],
     },
+
     {
-      label: 'Ayuda',
-      items: [{ label: 'Asistente Ágora', icon: '✦' }],
+      label: 'Herramientas',
+      items: [
+        {
+          label: 'Asistente Ágora',
+          icon: '✦',
+          route: '/candidate/assistant',
+        },
+      ],
     },
   ];
+
+  toggleSidebar(): void {
+    this.collapsed.update((value) => !value);
+  }
 
   openSetup(section: SetupSection): void {
     this.setupRequested.emit(section);

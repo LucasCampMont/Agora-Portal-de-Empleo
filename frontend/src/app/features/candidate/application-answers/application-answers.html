@@ -1,0 +1,420 @@
+<div class="min-h-full bg-[#F4FAFA] px-4 py-6 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl">
+
+    <!-- HEADER -->
+    <header class="mb-6">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+        <div>
+          <p class="mb-1 text-sm font-semibold text-[#0A9292]">
+            Postulaciones
+          </p>
+
+          <h1 class="text-2xl font-bold tracking-tight text-[#0F172A]">
+            Formularios y respuestas
+          </h1>
+
+          <p class="mt-1 max-w-2xl text-sm text-slate-500">
+            Guarda respuestas frecuentes para completar postulaciones de forma
+            más rápida y consistente.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          (click)="createAnswer()"
+          class="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0BAFA5] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0A9292] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0B7A6B]"
+        >
+          <span class="text-lg leading-none">
+            +
+          </span>
+
+          Nueva respuesta
+        </button>
+      </div>
+    </header>
+
+    <!-- RESUMEN -->
+    <section class="mb-6 grid gap-4 sm:grid-cols-3">
+      <article
+        class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm text-slate-500">
+              Respuestas guardadas
+            </p>
+
+            <p class="mt-2 text-2xl font-bold text-[#0F172A]">
+              {{ totalAnswers() }}
+            </p>
+          </div>
+
+          <div
+            class="flex size-10 items-center justify-center rounded-xl bg-[#E6F4F1] text-xl"
+          >
+            📋
+          </div>
+        </div>
+      </article>
+
+      <article
+        class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm text-slate-500">
+              Favoritas
+            </p>
+
+            <p class="mt-2 text-2xl font-bold text-[#0F172A]">
+              {{ favoriteAnswers() }}
+            </p>
+          </div>
+
+          <div
+            class="flex size-10 items-center justify-center rounded-xl bg-amber-50 text-xl"
+          >
+            ★
+          </div>
+        </div>
+      </article>
+
+      <article
+        class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"
+      >
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm text-slate-500">
+              Usos registrados
+            </p>
+
+            <p class="mt-2 text-2xl font-bold text-[#0F172A]">
+              {{ totalUses() }}
+            </p>
+          </div>
+
+          <div
+            class="flex size-10 items-center justify-center rounded-xl bg-slate-100 text-xl"
+          >
+            ↗
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- EXPLICACIÓN -->
+    <section
+      class="mb-6 rounded-2xl border border-[#BFE7E3] bg-[#EAF8F7] p-5"
+    >
+      <div class="flex gap-4">
+        <div
+          class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-white text-lg shadow-sm"
+          aria-hidden="true"
+        >
+          ⚡
+        </div>
+
+        <div>
+          <h2 class="font-semibold text-[#064635]">
+            Responde una vez, reutiliza cuando corresponda
+          </h2>
+
+          <p class="mt-1 max-w-3xl text-sm leading-6 text-[#37635F]">
+            Agora podrá utilizar estas respuestas durante una postulación para
+            ayudarte a completar preguntas frecuentes. Antes de enviar una
+            postulación podrás revisar y modificar cada respuesta.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HERRAMIENTAS -->
+    <section
+      class="mb-6 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"
+    >
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+
+        <!-- BUSCADOR -->
+        <div class="relative w-full lg:max-w-md">
+          <span
+            class="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+            aria-hidden="true"
+          >
+            ⌕
+          </span>
+
+          <input
+            type="search"
+            [value]="searchTerm()"
+            (input)="setSearchTerm($any($event.target).value)"
+            placeholder="Buscar pregunta o respuesta..."
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm text-[#0F172A] outline-none transition placeholder:text-slate-400 focus:border-[#0BAFA5] focus:bg-white focus:ring-2 focus:ring-[#0BAFA5]/10"
+          />
+        </div>
+
+        <!-- CATEGORÍAS -->
+        <div class="flex flex-wrap gap-2">
+          @for (
+            category of [
+              'Todas',
+              'Perfil',
+              'Experiencia',
+              'Disponibilidad',
+              'Expectativas',
+              'Motivación'
+            ];
+            track category
+          ) {
+            <button
+              type="button"
+              (click)="setCategory($any(category))"
+              [class.bg-[#0BAFA5]]="activeCategory() === category"
+              [class.text-white]="activeCategory() === category"
+              [class.border-[#0BAFA5]]="activeCategory() === category"
+              class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-[#0BAFA5] hover:text-[#0A9292]"
+            >
+              {{ category }}
+            </button>
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENIDO -->
+    <section>
+      <div class="mb-4 flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-semibold text-[#0F172A]">
+            Mis respuestas
+          </h2>
+
+          <p class="mt-1 text-sm text-slate-500">
+            {{ filteredAnswers().length }} respuestas disponibles
+          </p>
+        </div>
+      </div>
+
+      @if (filteredAnswers().length > 0) {
+        <div class="grid gap-4">
+          @for (answer of filteredAnswers(); track answer.id) {
+            <article
+              class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-[#B8DEDA] hover:shadow-md"
+            >
+              <div class="flex flex-col gap-5">
+
+                <!-- CABECERA -->
+                <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div class="min-w-0">
+                    <div class="mb-2 flex flex-wrap items-center gap-2">
+                      <span
+                        class="rounded-full bg-[#E6F4F1] px-2.5 py-1 text-[11px] font-semibold text-[#0A9292]"
+                      >
+                        {{ answer.category }}
+                      </span>
+
+                      @if (answer.favorite) {
+                        <span
+                          class="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-semibold text-amber-700"
+                        >
+                          ★ Favorita
+                        </span>
+                      }
+                    </div>
+
+                    <h3 class="font-semibold text-[#0F172A]">
+                      {{ answer.question }}
+                    </h3>
+                  </div>
+
+                  <button
+                    type="button"
+                    (click)="toggleFavorite(answer)"
+                    [attr.aria-label]="
+                      answer.favorite
+                        ? 'Quitar de favoritas'
+                        : 'Agregar a favoritas'
+                    "
+                    class="shrink-0 rounded-lg p-2 text-lg transition hover:bg-slate-100"
+                    [class.text-amber-500]="answer.favorite"
+                    [class.text-slate-300]="!answer.favorite"
+                  >
+                    ★
+                  </button>
+                </div>
+
+                <!-- RESPUESTA -->
+                <div
+                  class="rounded-xl border border-slate-100 bg-slate-50 p-4"
+                >
+                  <p
+                    class="line-clamp-3 text-sm leading-6 text-slate-600"
+                  >
+                    {{ answer.answer }}
+                  </p>
+                </div>
+
+                <!-- FOOTER -->
+                <div
+                  class="flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between"
+                >
+                  <div class="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                    <span>
+                      Usada {{ answer.usageCount }} veces
+                    </span>
+
+                    <span class="text-slate-300">
+                      •
+                    </span>
+
+                    <span>
+                      {{ answer.updatedAt }}
+                    </span>
+                  </div>
+
+                  <div class="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      (click)="editAnswer(answer)"
+                      class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-[#0BAFA5] hover:text-[#0A9292]"
+                    >
+                      Editar
+                    </button>
+
+                    <button
+                      type="button"
+                      (click)="openAnswer(answer)"
+                      class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-[#0BAFA5] hover:text-[#0A9292]"
+                    >
+                      Ver respuesta
+                    </button>
+
+                    <button
+                      type="button"
+                      (click)="useAnswer(answer)"
+                      class="rounded-lg bg-[#0BAFA5] px-3 py-2 text-xs font-semibold text-white transition hover:bg-[#0A9292]"
+                    >
+                      Usar respuesta
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </article>
+          }
+        </div>
+      } @else {
+        <div
+          class="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center"
+        >
+          <div
+            class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-slate-100 text-2xl"
+          >
+            📋
+          </div>
+
+          <h3 class="mt-4 font-semibold text-[#0F172A]">
+            No encontramos respuestas
+          </h3>
+
+          <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+            Prueba con otra búsqueda o categoría. También puedes crear una
+            nueva respuesta para guardarla en tu biblioteca.
+          </p>
+
+          <button
+            type="button"
+            (click)="createAnswer()"
+            class="mt-5 rounded-xl bg-[#0BAFA5] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0A9292]"
+          >
+            Crear respuesta
+          </button>
+        </div>
+      }
+    </section>
+
+  </div>
+</div>
+
+<!-- MODAL DE RESPUESTA -->
+@if (showAnswerModal() && selectedAnswer(); as answer) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Ver respuesta"
+    (click)="closeAnswer()"
+  >
+    <div
+      class="w-full max-w-2xl rounded-2xl bg-white shadow-2xl"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- HEADER -->
+      <div
+        class="flex items-start justify-between gap-4 border-b border-slate-200 p-5"
+      >
+        <div>
+          <span
+            class="rounded-full bg-[#E6F4F1] px-2.5 py-1 text-[11px] font-semibold text-[#0A9292]"
+          >
+            {{ answer.category }}
+          </span>
+
+          <h2 class="mt-3 text-lg font-semibold text-[#0F172A]">
+            {{ answer.question }}
+          </h2>
+        </div>
+
+        <button
+          type="button"
+          (click)="closeAnswer()"
+          class="flex size-9 shrink-0 items-center justify-center rounded-lg text-xl text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+          aria-label="Cerrar"
+        >
+          ×
+        </button>
+      </div>
+
+      <!-- RESPUESTA -->
+      <div class="p-5">
+        <div
+          class="rounded-xl border border-slate-200 bg-slate-50 p-5"
+        >
+          <p class="whitespace-pre-line text-sm leading-7 text-slate-700">
+            {{ answer.answer }}
+          </p>
+        </div>
+
+        <div class="mt-4 flex flex-wrap gap-4 text-xs text-slate-500">
+          <span>
+            Usada {{ answer.usageCount }} veces
+          </span>
+
+          <span>
+            {{ answer.updatedAt }}
+          </span>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div
+        class="flex flex-col-reverse gap-2 border-t border-slate-200 p-5 sm:flex-row sm:justify-end"
+      >
+        <button
+          type="button"
+          (click)="closeAnswer()"
+          class="rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+        >
+          Cerrar
+        </button>
+
+        <button
+          type="button"
+          (click)="useAnswer(answer); closeAnswer()"
+          class="rounded-xl bg-[#0BAFA5] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#0A9292]"
+        >
+          Usar respuesta
+        </button>
+      </div>
+    </div>
+  </div>
+}

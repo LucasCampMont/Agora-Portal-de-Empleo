@@ -12,6 +12,7 @@
 
 <app-footer></app-footer>
 
+<!-- MODAL DE CONFIGURACIÓN / PERFIL / CV -->
 @if (setupModalSection(); as section) {
   <div class="fixed inset-0 z-50 grid place-items-center p-4 sm:p-6">
     <button
@@ -28,19 +29,24 @@
       class="relative z-10 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl"
     >
       <header class="mb-5 flex items-center justify-between gap-4">
-        <h1 id="setup-modal-title" class="text-xl font-semibold text-slate-900">
-        @switch (section) {
-          @case ('profile') {
-            Mi perfil
+        <h1
+          id="setup-modal-title"
+          class="text-xl font-semibold text-slate-900"
+        >
+          @switch (section) {
+            @case ('profile') {
+              Mi perfil
+            }
+
+            @case ('cv') {
+              Mis CV
+            }
+
+            @case ('settings') {
+              Configuración
+            }
           }
-          @case ('cv') {
-            Mis CV
-          }
-          @case ('settings') {
-            Configuración
-          }
-        }
-      </h1>
+        </h1>
 
         <button
           type="button"
@@ -55,4 +61,9 @@
       <app-setup [section]="section"></app-setup>
     </section>
   </div>
+}
+
+<!-- MODAL DE EMPLEOS GUARDADOS -->
+@if (activeWindow() === 'saved') {
+  <app-saved-jobs-modal></app-saved-jobs-modal>
 }

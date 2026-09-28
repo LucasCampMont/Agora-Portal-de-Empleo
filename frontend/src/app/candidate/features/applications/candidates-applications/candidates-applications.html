@@ -1,0 +1,1492 @@
+<div class="min-h-screen bg-[#F4FAFA]">
+
+  <!-- HEADER -->
+  <div class="border-b border-slate-200 bg-white">
+    <div class="mx-auto max-w-[1500px] px-6 py-7">
+
+      <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+
+        <div>
+          <p class="mb-1 text-sm font-medium text-[#0A9292]">
+            Candidato
+          </p>
+
+          <h1 class="text-3xl font-bold tracking-tight text-[#0F172A]">
+            Mis postulaciones
+          </h1>
+
+          <p class="mt-2 text-sm text-slate-500">
+            Revisa el estado y avance de cada proceso en un solo lugar.
+          </p>
+        </div>
+
+        <!-- BUSCADOR -->
+        <div class="relative w-full lg:w-[360px]">
+
+          <svg
+            class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-3.5-3.5"></path>
+          </svg>
+
+          <input
+            type="text"
+            placeholder="Buscar cargo o empresa..."
+            [value]="searchQuery()"
+            (input)="searchQuery.set($any($event.target).value)"
+            class="w-full rounded-xl border border-slate-200 bg-slate-50 py-3 pl-10 pr-4 text-sm text-slate-700 outline-none transition focus:border-[#0BAFA5] focus:bg-white focus:ring-2 focus:ring-[#0BAFA5]/10"
+          />
+
+        </div>
+
+      </div>
+
+
+      <!-- FILTROS -->
+      <div class="mt-7 flex flex-wrap gap-2">
+
+        @for (
+          filter of [
+            'Todas',
+            'Enviada',
+            'En revisión',
+            'Evaluación',
+            'Entrevista',
+            'Oferta',
+            'Finalizada'
+          ];
+          track filter
+        ) {
+
+          <button
+            type="button"
+            (click)="setFilter($any(filter))"
+            [class.bg-[#0BAFA5]]="selectedFilter() === filter"
+            [class.text-white]="selectedFilter() === filter"
+            [class.border-[#0BAFA5]]="selectedFilter() === filter"
+            [class.bg-white]="selectedFilter() !== filter"
+            [class.text-slate-600]="selectedFilter() !== filter"
+            [class.border-slate-200]="selectedFilter() !== filter"
+            class="rounded-full border px-4 py-2 text-sm font-medium transition hover:border-[#0BAFA5] hover:text-[#0A9292]"
+          >
+            {{ filter }}
+          </button>
+
+        }
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- CONTENIDO -->
+  <div class="mx-auto grid max-w-[1500px] grid-cols-1 lg:grid-cols-[420px_1fr]">
+
+
+    <!-- ===================================================== -->
+    <!-- LISTA -->
+    <!-- ===================================================== -->
+
+    <aside class="border-r border-slate-200 bg-white">
+
+      <div class="border-b border-slate-200 px-6 py-4">
+
+        <p class="text-sm font-medium text-slate-500">
+          {{ filteredApplications().length }}
+
+          {{
+            filteredApplications().length === 1
+              ? 'postulación'
+              : 'postulaciones'
+          }}
+        </p>
+
+      </div>
+
+
+      <div class="divide-y divide-slate-100">
+
+        @for (
+          application of filteredApplications();
+          track application.id
+        ) {
+
+          <button
+            type="button"
+            (click)="selectApplication(application.id)"
+            class="w-full text-left transition hover:bg-slate-50"
+            [class.bg-[#F4FAFA]]="selectedApplication()?.id === application.id"
+          >
+
+            <div class="px-6 py-5">
+
+              <div class="flex gap-3">
+
+                <!-- PUNTO DE ESTADO -->
+                <div class="pt-1.5">
+
+                  <span
+                    class="block h-2.5 w-2.5 rounded-full"
+                    [class.bg-slate-400]="application.status === 'Enviada'"
+                    [class.bg-amber-400]="application.status === 'En revisión'"
+                    [class.bg-violet-500]="application.status === 'Evaluación'"
+                    [class.bg-blue-500]="application.status === 'Entrevista'"
+                    [class.bg-emerald-500]="application.status === 'Oferta'"
+                    [class.bg-slate-300]="application.status === 'Finalizada'"
+                  ></span>
+
+                </div>
+
+
+                <div class="min-w-0 flex-1">
+
+                  <div class="flex items-start justify-between gap-4">
+
+                    <div class="min-w-0">
+
+                      <h2 class="truncate text-base font-semibold text-[#0F172A]">
+                        {{ application.jobTitle }}
+                      </h2>
+
+                      <p class="mt-1 text-sm text-slate-500">
+                        {{ application.company }}
+                      </p>
+
+                    </div>
+
+
+                    <span
+                      class="shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold"
+                      [class]="getStatusClasses(application.status)"
+                    >
+                      {{ application.status }}
+                    </span>
+
+                  </div>
+
+
+                  <div class="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs text-slate-500">
+
+                    <span>
+                      {{ application.location }}
+                    </span>
+
+                    <span>
+                      {{ application.modality }}
+                    </span>
+
+                  </div>
+
+
+                  <div class="mt-4 flex items-center justify-between">
+
+                    <span class="text-xs text-slate-400">
+                      Postulaste el {{ application.appliedDate }}
+                    </span>
+
+                    <span class="text-sm font-bold text-[#0A9292]">
+                      {{ application.compatibility }}%
+                    </span>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </button>
+
+        }
+
+
+        <!-- SIN RESULTADOS -->
+        @if (filteredApplications().length === 0) {
+
+          <div class="px-6 py-12 text-center">
+
+            <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
+
+              <svg
+                class="h-5 w-5 text-slate-400"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m20 20-3.5-3.5"></path>
+              </svg>
+
+            </div>
+
+            <p class="mt-4 text-sm font-semibold text-slate-700">
+              No encontramos postulaciones
+            </p>
+
+            <p class="mt-1 text-xs text-slate-400">
+              Prueba con otro cargo, empresa o filtro.
+            </p>
+
+          </div>
+
+        }
+
+      </div>
+
+    </aside>
+
+
+    <!-- ===================================================== -->
+    <!-- DETALLE -->
+    <!-- ===================================================== -->
+
+    @if (selectedApplication(); as application) {
+
+      <main class="min-w-0 bg-[#F4FAFA]">
+
+        <div class="mx-auto max-w-[900px] px-6 py-8 lg:px-10">
+
+
+          <!-- ================================================= -->
+          <!-- CABECERA DEL CARGO -->
+          <!-- ================================================= -->
+
+          <section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+            <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+
+              <div>
+
+                <div class="flex items-center gap-2">
+
+                  <!-- PUNTO DE ESTADO -->
+                  <span
+                    class="h-2.5 w-2.5 rounded-full"
+                    [class.bg-slate-400]="application.status === 'Enviada'"
+                    [class.bg-amber-400]="application.status === 'En revisión'"
+                    [class.bg-violet-500]="application.status === 'Evaluación'"
+                    [class.bg-blue-500]="application.status === 'Entrevista'"
+                    [class.bg-emerald-500]="application.status === 'Oferta'"
+                    [class.bg-slate-300]="application.status === 'Finalizada'"
+                  ></span>
+
+
+                  <span
+                    class="inline-flex rounded-full px-3 py-1 text-xs font-semibold"
+                    [class]="getStatusClasses(application.status)"
+                  >
+                    {{ application.status }}
+                  </span>
+
+                </div>
+
+
+                <h2 class="mt-4 text-2xl font-bold tracking-tight text-[#0F172A]">
+                  {{ application.jobTitle }}
+                </h2>
+
+                <p class="mt-1 text-base font-medium text-slate-600">
+                  {{ application.company }}
+                </p>
+
+
+                <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-500">
+
+                  <span>
+                    {{ application.location }}
+                  </span>
+
+                  <span>
+                    {{ application.modality }}
+                  </span>
+
+                  <span>
+                    {{ application.salary }}
+                  </span>
+
+                </div>
+
+              </div>
+
+
+              <!-- COMPATIBILIDAD -->
+              <div class="rounded-xl bg-[#F4FAFA] px-5 py-4 text-center">
+
+                <p class="text-xs font-medium text-slate-500">
+                  Compatibilidad
+                </p>
+
+                <p class="mt-1 text-3xl font-bold text-[#0A9292]">
+                  {{ application.compatibility }}%
+                </p>
+
+              </div>
+
+            </div>
+
+          </section>
+
+
+          <!-- ================================================= -->
+          <!-- ESTADO DEL PROCESO -->
+          <!-- ================================================= -->
+
+          <section class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+            <div class="flex items-center justify-between gap-4">
+
+              <div>
+
+                <h3 class="text-base font-bold text-[#0F172A]">
+                  Estado del proceso
+                </h3>
+
+                <p class="mt-1 text-sm text-slate-500">
+                  Sigue el avance de tu postulación.
+                </p>
+
+              </div>
+
+
+              <!-- POSTULACIÓN VISTA -->
+              @if (application.viewed && application.viewedDate) {
+
+                <div class="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2">
+
+                  <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+
+                  <div>
+
+                    <p class="text-xs font-medium text-slate-600">
+                      Postulación vista
+                    </p>
+
+                    <p class="text-[11px] text-slate-400">
+                      {{ application.viewedDate }}
+                    </p>
+
+                  </div>
+
+                </div>
+
+              }
+
+            </div>
+
+
+            <!-- TIMELINE -->
+            <div class="mt-7">
+
+              @for (
+                event of application.timeline;
+                track $index;
+                let last = $last
+              ) {
+
+                <div class="flex gap-4">
+
+                  <!-- LINEA -->
+                  <div class="flex flex-col items-center">
+
+                    <div
+                      class="mt-1 h-3 w-3 shrink-0 rounded-full"
+                      [class]="getTimelineDotClasses(event)"
+                    ></div>
+
+                    @if (!last) {
+
+                      <div class="my-1 h-full min-h-10 w-px bg-slate-200"></div>
+
+                    }
+
+                  </div>
+
+
+                  <!-- EVENTO -->
+                  <div class="pb-7">
+
+                    <div class="flex flex-wrap items-center gap-2">
+
+                      @if (event.date) {
+
+                        <span class="text-xs font-medium text-slate-400">
+                          {{ event.date }}
+                        </span>
+
+                      }
+
+                      <h4
+                        class="text-sm font-semibold"
+                        [class.text-[#0F172A]]="event.completed || event.current"
+                        [class.text-slate-400]="!event.completed && !event.current"
+                      >
+                        {{ event.title }}
+                      </h4>
+
+                    </div>
+
+
+                    <p
+                      class="mt-1 text-sm"
+                      [class.text-slate-500]="event.completed || event.current"
+                      [class.text-slate-400]="!event.completed && !event.current"
+                    >
+                      {{ event.description }}
+                    </p>
+
+                  </div>
+
+                </div>
+
+              }
+
+            </div>
+
+          </section>
+
+
+          <!-- ================================================= -->
+          <!-- DATOS DE LA POSTULACIÓN -->
+          <!-- ================================================= -->
+
+          <section class="mt-6 grid gap-6 md:grid-cols-2">
+
+
+            <!-- CV -->
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+              <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+                CV utilizado
+              </p>
+
+
+              <div class="mt-3 flex items-center justify-between gap-4">
+
+                <div>
+
+                  <p class="font-semibold text-[#0F172A]">
+                    {{ application.cvName }}
+                  </p>
+
+                  <p class="mt-1 text-xs text-slate-400">
+                    CV enviado con esta postulación
+                  </p>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  (click)="openCv()"
+                  class="rounded-lg border border-slate-200 px-3 py-2 text-xs font-semibold text-slate-600 transition hover:border-[#0BAFA5] hover:text-[#0A9292]"
+                >
+                  Ver CV
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- RENTA -->
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+              <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+                Pretensión de renta
+              </p>
+
+              <p class="mt-3 text-xl font-bold text-[#0F172A]">
+                ${{ application.expectedSalary | number:'1.0-0' }}
+              </p>
+
+              <p class="mt-1 text-xs text-slate-400">
+                Informada al momento de postular
+              </p>
+
+            </div>
+
+          </section>
+
+
+          <!-- ================================================= -->
+          <!-- INFORMACIÓN PENDIENTE -->
+          <!-- ================================================= -->
+
+          @if (application.pendingInformation) {
+
+            <section class="mt-6 rounded-2xl border border-amber-200 bg-amber-50/60 p-6">
+
+              <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+
+                <div class="flex gap-4">
+
+                  <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-100">
+
+                    <svg
+                      class="h-5 w-5 text-amber-600"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M12 9v4"></path>
+                      <path d="M12 17h.01"></path>
+                      <path d="M10.3 3.6 2.5 17a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3l-7.8-13.4a2 2 0 0 0-3.4 0Z"></path>
+                    </svg>
+
+                  </div>
+
+
+                  <div>
+
+                    <h3 class="font-semibold text-amber-900">
+                      {{ application.pendingInformation.title }}
+                    </h3>
+
+                    <p class="mt-1 max-w-2xl text-sm leading-6 text-amber-800/80">
+                      {{ application.pendingInformation.description }}
+                    </p>
+
+
+                    <div class="mt-3 flex flex-wrap gap-2">
+
+                      @for (
+                        field of application.pendingInformation.fields;
+                        track field
+                      ) {
+
+                        <span class="rounded-full bg-white/70 px-2.5 py-1 text-xs font-medium text-amber-800">
+                          {{ field }}
+                        </span>
+
+                      }
+
+                    </div>
+
+                  </div>
+
+                </div>
+
+
+                <button
+                  type="button"
+                  (click)="openInformationModal()"
+                  class="shrink-0 rounded-xl bg-amber-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-amber-700"
+                >
+                  Completar información
+                </button>
+
+              </div>
+
+            </section>
+
+          }
+          <!-- ========================================================= -->
+<!-- VISOR DE CV -->
+<!-- ========================================================= -->
+
+@if (showCvModal() && selectedCv(); as cv) {
+
+  <div
+    class="fixed inset-0 z-[60] flex flex-col bg-slate-950/80 backdrop-blur-sm"
+    (click)="closeCv()"
+  >
+
+    <!-- ===================================================== -->
+    <!-- HEADER DEL VISOR -->
+    <!-- ===================================================== -->
+
+    <header
+      class="flex shrink-0 items-center justify-between border-b border-white/10 bg-[#0F172A] px-5 py-4 text-white"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="min-w-0">
+
+        <p class="text-xs font-medium text-slate-400">
+          CV utilizado en la postulación
+        </p>
+
+        <div class="mt-1 flex items-center gap-2">
+
+          <h2 class="truncate text-sm font-semibold">
+            {{ cv.name }}
+          </h2>
+
+          <span class="text-slate-500">
+            ·
+          </span>
+
+          <span class="text-xs text-slate-400">
+            {{ cv.fileName }}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <!-- ACCIONES -->
+
+      <div class="flex shrink-0 items-center gap-2">
+
+        <button
+          type="button"
+          class="hidden rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs font-semibold text-slate-200 transition hover:bg-white/10 sm:block"
+        >
+          Descargar
+        </button>
+
+
+        <button
+          type="button"
+          (click)="closeCv()"
+          class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-white/10 hover:text-white"
+          aria-label="Cerrar visor"
+        >
+
+          <svg
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M6 6l12 12"></path>
+            <path d="M18 6 6 18"></path>
+          </svg>
+
+        </button>
+
+      </div>
+
+    </header>
+
+
+    <!-- ===================================================== -->
+    <!-- CONTENIDO DEL VISOR -->
+    <!-- ===================================================== -->
+
+    <div
+      class="min-h-0 flex-1 overflow-auto bg-slate-800 px-4 py-6 sm:px-8"
+      (click)="$event.stopPropagation()"
+    >
+
+      <div class="mx-auto w-full max-w-[850px]">
+
+        <!-- INFORMACIÓN DEL ARCHIVO -->
+
+        <div class="mb-4 flex items-center justify-between gap-4">
+
+          <div>
+
+            <p class="text-xs font-medium text-slate-400">
+              Documento enviado
+            </p>
+
+            <p class="mt-1 text-sm font-semibold text-white">
+              {{ cv.name }}
+            </p>
+
+          </div>
+
+
+          <span
+            class="shrink-0 rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400"
+          >
+            {{ cv.language }}
+          </span>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- HOJA DEL CV -->
+        <!-- ================================================= -->
+
+        <div class="min-h-[1100px] overflow-hidden rounded-sm bg-white shadow-2xl">
+
+          <div class="p-10 sm:p-14">
+
+            <!-- CABECERA -->
+
+            <div class="border-b border-slate-200 pb-6">
+
+              <h1 class="text-3xl font-bold tracking-tight text-slate-900">
+                Lucas Camp Mont
+              </h1>
+
+              <p class="mt-2 text-sm font-medium text-[#0A9292]">
+                Ingeniería Civil Industrial · Sistemas de Gestión
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-slate-500">
+
+                <span>
+                  Santiago, Chile
+                </span>
+
+                <span>
+                  Email
+                </span>
+
+                <span>
+                  LinkedIn
+                </span>
+
+                <span>
+                  GitHub
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <!-- PERFIL -->
+
+            <section class="mt-8">
+
+              <h2
+                class="text-xs font-bold uppercase tracking-widest text-slate-400"
+              >
+                Perfil profesional
+              </h2>
+
+              <p class="mt-3 text-sm leading-7 text-slate-600">
+                Profesional orientado al análisis de datos,
+                automatización de procesos y desarrollo de
+                soluciones tecnológicas, con experiencia trabajando
+                con Python, SQL, Power BI y herramientas de
+                automatización.
+              </p>
+
+            </section>
+
+
+            <!-- EXPERIENCIA -->
+
+            <section class="mt-8">
+
+              <h2
+                class="text-xs font-bold uppercase tracking-widest text-slate-400"
+              >
+                Experiencia
+              </h2>
+
+
+              <div class="mt-4 space-y-6">
+
+                <article>
+
+                  <div class="flex justify-between gap-4">
+
+                    <div>
+
+                      <h3 class="font-semibold text-slate-900">
+                        Analista de Operaciones Clínicas
+                      </h3>
+
+                      <p class="mt-1 text-sm text-slate-500">
+                        Clínica Medical Home
+                      </p>
+
+                    </div>
+
+                    <span class="text-xs text-slate-400">
+                      2025 — 2026
+                    </span>
+
+                  </div>
+
+                  <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Automatización y análisis de procesos mediante
+                    Python, VBA, SQL, Power Query y Power BI.
+                  </p>
+
+                </article>
+
+
+                <article>
+
+                  <div class="flex justify-between gap-4">
+
+                    <div>
+
+                      <h3 class="font-semibold text-slate-900">
+                        Riesgo Operacional
+                      </h3>
+
+                      <p class="mt-1 text-sm text-slate-500">
+                        Banco Falabella · Kibernum
+                      </p>
+
+                    </div>
+
+                    <span class="text-xs text-slate-400">
+                      2024 — 2025
+                    </span>
+
+                  </div>
+
+                  <p class="mt-2 text-sm leading-6 text-slate-600">
+                    Procesamiento de datos y construcción de
+                    procesos ETL utilizando SQL y PySpark.
+                  </p>
+
+                </article>
+
+              </div>
+
+            </section>
+
+
+            <!-- EDUCACIÓN -->
+
+            <section class="mt-8">
+
+              <h2
+                class="text-xs font-bold uppercase tracking-widest text-slate-400"
+              >
+                Educación
+              </h2>
+
+              <div class="mt-4">
+
+                <h3 class="font-semibold text-slate-900">
+                  Ingeniería Civil Industrial
+                </h3>
+
+                <p class="mt-1 text-sm text-slate-500">
+                  Universidad Tecnológica Metropolitana
+                </p>
+
+              </div>
+
+            </section>
+
+
+            <!-- TECNOLOGÍAS -->
+
+            <section class="mt-8">
+
+              <h2
+                class="text-xs font-bold uppercase tracking-widest text-slate-400"
+              >
+                Tecnologías
+              </h2>
+
+              <div class="mt-4 flex flex-wrap gap-2">
+
+                @for (
+                  skill of [
+                    'Python',
+                    'SQL',
+                    'Power BI',
+                    'Power Query',
+                    'PySpark',
+                    'Angular',
+                    'TypeScript',
+                    'NestJS',
+                    'Docker',
+                    'Git'
+                  ];
+                  track skill
+                ) {
+
+                  <span
+                    class="rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600"
+                  >
+                    {{ skill }}
+                  </span>
+
+                }
+
+              </div>
+
+            </section>
+
+
+            <!-- ARCHIVO -->
+
+            <div class="mt-12 border-t border-slate-200 pt-5">
+
+              <div class="flex items-center justify-between gap-4">
+
+                <div>
+
+                  <p class="text-xs font-medium text-slate-400">
+                    Archivo utilizado
+                  </p>
+
+                  <p class="mt-1 text-xs text-slate-600">
+                    {{ cv.fileName }}
+                  </p>
+
+                </div>
+
+                <span class="text-xs text-slate-400">
+                  {{ cv.language }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+          <!-- ================================================= -->
+          <!-- EVALUACIÓN -->
+          <!-- ================================================= -->
+
+          @if (application.evaluation) {
+
+            <section class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+              <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+
+                  <div class="flex items-center gap-2">
+
+                    <span class="h-2.5 w-2.5 rounded-full bg-violet-500"></span>
+
+                    <h3 class="font-semibold text-[#0F172A]">
+                      {{ application.evaluation.title }}
+                    </h3>
+
+                  </div>
+
+
+                  <p class="mt-2 text-sm text-slate-500">
+
+                    Estado:
+
+                    <span class="font-medium text-violet-700">
+                      {{ application.evaluation.status }}
+                    </span>
+
+                  </p>
+
+
+                  @if (application.evaluation.deadline) {
+
+                    <p class="mt-1 text-xs text-slate-400">
+                      Plazo: {{ application.evaluation.deadline }}
+                    </p>
+
+                  }
+
+                </div>
+
+
+                @if (application.evaluation.status === 'Pendiente') {
+
+                  <button
+                    type="button"
+                    class="rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-semibold text-violet-700 transition hover:bg-violet-100"
+                  >
+                    Comenzar evaluación
+                  </button>
+
+                }
+
+              </div>
+
+            </section>
+
+          }
+
+
+          <!-- ================================================= -->
+          <!-- ENTREVISTA -->
+          <!-- ================================================= -->
+
+          @if (application.interview) {
+
+            <section class="mt-6 rounded-2xl border border-blue-200 bg-blue-50/60 p-6">
+
+              <div class="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+
+                <div>
+
+                  <div class="flex items-center gap-2">
+
+                    <div class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-100">
+
+                      <svg
+                        class="h-4 w-4 text-blue-600"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                        <path d="M8 2v4M16 2v4M3 10h18"></path>
+                      </svg>
+
+                    </div>
+
+
+                    <div>
+
+                      <h3 class="font-semibold text-blue-900">
+                        Entrevista
+                      </h3>
+
+                      <p class="text-sm text-blue-800/70">
+                        {{ application.interview.date }}
+                        ·
+                        {{ application.interview.time }}
+                      </p>
+
+                    </div>
+
+                  </div>
+
+
+                  <div class="mt-4 space-y-1 text-sm text-blue-900/80">
+
+                    <p>
+                      {{ application.interview.type }}
+                    </p>
+
+                    @if (application.interview.platform) {
+
+                      <p>
+                        {{ application.interview.platform }}
+                      </p>
+
+                    }
+
+                  </div>
+
+                </div>
+
+
+                @if (application.interview.meetingUrl) {
+
+                  <button
+                    type="button"
+                    class="rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+                  >
+                    Abrir reunión
+                  </button>
+
+                }
+
+              </div>
+
+            </section>
+
+          }
+
+
+          <!-- ================================================= -->
+          <!-- FEEDBACK -->
+          <!-- ================================================= -->
+
+          @if (application.feedback) {
+
+            <section class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+              <p class="text-xs font-medium uppercase tracking-wide text-slate-400">
+                Feedback del proceso
+              </p>
+
+              <p class="mt-3 text-sm leading-6 text-slate-600">
+                {{ application.feedback }}
+              </p>
+
+            </section>
+
+          }
+
+
+          <!-- ================================================= -->
+          <!-- COMUNICACIÓN -->
+          <!-- ================================================= -->
+
+          @if (application.communication) {
+
+            <section class="mt-6 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+
+              <h3 class="font-semibold text-[#0F172A]">
+                Comunicación
+              </h3>
+
+
+              <div class="mt-4 flex flex-wrap gap-3">
+
+                @if (application.communication.email) {
+
+                  <div class="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600">
+
+                    <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+
+                    Notificaciones por email
+
+                  </div>
+
+                }
+
+
+                @if (application.communication.whatsapp) {
+
+                  <div class="flex items-center gap-2 rounded-lg bg-slate-50 px-3 py-2 text-xs font-medium text-slate-600">
+
+                    <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+
+                    Comunicación por WhatsApp
+
+                  </div>
+
+                }
+
+              </div>
+
+            </section>
+
+          }
+
+
+          <!-- ================================================= -->
+          <!-- ASISTENTE AGORA -->
+          <!-- ================================================= -->
+
+          <section class="mt-6 overflow-hidden rounded-2xl border border-[#0BAFA5]/20 bg-white shadow-sm">
+
+            <button
+              type="button"
+              (click)="toggleAssistant()"
+              class="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition hover:bg-[#F4FAFA]"
+            >
+
+              <div class="flex items-center gap-4">
+
+                <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-[#0BAFA5]/10">
+
+                  <svg
+                    class="h-5 w-5 text-[#0A9292]"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M12 3a7 7 0 0 0-7 7c0 2.3 1.1 4.4 2.8 5.7L7 20l5-2 5 2-.8-4.3A7 7 0 0 0 19 10a7 7 0 0 0-7-7Z"></path>
+                    <path d="M9.5 10h.01M14.5 10h.01M9 13c.8.8 1.7 1.2 3 1.2s2.2-.4 3-1.2"></path>
+                  </svg>
+
+                </div>
+
+
+                <div>
+
+                  <h3 class="font-semibold text-[#0F172A]">
+                    Asistente Agora
+                  </h3>
+
+                  <p class="mt-1 text-xs text-slate-500">
+                    Ayuda contextual sobre este proceso.
+                  </p>
+
+                </div>
+
+              </div>
+
+
+              <svg
+                class="h-5 w-5 text-slate-400 transition-transform"
+                [class.rotate-180]="showAssistant()"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="m6 9 6 6 6-6"></path>
+              </svg>
+
+            </button>
+
+
+            @if (showAssistant()) {
+
+              <div class="border-t border-slate-100 bg-[#F4FAFA] px-6 py-5">
+
+                <p class="text-sm leading-6 text-slate-600">
+                  Puedo ayudarte a entender el estado de esta postulación,
+                  revisar qué información falta o explicarte qué significa
+                  cada etapa del proceso.
+                </p>
+
+
+                <div class="mt-4 flex flex-wrap gap-2">
+
+                  <button
+                    type="button"
+                    class="rounded-lg bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm ring-1 ring-slate-200 transition hover:text-[#0A9292]"
+                  >
+                    ¿Qué significa este estado?
+                  </button>
+
+                  <button
+                    type="button"
+                    class="rounded-lg bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm ring-1 ring-slate-200 transition hover:text-[#0A9292]"
+                  >
+                    ¿Qué me falta?
+                  </button>
+
+                  <button
+                    type="button"
+                    class="rounded-lg bg-white px-3 py-2 text-xs font-medium text-slate-600 shadow-sm ring-1 ring-slate-200 transition hover:text-[#0A9292]"
+                  >
+                    ¿Qué viene después?
+                  </button>
+
+                </div>
+
+              </div>
+
+            }
+
+          </section>
+
+
+          <!-- OFERTA ORIGINAL -->
+          <div class="mt-6 flex justify-end">
+
+            <button
+              type="button"
+              class="text-sm font-semibold text-[#0A9292] transition hover:text-[#076F6F]"
+            >
+              Ver oferta original
+            </button>
+
+          </div>
+
+        </div>
+
+      </main>
+
+    }
+
+  </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- MODAL: COMPLETAR INFORMACIÓN -->
+<!-- ========================================================= -->
+
+@if (showInformationModal() && selectedApplication(); as application) {
+
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 px-4 py-6 backdrop-blur-sm"
+    (click)="closeInformationModal()"
+  >
+
+    <div
+      class="w-full max-w-xl overflow-hidden rounded-2xl bg-white shadow-2xl"
+      (click)="$event.stopPropagation()"
+    >
+
+      <!-- HEADER -->
+      <div class="flex items-start justify-between border-b border-slate-200 px-6 py-5">
+
+        <div>
+
+          <p class="text-xs font-semibold uppercase tracking-wide text-[#0A9292]">
+            Información solicitada
+          </p>
+
+          <h2 class="mt-1 text-xl font-bold text-[#0F172A]">
+            Completa tu información
+          </h2>
+
+          <p class="mt-1 text-sm text-slate-500">
+            {{ application.company }} · {{ application.jobTitle }}
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          (click)="closeInformationModal()"
+          class="flex h-9 w-9 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-slate-600"
+        >
+
+          <svg
+            class="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M6 6l12 12M18 6 6 18"></path>
+          </svg>
+
+        </button>
+
+      </div>
+
+
+      <!-- BODY -->
+      <div class="space-y-6 px-6 py-6">
+
+        <div class="rounded-xl bg-amber-50 p-4">
+
+          <p class="text-sm leading-6 text-amber-900">
+            La empresa solicitó información adicional para continuar
+            evaluando tu postulación.
+          </p>
+
+        </div>
+
+
+        <!-- DISPONIBILIDAD -->
+        <div>
+
+          <label class="text-sm font-semibold text-slate-700">
+            ¿Cuándo podrías comenzar?
+          </label>
+
+          <select
+            [value]="availability()"
+            (change)="availability.set($any($event.target).value)"
+            class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#0BAFA5] focus:ring-2 focus:ring-[#0BAFA5]/10"
+          >
+
+            <option value="">
+              Selecciona una opción
+            </option>
+
+            <option value="Inmediatamente">
+              Inmediatamente
+            </option>
+
+            <option value="En 1 semana">
+              En 1 semana
+            </option>
+
+            <option value="En 2 semanas">
+              En 2 semanas
+            </option>
+
+            <option value="En 1 mes">
+              En 1 mes
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- POWER BI -->
+        <div>
+
+          <label class="text-sm font-semibold text-slate-700">
+            ¿Tienes experiencia con Power BI?
+          </label>
+
+          <select
+            [value]="powerBiExperience()"
+            (change)="powerBiExperience.set($any($event.target).value)"
+            class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition focus:border-[#0BAFA5] focus:ring-2 focus:ring-[#0BAFA5]/10"
+          >
+
+            <option value="">
+              Selecciona una opción
+            </option>
+
+            <option value="Sí, experiencia profesional">
+              Sí, experiencia profesional
+            </option>
+
+            <option value="Sí, experiencia académica">
+              Sí, experiencia académica
+            </option>
+
+            <option value="Experiencia básica">
+              Experiencia básica
+            </option>
+
+            <option value="No">
+              No
+            </option>
+
+          </select>
+
+        </div>
+
+
+        <!-- INFORMACIÓN ADICIONAL -->
+        <div>
+
+          <label class="text-sm font-semibold text-slate-700">
+            Información adicional
+            <span class="font-normal text-slate-400">
+              (opcional)
+            </span>
+          </label>
+
+          <textarea
+            rows="4"
+            [value]="additionalInformation()"
+            (input)="additionalInformation.set($any($event.target).value)"
+            placeholder="Agrega información relevante para esta postulación..."
+            class="mt-2 w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-[#0BAFA5] focus:ring-2 focus:ring-[#0BAFA5]/10"
+          ></textarea>
+
+        </div>
+
+      </div>
+
+
+      <!-- FOOTER -->
+      <div class="flex flex-col-reverse gap-3 border-t border-slate-200 bg-slate-50 px-6 py-4 sm:flex-row sm:justify-end">
+
+        <button
+          type="button"
+          (click)="closeInformationModal()"
+          class="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-100"
+        >
+          Cancelar
+        </button>
+
+
+        <button
+          type="button"
+          (click)="saveInformation()"
+          [disabled]="!availability() || !powerBiExperience()"
+          class="rounded-xl bg-[#0BAFA5] px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0A9292] disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          Enviar información
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
