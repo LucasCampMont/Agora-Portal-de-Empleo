@@ -1,0 +1,405 @@
+
+<div class="space-y-6">
+
+  <!-- Header -->
+  <header class="space-y-4">
+
+    <a
+      routerLink="/recruiter/procesos"
+      class="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-800"
+    >
+      <span aria-hidden="true">←</span>
+      Volver a procesos
+    </a>
+
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+
+      <div>
+        <div class="mb-2 flex flex-wrap items-center gap-2">
+          <span
+            class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700"
+          >
+            {{ getStatusLabel(process.status) }}
+          </span>
+
+          <span class="text-sm text-slate-400">
+            Proceso #{{ process.id }}
+          </span>
+        </div>
+
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+          {{ process.name }}
+        </h1>
+
+        <p class="mt-2 text-sm text-slate-500">
+          {{ process.vacancy }} · {{ process.location }}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          class="rounded-lg border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+        >
+          Pausar proceso
+        </button>
+
+        <button
+          type="button"
+          class="rounded-lg bg-[#0BAFA5] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#0A9292]"
+        >
+          Configurar
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+
+  <!-- Navegación del proceso -->
+  <nav
+    class="overflow-x-auto rounded-xl border border-slate-200 bg-white"
+    aria-label="Secciones del proceso"
+  >
+    <div class="flex min-w-max">
+
+      <a
+        class="border-b-2 border-[#0BAFA5] px-4 py-3 text-sm font-semibold text-[#0A9292]"
+        href="#"
+      >
+        Resumen
+      </a>
+
+      <a
+        class="px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+        href="#"
+      >
+        Pipeline
+      </a>
+
+      <a
+        class="px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+        href="#"
+      >
+        Candidatos
+      </a>
+
+      <a
+        class="px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+        href="#"
+      >
+        Matching
+      </a>
+
+      <a
+        class="px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+        href="#"
+      >
+        Evaluaciones
+      </a>
+
+      <a
+        class="px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+        href="#"
+      >
+        Entrevistas
+      </a>
+
+      <a
+        class="px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+        href="#"
+      >
+        Comunicación
+      </a>
+
+      <a
+        class="px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+        href="#"
+      >
+        Automatizaciones
+      </a>
+
+      <a
+        class="px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+        href="#"
+      >
+        Supervisor Agora
+      </a>
+
+      <a
+        class="px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+        href="#"
+      >
+        Actividad
+      </a>
+
+      <a
+        class="px-4 py-3 text-sm font-medium text-slate-500 transition hover:bg-slate-50 hover:text-slate-800"
+        href="#"
+      >
+        Configuración
+      </a>
+
+    </div>
+  </nav>
+
+
+  <!-- Métricas principales -->
+  <section class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+
+    <article class="rounded-xl border border-slate-200 bg-white p-5">
+      <p class="text-sm text-slate-500">
+        Candidatos
+      </p>
+
+      <p class="mt-2 text-3xl font-bold text-slate-900">
+        {{ process.candidates }}
+      </p>
+
+      <p class="mt-1 text-xs text-slate-400">
+        Participantes del proceso
+      </p>
+    </article>
+
+
+    <article class="rounded-xl border border-slate-200 bg-white p-5">
+      <p class="text-sm text-slate-500">
+        Match promedio
+      </p>
+
+      <p class="mt-2 text-3xl font-bold text-slate-900">
+        {{ process.matchAverage }}%
+      </p>
+
+      <p class="mt-1 text-xs text-slate-400">
+        Según criterios configurados
+      </p>
+    </article>
+
+
+    <article class="rounded-xl border border-slate-200 bg-white p-5">
+      <p class="text-sm text-slate-500">
+        Acciones pendientes
+      </p>
+
+      <p class="mt-2 text-3xl font-bold text-slate-900">
+        {{ process.pendingActions }}
+      </p>
+
+      <p class="mt-1 text-xs text-slate-400">
+        Requieren atención
+      </p>
+    </article>
+
+
+    <article class="rounded-xl border border-slate-200 bg-white p-5">
+      <p class="text-sm text-slate-500">
+        Automatizaciones
+      </p>
+
+      <p class="mt-2 text-3xl font-bold text-slate-900">
+        {{ process.activeAutomations }}
+      </p>
+
+      <p class="mt-1 text-xs text-slate-400">
+        Activas en este proceso
+      </p>
+    </article>
+
+  </section>
+
+
+  <!-- Contenido principal -->
+  <div class="grid gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(320px,1fr)]">
+
+    <!-- Pipeline -->
+    <section class="rounded-xl border border-slate-200 bg-white">
+
+      <div class="border-b border-slate-100 px-5 py-4">
+        <div class="flex items-center justify-between gap-4">
+
+          <div>
+            <h2 class="font-semibold text-slate-900">
+              Pipeline
+            </h2>
+
+            <p class="mt-1 text-sm text-slate-500">
+              Estado actual de los participantes.
+            </p>
+          </div>
+
+          <a
+            href="#"
+            class="text-sm font-semibold text-[#0A9292] hover:underline"
+          >
+            Ver pipeline
+          </a>
+
+        </div>
+      </div>
+
+
+      <div class="grid gap-3 p-5 sm:grid-cols-2 xl:grid-cols-4">
+
+        @for (stage of process.pipeline; track stage.label) {
+
+          <article
+            class="rounded-lg border border-slate-200 bg-slate-50 p-4"
+          >
+            <p class="text-sm text-slate-500">
+              {{ stage.label }}
+            </p>
+
+            <p class="mt-2 text-2xl font-bold text-slate-900">
+              {{ stage.count }}
+            </p>
+
+            <div class="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-200">
+              <div
+                class="h-full rounded-full bg-[#0BAFA5]"
+                [style.width.%]="(stage.count / process.candidates) * 100"
+              ></div>
+            </div>
+          </article>
+
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- Supervisor Agora -->
+    <section class="rounded-xl border border-slate-200 bg-white">
+
+      <div class="border-b border-slate-100 px-5 py-4">
+
+        <div class="flex items-center gap-3">
+
+          <div
+            class="flex h-9 w-9 items-center justify-center rounded-lg bg-[#E6F7F5] text-sm font-bold text-[#0A9292]"
+          >
+            A
+          </div>
+
+          <div>
+            <h2 class="font-semibold text-slate-900">
+              Supervisor Agora
+            </h2>
+
+            <p class="text-sm text-slate-500">
+              Supervisión del proceso
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="space-y-4 p-5">
+
+        <div class="rounded-lg bg-slate-50 p-4">
+          <p class="text-sm font-medium text-slate-800">
+            Estado del proceso
+          </p>
+
+          <p class="mt-1 text-sm leading-6 text-slate-500">
+            El proceso está avanzando normalmente. Hay
+            {{ process.pendingActions }}
+            acciones que requieren revisión del recruiter.
+          </p>
+        </div>
+
+
+        <div class="rounded-lg border border-amber-200 bg-amber-50 p-4">
+
+          <p class="text-sm font-semibold text-amber-800">
+            Atención requerida
+          </p>
+
+          <p class="mt-1 text-sm leading-6 text-amber-700">
+            Existen candidatos pendientes de revisión antes de continuar
+            automáticamente.
+          </p>
+
+        </div>
+
+
+        <button
+          type="button"
+          class="w-full rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+        >
+          Ver actividad de Agora
+        </button>
+
+      </div>
+
+    </section>
+
+  </div>
+
+
+  <!-- Actividad reciente -->
+  <section class="rounded-xl border border-slate-200 bg-white">
+
+    <div class="border-b border-slate-100 px-5 py-4">
+
+      <div class="flex items-center justify-between gap-4">
+
+        <div>
+          <h2 class="font-semibold text-slate-900">
+            Actividad reciente
+          </h2>
+
+          <p class="mt-1 text-sm text-slate-500">
+            Últimos eventos registrados en el proceso.
+          </p>
+        </div>
+
+        <a
+          href="#"
+          class="text-sm font-semibold text-[#0A9292] hover:underline"
+        >
+          Ver todo
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="divide-y divide-slate-100">
+
+      @for (activity of process.recentActivity; track activity.description) {
+
+        <article class="flex gap-4 px-5 py-4">
+
+          <div
+            class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-xs font-bold text-slate-600"
+          >
+            {{ getActivityIcon(activity.type) }}
+          </div>
+
+          <div class="min-w-0">
+
+            <p class="text-sm text-slate-800">
+              {{ activity.description }}
+            </p>
+
+            <p class="mt-1 text-xs text-slate-400">
+              {{ activity.time }}
+            </p>
+
+          </div>
+
+        </article>
+
+      }
+
+    </div>
+
+  </section>
+
+</div>
+```

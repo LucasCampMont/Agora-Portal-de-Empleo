@@ -16,7 +16,6 @@ type Vacancy = {
 @Component({
   selector: 'app-recruiter-vacancies',
   templateUrl: './recruiter-vacancies.html',
-  styleUrl: './recruiter-vacancies.scss',
 })
 export class RecruiterVacancies {
 
@@ -85,3 +84,4 @@ export class RecruiterVacancies {
 
 
 }
+

@@ -11,7 +11,6 @@ import { Footer } from '../application/components/footer/footer';
   selector: 'app-recruiter-layout',
   imports: [RouterOutlet, WorkspaceNavbar, RecruiterSidebar, Footer],
   templateUrl: './recruiter-layout.html',
-  styleUrl: './recruiter-layout.scss',
 })
 export class RecruiterLayout {
   readonly navbarConfig: WorkspaceNavbarConfig = {

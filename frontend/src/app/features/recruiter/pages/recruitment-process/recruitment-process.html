@@ -1,0 +1,363 @@
+<section
+  aria-labelledby="processes-title"
+  class="mx-auto max-w-7xl space-y-6"
+>
+  <!-- HEADER -->
+  <header class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+    <div>
+      <p class="text-sm font-medium text-[#0A9292]">Reclutamiento</p>
+
+      <h1
+        id="processes-title"
+        class="mt-1 text-2xl font-semibold tracking-tight text-[#0F172A] sm:text-3xl"
+      >
+        Procesos
+      </h1>
+
+      <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+        Supervisa tus procesos de selección, identifica acciones pendientes y
+        accede rápidamente a cada proceso.
+      </p>
+    </div>
+
+    <button
+      type="button"
+      class="inline-flex min-h-10 items-center justify-center rounded-lg bg-[#07575B] px-4 text-sm font-semibold text-white transition hover:bg-[#06484B]"
+    >
+      + Nuevo proceso
+    </button>
+  </header>
+
+  <!-- RESUMEN -->
+  <section
+    aria-label="Resumen de procesos"
+    class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"
+  >
+    <article class="rounded-xl border border-[#DCEBEA] bg-white p-5">
+      <p class="text-sm text-slate-500">Procesos activos</p>
+
+      <div class="mt-2 flex items-end justify-between gap-4">
+        <p class="text-3xl font-semibold tracking-tight text-[#0F172A]">
+          3
+        </p>
+
+        <span
+          class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700"
+        >
+          En curso
+        </span>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-[#DCEBEA] bg-white p-5">
+      <p class="text-sm text-slate-500">Candidatos en procesos</p>
+
+      <div class="mt-2 flex items-end justify-between gap-4">
+        <p class="text-3xl font-semibold tracking-tight text-[#0F172A]">
+          95
+        </p>
+
+        <span class="text-xs text-slate-500">
+          4 procesos
+        </span>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-[#DCEBEA] bg-white p-5">
+      <p class="text-sm text-slate-500">Acciones pendientes</p>
+
+      <div class="mt-2 flex items-end justify-between gap-4">
+        <p class="text-3xl font-semibold tracking-tight text-[#0F172A]">
+          9
+        </p>
+
+        <span
+          class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700"
+        >
+          Requieren atención
+        </span>
+      </div>
+    </article>
+
+    <article class="rounded-xl border border-[#DCEBEA] bg-white p-5">
+      <p class="text-sm text-slate-500">Actividad de Agora</p>
+
+      <div class="mt-2 flex items-end justify-between gap-4">
+        <p class="text-3xl font-semibold tracking-tight text-[#0F172A]">
+          18
+        </p>
+
+        <span class="text-xs text-slate-500">
+          Últimas 24 h
+        </span>
+      </div>
+    </article>
+  </section>
+
+  <!-- FILTROS -->
+  <section
+    aria-label="Buscar y filtrar procesos"
+    class="rounded-xl border border-[#DCEBEA] bg-white p-4 sm:p-5"
+  >
+    <div class="grid gap-4 lg:grid-cols-[1fr_auto_auto] lg:items-end">
+      <div>
+        <label
+          for="process-search"
+          class="mb-2 block text-sm font-medium text-[#0F172A]"
+        >
+          Buscar proceso
+        </label>
+
+        <input
+          id="process-search"
+          type="search"
+          placeholder="Nombre del proceso o vacante..."
+          class="h-11 w-full rounded-lg border border-[#DCEBEA] px-3 text-sm text-[#0F172A] outline-none placeholder:text-slate-400 focus:border-[#0A9292] focus:ring-2 focus:ring-[#0A9292]/20"
+        />
+      </div>
+
+      <div>
+        <label
+          for="process-status"
+          class="mb-2 block text-sm font-medium text-[#0F172A]"
+        >
+          Estado
+        </label>
+
+        <select
+          id="process-status"
+          class="h-11 min-w-40 rounded-lg border border-[#DCEBEA] bg-white px-3 text-sm text-[#0F172A] outline-none focus:border-[#0A9292] focus:ring-2 focus:ring-[#0A9292]/20"
+        >
+          <option>Todos</option>
+          <option>Activos</option>
+          <option>Pausados</option>
+          <option>Cerrados</option>
+        </select>
+      </div>
+
+      <div>
+        <label
+          for="process-sort"
+          class="mb-2 block text-sm font-medium text-[#0F172A]"
+        >
+          Ordenar
+        </label>
+
+        <select
+          id="process-sort"
+          class="h-11 min-w-48 rounded-lg border border-[#DCEBEA] bg-white px-3 text-sm text-[#0F172A] outline-none focus:border-[#0A9292] focus:ring-2 focus:ring-[#0A9292]/20"
+        >
+          <option>Última actividad</option>
+          <option>Más candidatos</option>
+          <option>Más pendientes</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESOS -->
+  <section aria-labelledby="active-processes-title" class="space-y-4">
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <h2
+          id="active-processes-title"
+          class="text-lg font-semibold text-[#0F172A]"
+        >
+          Tus procesos
+        </h2>
+
+        <p class="mt-1 text-sm text-slate-500">
+          Actividad y estado actual de cada proceso.
+        </p>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      @for (process of processes; track process.id) {
+        <article
+          class="overflow-hidden rounded-xl border border-[#DCEBEA] bg-white"
+        >
+          <!-- PROCESS HEADER -->
+          <div class="border-b border-slate-100 p-5 sm:p-6">
+            <div
+              class="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between"
+            >
+              <div class="min-w-0">
+                <div class="flex flex-wrap items-center gap-2">
+                  <h3 class="text-base font-semibold text-[#0F172A] sm:text-lg">
+                    {{ process.name }}
+                  </h3>
+
+                  @if (process.status === 'activo') {
+                    <span
+                      class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700"
+                    >
+                      {{ getStatusLabel(process.status) }}
+                    </span>
+                  } @else if (process.status === 'pausado') {
+                    <span
+                      class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-700"
+                    >
+                      {{ getStatusLabel(process.status) }}
+                    </span>
+                  } @else {
+                    <span
+                      class="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700"
+                    >
+                      {{ getStatusLabel(process.status) }}
+                    </span>
+                  }
+                </div>
+
+                <p class="mt-2 text-sm text-slate-600">
+                  {{ process.vacancy }}
+                  <span class="mx-1 text-slate-300">·</span>
+                  {{ process.location }}
+                </p>
+
+                <p class="mt-1 text-xs text-slate-500">
+                  {{ process.updatedAt }}
+                </p>
+              </div>
+
+              <a
+                [routerLink]="['/recruiter/procesos', process.id]"
+                class="inline-flex min-h-10 shrink-0 items-center justify-center rounded-lg bg-[#07575B] px-4 text-sm font-semibold text-white transition hover:bg-[#06484B]"
+              >
+                Abrir proceso
+              </a>
+            </div>
+          </div>
+
+          <!-- METRICS -->
+          <div
+            class="grid divide-y divide-slate-100 sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+          >
+            <div class="p-5">
+              <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
+                Candidatos
+              </p>
+
+              <p class="mt-2 text-2xl font-semibold text-[#0F172A]">
+                {{ process.candidates }}
+              </p>
+            </div>
+
+            <div class="p-5">
+              <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
+                Acciones pendientes
+              </p>
+
+              <p
+                class="mt-2 text-2xl font-semibold"
+                [class.text-amber-700]="process.pendingActions > 0"
+                [class.text-[#0F172A]]="process.pendingActions === 0"
+              >
+                {{ process.pendingActions }}
+              </p>
+            </div>
+
+            <div class="p-5">
+              <p class="text-xs font-medium uppercase tracking-wide text-slate-500">
+                Estado de actividad
+              </p>
+
+              <p class="mt-2 text-sm font-semibold text-[#0F172A]">
+                {{ process.updatedAt }}
+              </p>
+            </div>
+          </div>
+
+          <!-- PIPELINE -->
+          <div class="border-t border-slate-100 bg-slate-50/50 p-5 sm:p-6">
+            <div class="flex items-center justify-between gap-4">
+              <div>
+                <h4 class="text-sm font-semibold text-[#0F172A]">
+                  Pipeline
+                </h4>
+
+                <p class="mt-1 text-xs text-slate-500">
+                  Distribución actual de candidatos.
+                </p>
+              </div>
+            </div>
+
+            <div class="mt-4 grid gap-2 sm:grid-cols-4">
+              <div class="rounded-lg border border-slate-200 bg-white p-3">
+                <p class="text-xs text-slate-500">Nuevos</p>
+                <p class="mt-1 text-lg font-semibold text-[#0F172A]">
+                  {{ process.pipeline.newCandidates }}
+                </p>
+              </div>
+
+              <div class="rounded-lg border border-slate-200 bg-white p-3">
+                <p class="text-xs text-slate-500">Screening</p>
+                <p class="mt-1 text-lg font-semibold text-[#0F172A]">
+                  {{ process.pipeline.screening }}
+                </p>
+              </div>
+
+              <div class="rounded-lg border border-slate-200 bg-white p-3">
+                <p class="text-xs text-slate-500">Evaluación</p>
+                <p class="mt-1 text-lg font-semibold text-[#0F172A]">
+                  {{ process.pipeline.evaluation }}
+                </p>
+              </div>
+
+              <div class="rounded-lg border border-slate-200 bg-white p-3">
+                <p class="text-xs text-slate-500">Entrevista</p>
+                <p class="mt-1 text-lg font-semibold text-[#0F172A]">
+                  {{ process.pipeline.interview }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <!-- ACTIVIDAD -->
+  <section
+    aria-labelledby="recent-activity-title"
+    class="rounded-xl border border-[#DCEBEA] bg-white"
+  >
+    <div class="border-b border-slate-100 p-5 sm:p-6">
+      <h2
+        id="recent-activity-title"
+        class="text-lg font-semibold text-[#0F172A]"
+      >
+        Actividad reciente
+      </h2>
+
+      <p class="mt-1 text-sm text-slate-500">
+        Últimos eventos registrados en tus procesos.
+      </p>
+    </div>
+
+    <div class="divide-y divide-slate-100">
+      @for (activity of recentActivity; track activity.id) {
+        <div class="flex gap-4 p-5 sm:px-6">
+          <div
+            class="mt-1 grid size-8 shrink-0 place-items-center rounded-full bg-[#E6F4F1] text-xs font-bold text-[#07575B]"
+            aria-hidden="true"
+          >
+            A
+          </div>
+
+          <div class="min-w-0 flex-1">
+            <p class="text-sm font-medium text-[#0F172A]">
+              {{ activity.description }}
+            </p>
+
+            <div class="mt-1 flex flex-wrap gap-x-2 text-xs text-slate-500">
+              <span>{{ activity.process }}</span>
+              <span aria-hidden="true">·</span>
+              <span>{{ activity.time }}</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</section>

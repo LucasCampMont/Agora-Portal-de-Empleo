@@ -156,7 +156,6 @@ type CandidateJob = {
   selector: 'app-candidates-job',
   imports: [JobSearchBar],
   templateUrl: './candidates-job.html',
-  styleUrl: './candidates-job.scss',
 })
 export class CandidatesJob {
   private readonly route = inject(ActivatedRoute);

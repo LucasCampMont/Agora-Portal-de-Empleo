@@ -7,6 +7,6 @@ import { Footer } from "../../../../layout/application/components/footer/footer"
   selector: 'app-home',
   imports: [Navbar, Footer, RouterLink],
   templateUrl: './home.html',
-  styleUrl: './home.scss',
 })
 export class Home {}
+

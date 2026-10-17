@@ -21,7 +21,6 @@ interface CandidateSidebarSection {
   selector: 'app-candidate-sidebar',
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './candidate-sidebar.html',
-  styleUrl: './candidate-sidebar.scss',
 })
 export class CandidateSidebar {
   readonly setupRequested = output<SetupSection>();

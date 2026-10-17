@@ -1,1 +1,301 @@
-<p>recruiter-home works!</p>
+<section
+  aria-labelledby="recruiter-home-title"
+  class="mx-auto max-w-7xl space-y-6"
+>
+  <!-- Encabezado -->
+  <header>
+    <p class="text-sm font-medium text-[#0A9292]">
+      Reclutamiento
+    </p>
+
+    <div
+      class="mt-1 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"
+    >
+      <div>
+        <h1
+          id="recruiter-home-title"
+          class="text-2xl font-semibold tracking-tight text-[#0F172A] sm:text-3xl"
+        >
+          Centro de control
+        </h1>
+
+        <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600">
+          Supervisa tus procesos de selección, identifica lo que requiere
+          atención y revisa la actividad reciente de Agora.
+        </p>
+      </div>
+
+      <a
+        routerLink="/recruiter/procesos"
+        class="inline-flex min-h-10 items-center justify-center rounded-lg bg-[#0A9292] px-4 text-sm font-semibold text-white transition hover:bg-[#087E7E]"
+      >
+        Ver procesos
+      </a>
+    </div>
+  </header>
+
+  <!-- Resumen -->
+  <section
+    aria-label="Resumen del reclutamiento"
+    class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+  >
+    <article class="rounded-xl border border-[#DCEBEA] bg-white p-5">
+      <p class="text-sm text-slate-500">
+        Procesos activos
+      </p>
+
+      <p class="mt-2 text-3xl font-semibold text-[#0F172A]">
+        3
+      </p>
+
+      <p class="mt-1 text-xs text-slate-500">
+        Procesos actualmente en ejecución
+      </p>
+    </article>
+
+    <article class="rounded-xl border border-[#DCEBEA] bg-white p-5">
+      <p class="text-sm text-slate-500">
+        Candidatos en proceso
+      </p>
+
+      <p class="mt-2 text-3xl font-semibold text-[#0F172A]">
+        86
+      </p>
+
+      <p class="mt-1 text-xs text-slate-500">
+        Distribuidos entre procesos activos
+      </p>
+    </article>
+
+    <article class="rounded-xl border border-[#DCEBEA] bg-white p-5">
+      <p class="text-sm text-slate-500">
+        Requieren atención
+      </p>
+
+      <p class="mt-2 text-3xl font-semibold text-amber-700">
+        8
+      </p>
+
+      <p class="mt-1 text-xs text-slate-500">
+        Acciones pendientes del recruiter
+      </p>
+    </article>
+
+    <article class="rounded-xl border border-[#DCEBEA] bg-white p-5">
+      <p class="text-sm text-slate-500">
+        Actividad de Agora
+      </p>
+
+      <p class="mt-2 text-3xl font-semibold text-[#0A9292]">
+        18
+      </p>
+
+      <p class="mt-1 text-xs text-slate-500">
+        Acciones registradas recientemente
+      </p>
+    </article>
+  </section>
+
+  <!-- Procesos activos -->
+  <section
+    aria-labelledby="active-processes-title"
+    class="space-y-3"
+  >
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <h2
+          id="active-processes-title"
+          class="text-lg font-semibold text-[#0F172A]"
+        >
+          Procesos activos
+        </h2>
+
+        <p class="mt-1 text-sm text-slate-500">
+          Una vista rápida del estado actual de tus procesos.
+        </p>
+      </div>
+
+      <a
+        routerLink="/recruiter/procesos"
+        class="hidden text-sm font-semibold text-[#0A9292] hover:text-[#07575B] sm:inline"
+      >
+        Ver todos
+      </a>
+    </div>
+
+    <div class="grid gap-3">
+      @for (process of activeProcesses; track process.id) {
+        <article
+          class="rounded-xl border border-[#DCEBEA] bg-white p-5 transition hover:border-[#B8D7D4]"
+        >
+          <div
+            class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between"
+          >
+            <div class="min-w-0">
+              <div class="flex flex-wrap items-center gap-2">
+                <h3 class="font-semibold text-[#0F172A]">
+                  {{ process.name }}
+                </h3>
+
+                @if (process.status === 'atencion') {
+                  <span
+                    class="rounded-full bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-800"
+                  >
+                    {{ getProcessStatusLabel(process.status) }}
+                  </span>
+                } @else {
+                  <span
+                    class="rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-800"
+                  >
+                    {{ getProcessStatusLabel(process.status) }}
+                  </span>
+                }
+              </div>
+
+              <p class="mt-1 text-sm text-slate-600">
+                {{ process.vacancy }}
+              </p>
+
+              <p class="mt-2 text-xs text-slate-500">
+                {{ process.updatedAt }}
+              </p>
+            </div>
+
+            <div
+              class="flex shrink-0 items-center gap-5 text-sm"
+            >
+              <div>
+                <p class="text-xs text-slate-500">
+                  Candidatos
+                </p>
+
+                <p class="mt-1 font-semibold text-[#0F172A]">
+                  {{ process.candidates }}
+                </p>
+              </div>
+
+              <div>
+                <p class="text-xs text-slate-500">
+                  Pendientes
+                </p>
+
+                <p
+                  class="mt-1 font-semibold"
+                  [class.text-amber-700]="process.pendingActions > 0"
+                  [class.text-slate-700]="process.pendingActions === 0"
+                >
+                  {{ process.pendingActions }}
+                </p>
+              </div>
+
+              <a
+                [routerLink]="['/recruiter/procesos', process.id]"
+                class="rounded-lg border border-[#DCEBEA] px-3 py-2 text-xs font-semibold text-[#07575B] transition hover:bg-[#F4FAFA]"
+              >
+                Abrir
+              </a>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <!-- Atención + actividad -->
+  <div class="grid gap-6 lg:grid-cols-2">
+    <!-- Requiere atención -->
+    <section
+      aria-labelledby="attention-title"
+      class="space-y-3"
+    >
+      <div>
+        <h2
+          id="attention-title"
+          class="text-lg font-semibold text-[#0F172A]"
+        >
+          Requiere atención
+        </h2>
+
+        <p class="mt-1 text-sm text-slate-500">
+          Situaciones donde tu intervención puede destrabar el proceso.
+        </p>
+      </div>
+
+      <div class="space-y-3">
+        @for (item of attentionItems; track item.id) {
+          <article
+            class="rounded-xl border border-amber-100 bg-white p-4"
+          >
+            <div class="flex gap-3">
+              <span
+                class="mt-0.5 grid size-8 shrink-0 place-items-center rounded-lg bg-amber-50 text-sm font-bold text-amber-700"
+                aria-hidden="true"
+              >
+                !
+              </span>
+
+              <div class="min-w-0">
+                <h3 class="text-sm font-semibold text-[#0F172A]">
+                  {{ item.title }}
+                </h3>
+
+                <p class="mt-1 text-sm leading-5 text-slate-600">
+                  {{ item.description }}
+                </p>
+
+                <button
+                  type="button"
+                  class="mt-3 text-xs font-semibold text-[#07575B] underline decoration-[#B8D7D4] underline-offset-4 hover:text-[#0A9292]"
+                >
+                  {{ item.actionLabel }}
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+    </section>
+
+    <!-- Actividad -->
+    <section
+      aria-labelledby="activity-title"
+      class="space-y-3"
+    >
+      <div>
+        <h2
+          id="activity-title"
+          class="text-lg font-semibold text-[#0F172A]"
+        >
+          Actividad reciente
+        </h2>
+
+        <p class="mt-1 text-sm text-slate-500">
+          Cambios y acciones registrados en tus procesos.
+        </p>
+      </div>
+
+      <div
+        class="divide-y divide-[#DCEBEA] rounded-xl border border-[#DCEBEA] bg-white"
+      >
+        @for (activity of recentActivity; track activity.id) {
+          <article class="flex gap-3 p-4">
+            <span
+              class="mt-1.5 size-2 shrink-0 rounded-full bg-[#0A9292]"
+              aria-hidden="true"
+            ></span>
+
+            <div class="min-w-0">
+              <p class="text-sm leading-5 text-slate-700">
+                {{ activity.description }}
+              </p>
+
+              <p class="mt-1 text-xs text-slate-500">
+                {{ activity.time }}
+              </p>
+            </div>
+          </article>
+        }
+      </div>
+    </section>
+  </div>
+</section>

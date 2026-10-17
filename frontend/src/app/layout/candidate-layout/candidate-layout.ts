@@ -19,7 +19,6 @@ import { SavedJobsModal } from '../../features/candidate/components/saved-jobs-m
     SavedJobsModal,
   ],
   templateUrl: './candidate-layout.html',
-  styleUrl: './candidate-layout.scss',
 })
 export class CandidateLayout {
   private readonly windowService = inject(CandidateWindowService);

@@ -42,9 +42,7 @@ export const routes: Routes = [
       ),
 
     children: [
-      // =========================
       // INICIO
-      // =========================
       {
         path: '',
         loadComponent: () =>
@@ -53,9 +51,7 @@ export const routes: Routes = [
           ).then((module) => module.CandidateHome),
       },
 
-      // =========================
       // CONFIGURACIÓN INICIAL
-      // =========================
       {
         path: 'setup',
         loadComponent: () =>
@@ -64,9 +60,7 @@ export const routes: Routes = [
           ),
       },
 
-      // =========================
       // EMPLEOS
-      // =========================
       {
         path: 'jobs',
         loadComponent: () =>
@@ -83,20 +77,16 @@ export const routes: Routes = [
           ).then((module) => module.RecommendedJobs),
       },
 
-      // =========================
       // POSTULACIONES
-      // =========================
       {
         path: 'applications',
         loadComponent: () =>
           import(
-            './candidate/features/applications/candidates-applications/candidates-applications'
+            './features/candidate/applications/candidates-applications/candidates-applications'
           ).then((module) => module.CandidatesApplications),
       },
 
-      // =========================
       // NOTIFICACIONES
-      // =========================
       {
         path: 'notifications',
         loadComponent: () =>
@@ -105,9 +95,7 @@ export const routes: Routes = [
           ).then((module) => module.Notifications),
       },
 
-      // =========================
       // FORMULARIOS Y RESPUESTAS
-      // =========================
       {
         path: 'answers',
         loadComponent: () =>
@@ -116,9 +104,7 @@ export const routes: Routes = [
           ).then((module) => module.ApplicationAnswers),
       },
 
-      // =========================
       // EVALUACIONES
-      // =========================
       {
         path: 'evaluations',
         loadComponent: () =>
@@ -126,6 +112,7 @@ export const routes: Routes = [
             './features/candidate/evaluations/evaluations'
           ).then((module) => module.Evaluations),
       },
+
       {
         path: 'flash-requests',
         loadComponent: () =>
@@ -133,9 +120,8 @@ export const routes: Routes = [
             './features/candidate/flash-requests/flash-requests'
           ).then((module) => module.FlashRequests),
       },
-      // =========================
+
       // ASISTENTE ÁGORA
-      // =========================
       {
         path: 'assistant',
         loadComponent: () =>
@@ -157,6 +143,7 @@ export const routes: Routes = [
       ),
 
     children: [
+      // CENTRO DE CONTROL
       {
         path: '',
         pathMatch: 'full',
@@ -166,12 +153,40 @@ export const routes: Routes = [
           ).then((module) => module.RecruiterHome),
       },
 
+      // VACANTES
       {
         path: 'vacantes',
         loadComponent: () =>
           import(
             './features/recruiter/pages/recruiter-vacancies/recruiter-vacancies'
           ).then((module) => module.RecruiterVacancies),
+      },
+
+      // PROCESOS
+      {
+        path: 'procesos',
+        loadComponent: () =>
+          import(
+            './features/recruiter/pages/recruitment-process/recruitment-process'
+          ).then((module) => module.RecruitmentProcess),
+      },
+
+      // DETALLE DEL PROCESO
+      {
+        path: 'procesos/:id',
+        loadComponent: () =>
+          import(
+            './features/recruiter/pages/recruitment-process-detail/recruitment-process-detail'
+          ).then((module) => module.RecruitmentProcessDetail),
+      },
+
+      // PIPELINE DEL PROCESO
+      {
+        path: 'procesos/:id/pipeline',
+        loadComponent: () =>
+          import(
+            './features/recruiter/pages/recruitment-pipeline/recruitment-pipeline'
+          ).then((module) => module.RecruitmentPipeline),
       },
     ],
   },

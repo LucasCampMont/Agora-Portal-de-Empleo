@@ -7,7 +7,6 @@ export type SetupSection = 'profile' | 'cv' | 'settings';
   selector: 'app-setup',
   imports: [CandidateCvManager, CandidateProfileEditor],
   templateUrl: './setup.html',
-  styleUrl: './setup.scss',
 })
 export class Setup {
   readonly section = input<SetupSection>('settings');

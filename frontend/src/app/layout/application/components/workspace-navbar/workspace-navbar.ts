@@ -16,7 +16,6 @@ export interface WorkspaceNavbarConfig {
   selector: 'app-workspace-navbar',
   imports: [RouterLink],
   templateUrl: './workspace-navbar.html',
-  styleUrl: './workspace-navbar.scss',
 })
 export class WorkspaceNavbar {
   readonly config = input.required<WorkspaceNavbarConfig>();
